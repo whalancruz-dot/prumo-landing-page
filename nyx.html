@@ -1,0 +1,2793 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#090716">
+<title>Nyx</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23B692FF'/%3E%3Cstop offset='1' stop-color='%234F9DFF'/%3E%3C/linearGradient%3E%3Cmask id='m'%3E%3Crect width='48' height='48' fill='%23fff'/%3E%3Ccircle cx='30' cy='20' r='16' fill='%23000'/%3E%3C/mask%3E%3C/defs%3E%3Ccircle cx='24' cy='24' r='20' fill='url(%23g)' mask='url(%23m)'/%3E%3Cpath d='M26 13.5 37 20 26 26.5Z' fill='%23EEEBFF' stroke='%23EEEBFF' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.25.6/babel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.13/hls.min.js"></script>
+
+<style>
+  :root {
+    --bg: #090716;
+    --bg-2: #0e0b20;
+    --surf: #15112e;
+    --surf-2: #1d183d;
+    --surf-3: #272050;
+    --line: rgba(190, 180, 255, .11);
+    --line-2: rgba(190, 180, 255, .2);
+    --text: #eeebff;
+    --mute: rgba(228, 223, 255, .64);
+    --dim: rgba(228, 223, 255, .4);
+    --vio: #9b6dff;
+    --blue: #4f9dff;
+    --grad: linear-gradient(135deg, #a877ff 0%, #7480ff 52%, #4f9dff 100%);
+    --danger: #ff6b8e;
+    --ok: #6fe3c1;
+    --r-s: 10px;
+    --r-m: 16px;
+    --r-l: 26px;
+    --sat: env(safe-area-inset-top, 0px);
+    --sab: env(safe-area-inset-bottom, 0px);
+    --hh: 56px;
+    --pad: 16px;
+    --display: "Bricolage Grotesque", "Figtree", system-ui, sans-serif;
+    --body: "Figtree", system-ui, -apple-system, sans-serif;
+    box-sizing: border-box;
+  }
+  @media (min-width: 860px) { :root { --pad: 40px; --hh: 64px; } }
+
+  *, *::before, *::after { box-sizing: inherit; }
+  html, body { height: 100%; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--body); font-size: 15px; line-height: 1.45;
+    -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: none;
+  }
+  body.locked { overflow: hidden; }
+  body::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background:
+      radial-gradient(60% 40% at 12% -5%, rgba(155, 109, 255, .22), transparent 70%),
+      radial-gradient(50% 35% at 100% 0%, rgba(79, 157, 255, .14), transparent 70%);
+  }
+  #root { position: relative; z-index: 1; min-height: 100%; }
+  button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; text-align: inherit; }
+  button:focus-visible, input:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+  input { font: inherit; color: inherit; }
+  h1, h2, h3, p { margin: 0; }
+  img { display: block; }
+  .noscroll::-webkit-scrollbar { display: none; }
+  .noscroll { scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .clamp-1 { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+  /* ---------- motion ---------- */
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @keyframes sheet-in { from { transform: translateY(100%); } to { transform: none; } }
+  @keyframes sheet-out { from { transform: none; } to { transform: translateY(100%); } }
+  @keyframes page-in { from { opacity: 0; transform: translateY(28px) scale(.985); } to { opacity: 1; transform: none; } }
+  @keyframes shake { 10%,90%{transform:translateX(-1px)} 20%,80%{transform:translateX(2px)} 30%,50%,70%{transform:translateX(-5px)} 40%,60%{transform:translateX(5px)} }
+  @keyframes halo { 0%,100% { opacity: .55; transform: scale(1); } 50% { opacity: 1; transform: scale(1.12); } }
+  @keyframes drift-a { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(12%, 8%) scale(1.15); } }
+  @keyframes drift-b { 0%,100% { transform: translate(0,0) scale(1.1); } 50% { transform: translate(-10%, -12%) scale(.95); } }
+  @keyframes indet { 0% { left: -40%; } 100% { left: 100%; } }
+  @keyframes here { 0%,100% { box-shadow: 0 0 0 1px var(--vio), 0 0 0 0 rgba(155,109,255,.45); } 50% { box-shadow: 0 0 0 1px var(--vio), 0 0 0 8px rgba(155,109,255,0); } }
+  @keyframes swipe-next { from { opacity: 0; transform: translateX(46px); } to { opacity: 1; transform: none; } }
+  @keyframes swipe-prev { from { opacity: 0; transform: translateX(-46px); } to { opacity: 1; transform: none; } }
+  @keyframes eq { 0%,100% { transform: scaleY(.35); } 50% { transform: scaleY(1); } }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+  @keyframes twinkle { 0%,100% { opacity: .15; } 50% { opacity: .9; } }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  }
+
+  /* ---------- brand ---------- */
+  .brand { display: inline-flex; align-items: center; gap: 9px; }
+  .brand__word { font-family: var(--display); font-weight: 800; font-size: 24px; letter-spacing: -.04em; line-height: 1; }
+  .gradtext { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+  /* ---------- splash ---------- */
+  .splash { position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px; background: var(--bg); overflow: hidden; }
+  .splash__stars { position: absolute; inset: 0; }
+  .splash__stars i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff; animation: twinkle 3s ease-in-out infinite; }
+  .splash__moon { position: relative; width: 132px; height: 132px; display: grid; place-items: center; }
+  .splash__moon::before { content: ""; position: absolute; inset: -30px; border-radius: 50%; background: radial-gradient(circle, rgba(155,109,255,.5), rgba(79,157,255,.14) 45%, transparent 68%); animation: halo 2.6s ease-in-out infinite; }
+  .splash__orbit { position: absolute; inset: 0; border-radius: 50%; border: 1px solid var(--line); animation: spin 3.2s linear infinite; }
+  .splash__orbit::after { content: ""; position: absolute; top: -4px; left: 50%; width: 8px; height: 8px; margin-left: -4px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 14px 2px var(--blue); }
+  .splash__word { font-family: var(--display); font-weight: 800; font-size: 44px; letter-spacing: -.05em; line-height: 1; animation: rise .7s .15s both; }
+  .splash__status { color: var(--mute); font-size: 13.5px; min-height: 20px; animation: fade .6s .4s both; }
+  .bar { position: relative; width: 168px; height: 3px; border-radius: 3px; background: rgba(255,255,255,.1); overflow: hidden; }
+  .bar > span { position: absolute; top: 0; bottom: 0; left: 0; border-radius: 3px; background: var(--grad); transition: width .35s ease; }
+  .bar--indet > span { width: 40%; animation: indet 1.1s ease-in-out infinite; }
+
+  .spinner { width: 34px; height: 34px; border-radius: 50%; border: 2.5px solid rgba(255,255,255,.12); border-top-color: var(--vio); border-right-color: var(--blue); animation: spin .8s linear infinite; }
+  .center-pad { display: flex; justify-content: center; padding: 56px 0; }
+
+  /* ---------- buttons ---------- */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 48px; padding: 0 22px; border-radius: 14px; font-weight: 600; font-size: 15px; transition: transform .15s, filter .15s, background .15s; white-space: nowrap; }
+  .btn:active { transform: scale(.97); }
+  .btn i { font-size: 20px; }
+  .btn--primary { background: var(--grad); color: #fff; box-shadow: 0 10px 30px -8px rgba(124, 108, 255, .7); }
+  .btn--primary:hover { filter: brightness(1.1); }
+  .btn--ghost { background: rgba(255,255,255,.09); border: 1px solid var(--line); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .btn--ghost:hover { background: rgba(255,255,255,.15); }
+  .btn--danger { background: rgba(255,107,142,.14); color: var(--danger); border: 1px solid rgba(255,107,142,.3); }
+  .btn--block { width: 100%; }
+  .btn--sm { height: 40px; padding: 0 16px; font-size: 14px; border-radius: 12px; }
+  .btn[disabled] { opacity: .65; pointer-events: none; }
+  .iconbtn { width: 42px; height: 42px; flex: none; border-radius: 50%; display: grid; place-items: center; font-size: 20px; color: var(--text); background: rgba(255,255,255,.07); border: 1px solid var(--line); transition: background .15s, transform .15s; }
+  .iconbtn:hover { background: rgba(255,255,255,.14); }
+  .iconbtn:active { transform: scale(.92); }
+  .iconbtn--glass { background: rgba(9,7,22,.55); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+  .iconbtn.is-on { background: var(--grad); border-color: transparent; }
+
+  /* ---------- header + nav ---------- */
+  .header { position: fixed; top: 0; left: 0; right: 0; z-index: 30; padding-top: var(--sat); transition: background .25s, border-color .25s; border-bottom: 1px solid transparent; }
+  .header.is-solid { background: rgba(9,7,22,.78); backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4); border-bottom-color: var(--line); }
+  .header__in { height: var(--hh); display: flex; align-items: center; gap: 12px; padding: 0 var(--pad); }
+  .header__tabs { display: none; flex: 1; gap: 4px; margin-left: 20px; }
+  .header__tab { padding: 8px 14px; border-radius: 99px; font-size: 14.5px; font-weight: 500; color: var(--mute); transition: color .15s, background .15s; }
+  .header__tab:hover { color: var(--text); }
+  .header__tab.is-on { color: #fff; background: rgba(255,255,255,.1); }
+  .header__sp { flex: 1; }
+  @media (min-width: 860px) { .header__tabs { display: flex; } .header__sp { display: none; } }
+
+  .nav { position: fixed; z-index: 30; left: 8px; right: 8px; bottom: calc(10px + var(--sab)); display: flex; padding: 6px; border-radius: 24px; background: rgba(21,17,46,.82); backdrop-filter: blur(22px) saturate(1.5); -webkit-backdrop-filter: blur(22px) saturate(1.5); border: 1px solid var(--line-2); box-shadow: 0 18px 40px -10px rgba(0,0,0,.7); }
+  .nav__item { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 7px 1px 6px; border-radius: 18px; color: var(--dim); font-size: 10px; font-weight: 600; transition: color .2s, background .2s; }
+  .nav__item i { font-size: 21px; line-height: 1; transition: transform .25s cubic-bezier(.3,1.6,.5,1); }
+  .nav__item.is-on { color: #fff; background: linear-gradient(135deg, rgba(168,119,255,.3), rgba(79,157,255,.22)); }
+  .nav__item.is-on i { transform: translateY(-1px) scale(1.12); }
+  @media (min-width: 860px) { .nav { display: none; } }
+
+  .page { padding-top: calc(var(--sat) + var(--hh)); padding-bottom: calc(110px + var(--sab)); min-height: 100vh; }
+  .page--home { padding-top: 0; }
+  .page__title { font-family: var(--display); font-weight: 700; font-size: 30px; letter-spacing: -.03em; padding: 14px var(--pad) 4px; }
+
+  /* ---------- hero ---------- */
+  .hero { position: relative; height: min(74vh, 600px); min-height: 470px; overflow: hidden; margin-bottom: 8px; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+  .hero__in--next { animation: swipe-next .32s cubic-bezier(.2,.8,.2,1) both; }
+  .hero__in--prev { animation: swipe-prev .32s cubic-bezier(.2,.8,.2,1) both; }
+  .hero__arrow { display: none; position: absolute; top: 50%; z-index: 2; transform: translateY(-50%); }
+  .hero__arrow--l { left: 12px; } .hero__arrow--r { right: 12px; }
+  @media (min-width: 860px) and (hover: hover) { .hero__arrow { display: grid; } }
+  .hero__bg { position: absolute; inset: -30px; background-size: cover; background-position: center 25%; filter: blur(26px) saturate(1.35) brightness(.8); transform: scale(1.12); opacity: 0; transition: opacity .9s ease; }
+  .hero__bg.is-on { opacity: 1; }
+  .hero__shade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(9,7,22,.55) 0%, rgba(9,7,22,.1) 30%, rgba(9,7,22,.72) 68%, var(--bg) 100%); }
+  .hero__in { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 var(--pad) 18px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; }
+  .hero__poster { width: 150px; aspect-ratio: 2/3; border-radius: 18px; overflow: hidden; position: relative; background: var(--surf); box-shadow: 0 30px 60px -18px rgba(0,0,0,.85), 0 0 0 1px rgba(255,255,255,.12); animation: rise .6s both; }
+  .hero__title { font-family: var(--display); font-weight: 800; font-size: clamp(26px, 7vw, 46px); line-height: 1.02; letter-spacing: -.035em; max-width: 16ch; text-wrap: balance; animation: rise .6s .06s both; }
+  .hero__meta { display: flex; align-items: center; gap: 10px; color: var(--mute); font-size: 13.5px; animation: rise .6s .1s both; }
+  .hero__actions { display: flex; gap: 10px; animation: rise .6s .14s both; }
+  .hero__dots { display: flex; gap: 6px; margin-top: 2px; }
+  .hero__dots button { width: 6px; height: 6px; border-radius: 6px; background: rgba(255,255,255,.25); transition: width .3s, background .3s; }
+  .hero__dots button.is-on { width: 22px; background: var(--grad); }
+  @media (min-width: 860px) {
+    .hero { height: min(78vh, 640px); }
+    .hero__in { flex-direction: row; align-items: flex-end; text-align: left; gap: 32px; padding-bottom: 34px; }
+    .hero__poster { width: 210px; flex: none; }
+    .hero__txt { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; padding-bottom: 6px; }
+  }
+  .hero__txt { display: contents; }
+  @media (min-width: 860px) { .hero__txt { display: flex; } }
+
+  .pill { display: inline-flex; align-items: center; gap: 5px; height: 24px; padding: 0 9px; border-radius: 99px; font-size: 12px; font-weight: 600; background: rgba(255,255,255,.1); border: 1px solid var(--line); color: var(--text); }
+  .pill i { font-size: 13px; }
+  .pill--star i { color: #ffd166; }
+  .pill--grad { background: var(--grad); border-color: transparent; color: #fff; }
+
+  /* ---------- rows ---------- */
+  .row { margin: 0 0 30px; }
+  .row__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 0 var(--pad); margin-bottom: 12px; }
+  .row__title { font-family: var(--display); font-weight: 700; font-size: 19px; letter-spacing: -.02em; }
+  .row__more { color: var(--mute); font-size: 13px; font-weight: 600; flex: none; }
+  .row__more:hover { color: var(--text); }
+  .row__track { display: flex; gap: 12px; overflow-x: auto; padding: 4px var(--pad) 6px; scroll-snap-type: x proximity; scroll-padding-left: var(--pad); }
+  .row__track > * { scroll-snap-align: start; flex: none; }
+
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px 10px; padding: 0 var(--pad); }
+  @media (min-width: 560px) { .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  @media (min-width: 860px) { .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 22px 16px; } }
+
+  /* ---------- poster ---------- */
+  .art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .45s ease; }
+  .art.on { opacity: 1; }
+  .ph { position: absolute; inset: 0; display: grid; place-items: center; font-size: 26px; color: rgba(255,255,255,.16); background: linear-gradient(145deg, var(--surf-2), var(--surf)); }
+  .poster { width: 124px; display: block; }
+  .poster--grid { width: 100%; }
+  .poster__art { position: relative; aspect-ratio: 2/3; border-radius: 14px; overflow: hidden; background: var(--surf); box-shadow: 0 0 0 1px rgba(255,255,255,.07), 0 12px 24px -14px rgba(0,0,0,.9); transition: transform .2s ease, box-shadow .2s ease; }
+  @media (hover: hover) { .poster:hover .poster__art { transform: translateY(-4px); box-shadow: 0 0 0 1.5px var(--vio), 0 18px 30px -14px rgba(155,109,255,.55); } }
+  .poster:active .poster__art { transform: scale(.96); }
+  .poster__name { margin-top: 8px; font-size: 12.5px; line-height: 1.3; color: var(--mute); font-weight: 500; }
+  .poster__tag { position: absolute; top: 7px; left: 7px; height: 20px; padding: 0 7px; border-radius: 6px; font-size: 10.5px; font-weight: 700; display: inline-flex; align-items: center; background: rgba(9,7,22,.75); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+  .poster--live { width: 108px; }
+  .poster--live.poster--grid { width: 100%; }
+  .poster--live .poster__art { aspect-ratio: 1; }
+  .poster--live .art { object-fit: contain; padding: 14%; }
+  @media (min-width: 860px) { .poster { width: 156px; } .poster--live { width: 128px; } .poster__name { font-size: 13.5px; } }
+
+  /* ---------- top 10 ---------- */
+  .top { display: flex; align-items: flex-end; }
+  .top__n { font-family: var(--display); font-weight: 800; font-size: 104px; line-height: .78; letter-spacing: -.08em; color: transparent; -webkit-text-stroke: 2px rgba(168, 139, 255, .75); margin-right: -9px; padding: 0 0 2px 4px; user-select: none; }
+  .top__art { position: relative; width: 104px; aspect-ratio: 2/3; border-radius: 14px; overflow: hidden; background: var(--surf); box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 14px 26px -12px rgba(0,0,0,.9); transition: transform .2s; }
+  .top:active .top__art { transform: scale(.95); }
+  @media (min-width: 860px) { .top__n { font-size: 150px; } .top__art { width: 140px; } }
+
+  /* ---------- continue cards ---------- */
+  .cont { position: relative; width: 272px; }
+  .cont__art { position: relative; display: block; width: 100%; aspect-ratio: 16/9; border-radius: 18px; overflow: hidden; background: var(--surf); box-shadow: 0 0 0 1px rgba(255,255,255,.09), 0 18px 34px -16px rgba(0,0,0,.9); }
+  .cont__art .art { object-position: center 22%; }
+  .cont__shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(9,7,22,.96) 4%, rgba(9,7,22,.35) 52%, rgba(9,7,22,.1)); }
+  .cont__play { position: absolute; left: 14px; bottom: 44px; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-size: 19px; background: var(--grad); box-shadow: 0 8px 20px -4px rgba(124,108,255,.8); transition: transform .2s; }
+  .cont__art:active .cont__play { transform: scale(.9); }
+  .cont__info { position: absolute; left: 62px; right: 14px; bottom: 42px; }
+  .cont__title { font-weight: 700; font-size: 14.5px; line-height: 1.2; }
+  .cont__sub { display: flex; gap: 8px; font-size: 12px; color: var(--mute); margin-top: 2px; }
+  .cont__sub b { color: #cdbcff; font-weight: 700; }
+  .cont__bar { position: absolute; left: 14px; right: 14px; bottom: 14px; }
+  .cont__left { position: absolute; left: 14px; bottom: 22px; right: 14px; font-size: 11px; color: var(--dim); display: flex; justify-content: space-between; }
+  .cont__menu { position: absolute; top: 8px; right: 8px; width: 34px; height: 34px; font-size: 18px; }
+  .track { height: 4px; border-radius: 4px; background: rgba(255,255,255,.16); overflow: hidden; }
+  .track > span { display: block; height: 100%; border-radius: 4px; background: var(--grad); }
+
+  /* ---------- chips ---------- */
+  .chips { position: sticky; top: calc(var(--sat) + var(--hh)); z-index: 20; display: flex; gap: 8px; overflow-x: auto; padding: 10px var(--pad) 12px; background: linear-gradient(to bottom, var(--bg) 70%, transparent); margin-bottom: 8px; }
+  .chip { flex: none; height: 36px; padding: 0 15px; border-radius: 99px; font-size: 13.5px; font-weight: 600; color: var(--mute); background: var(--surf); border: 1px solid var(--line); transition: color .15s, background .15s, border-color .15s; white-space: nowrap; }
+  .chip:hover { color: var(--text); border-color: var(--line-2); }
+  .chip.is-on { color: #fff; background: var(--grad); border-color: transparent; box-shadow: 0 8px 18px -8px rgba(124,108,255,.8); }
+  .chip small { opacity: .7; font-weight: 500; margin-left: 5px; font-size: 12px; }
+
+  .empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding: 64px 32px; color: var(--mute); }
+  .empty__ico { width: 76px; height: 76px; border-radius: 50%; display: grid; place-items: center; font-size: 32px; color: #cdbcff; background: radial-gradient(circle at 30% 30%, rgba(168,119,255,.35), rgba(79,157,255,.08)); border: 1px solid var(--line-2); margin-bottom: 6px; }
+  .empty h3 { font-family: var(--display); font-size: 20px; font-weight: 700; color: var(--text); letter-spacing: -.02em; }
+  .empty p { max-width: 30ch; font-size: 14px; }
+
+  /* ---------- search ---------- */
+  .search { padding: 8px var(--pad) 0; }
+  .search__box { position: relative; }
+  .search__box > i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 20px; color: var(--dim); pointer-events: none; }
+  .search__input { width: 100%; height: 54px; border-radius: 18px; padding: 0 48px 0 48px; font-size: 16px; background: var(--surf); border: 1.5px solid var(--line); outline: none; transition: border-color .2s, box-shadow .2s; }
+  .search__input::placeholder { color: var(--dim); }
+  .search__input:focus { border-color: var(--vio); box-shadow: 0 0 0 4px rgba(155,109,255,.18); }
+  .search__clear { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,.1); display: grid; place-items: center; font-size: 16px; }
+  .search__seg { display: flex; gap: 8px; overflow-x: auto; margin: 14px calc(var(--pad) * -1) 18px; padding: 0 var(--pad); }
+  .search__h { display: flex; justify-content: space-between; align-items: baseline; margin: 22px 0 12px; }
+  .search__h h2 { font-family: var(--display); font-size: 18px; font-weight: 700; letter-spacing: -.02em; }
+  .search__h button { color: var(--mute); font-size: 13px; font-weight: 600; }
+  .recent { display: flex; flex-wrap: wrap; gap: 8px; }
+  .recent button { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px; border-radius: 99px; background: var(--surf); border: 1px solid var(--line); font-size: 13.5px; color: var(--mute); }
+  .recent button i { font-size: 15px; color: var(--dim); }
+  .hint { font-size: 12.5px; color: var(--dim); margin-bottom: 14px; }
+
+  /* ---------- detail ---------- */
+  .detail { position: fixed; inset: 0; z-index: 40; background: var(--bg); overflow-y: auto; animation: page-in .34s cubic-bezier(.2,.8,.2,1) both; }
+  .detail__hero { position: relative; height: min(52vh, 440px); min-height: 330px; overflow: hidden; }
+  .detail__bg { position: absolute; inset: 0; background-size: cover; background-position: center 18%; }
+  .detail__bg--blur { inset: -24px; filter: blur(22px) saturate(1.3); transform: scale(1.1); }
+  .detail__shade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(9,7,22,.6) 0%, rgba(9,7,22,.05) 34%, rgba(9,7,22,.7) 72%, var(--bg) 100%); }
+  .detail__top { position: fixed; z-index: 3; top: calc(var(--sat) + 10px); left: var(--pad); right: var(--pad); display: flex; justify-content: space-between; pointer-events: none; }
+  .detail__top > * { pointer-events: auto; }
+  .detail__id { position: absolute; left: var(--pad); right: var(--pad); bottom: 6px; display: flex; align-items: flex-end; gap: 16px; }
+  .detail__poster { position: relative; width: 104px; flex: none; aspect-ratio: 2/3; border-radius: 14px; overflow: hidden; background: var(--surf); box-shadow: 0 22px 40px -14px rgba(0,0,0,.9), 0 0 0 1px rgba(255,255,255,.12); }
+  .detail__title { font-family: var(--display); font-weight: 800; font-size: clamp(24px, 6.4vw, 40px); line-height: 1.04; letter-spacing: -.035em; text-wrap: balance; }
+  .detail__meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .detail__body { padding: 18px var(--pad) calc(40px + var(--sab)); max-width: 900px; }
+  .detail__plot { color: var(--mute); font-size: 14.5px; line-height: 1.55; margin-bottom: 4px; }
+  .detail__more { color: #cdbcff; font-weight: 600; font-size: 13.5px; margin-bottom: 18px; }
+  .detail__facts { color: var(--dim); font-size: 13px; margin: 12px 0 0; }
+  .detail__facts b { color: var(--mute); font-weight: 600; }
+  @media (min-width: 860px) { .detail__poster { width: 150px; } .detail__body { padding-top: 26px; } }
+
+  .resume { width: 100%; display: flex; align-items: center; gap: 14px; padding: 14px; margin: 18px 0 6px; border-radius: 20px; background: linear-gradient(135deg, rgba(168,119,255,.22), rgba(79,157,255,.14)); border: 1px solid rgba(168,139,255,.35); transition: transform .15s; }
+  .resume:active { transform: scale(.985); }
+  .resume__play { width: 50px; height: 50px; flex: none; border-radius: 50%; display: grid; place-items: center; font-size: 24px; background: var(--grad); box-shadow: 0 10px 24px -6px rgba(124,108,255,.85); }
+  .resume__txt { flex: 1; min-width: 0; }
+  .resume__k { font-size: 12.5px; color: #cdbcff; font-weight: 600; }
+  .resume__t { font-weight: 700; font-size: 15px; margin: 1px 0 8px; }
+  .resume__foot { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--dim); margin-top: 5px; }
+
+  .seasons { display: flex; gap: 8px; overflow-x: auto; margin: 22px calc(var(--pad) * -1) 14px; padding: 2px var(--pad); }
+  .eps { display: flex; flex-direction: column; gap: 10px; }
+  .ep { position: relative; display: flex; align-items: center; border-radius: 18px; background: var(--surf); border: 1px solid var(--line); scroll-margin: 120px 0; transition: background .15s; }
+  .ep:hover { background: var(--surf-2); }
+  .ep.is-here { background: linear-gradient(135deg, rgba(168,119,255,.18), rgba(79,157,255,.1)); border-color: transparent; animation: here 1.6s ease-out 3; box-shadow: 0 0 0 1px var(--vio); }
+  .ep__main { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; padding: 10px 0 10px 10px; }
+  .ep__thumb { position: relative; width: 116px; flex: none; aspect-ratio: 16/9; border-radius: 12px; overflow: hidden; background: var(--surf-3); }
+  .ep__thumb .ph { font-size: 20px; }
+  .ep__thumb .track { position: absolute; left: 0; right: 0; bottom: 0; border-radius: 0; height: 3px; }
+  .ep__playing { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(9,7,22,.35); font-size: 22px; }
+  .ep__n { font-size: 12px; font-weight: 700; color: #cdbcff; display: flex; gap: 8px; align-items: center; }
+  .ep__n span { color: var(--dim); font-weight: 500; }
+  .ep__here { display: inline-flex; height: 18px; align-items: center; padding: 0 7px; border-radius: 99px; background: var(--grad); color: #fff !important; font-size: 10.5px; font-weight: 700 !important; }
+  .ep__t { font-size: 14.5px; font-weight: 600; line-height: 1.25; margin-top: 2px; }
+  .ep.is-watched .ep__t { color: var(--dim); }
+  .ep.is-watched .ep__thumb .art { filter: saturate(.4) brightness(.6); }
+  .ep__check { width: 46px; height: 46px; flex: none; display: grid; place-items: center; font-size: 22px; color: var(--dim); margin-right: 4px; border-radius: 50%; }
+  .ep__check.is-on { color: var(--ok); }
+  @media (min-width: 860px) { .ep__thumb { width: 160px; } }
+
+  /* ---------- sheet ---------- */
+  .scrim { position: fixed; inset: 0; z-index: 60; background: rgba(4,3,12,.66); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); animation: fade .2s both; display: flex; align-items: flex-end; justify-content: center; }
+  .scrim.is-out { opacity: 0; transition: opacity .2s; }
+  .sheet { width: 100%; max-width: 480px; max-height: 88vh; overflow-y: auto; background: var(--bg-2); border: 1px solid var(--line-2); border-bottom: 0; border-radius: var(--r-l) var(--r-l) 0 0; padding: 10px 20px calc(22px + var(--sab)); animation: sheet-in .3s cubic-bezier(.2,.85,.25,1) both; box-shadow: 0 -20px 60px rgba(0,0,0,.6); }
+  .is-out .sheet { animation: sheet-out .2s ease-in both; }
+  .sheet__grab { width: 40px; height: 4px; border-radius: 4px; background: rgba(255,255,255,.2); margin: 0 auto 16px; }
+  .sheet__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .sheet__title { font-family: var(--display); font-weight: 700; font-size: 22px; letter-spacing: -.03em; }
+  @media (min-width: 860px) { .scrim { align-items: center; } .sheet { border-radius: var(--r-l); border-bottom: 1px solid var(--line-2); } .sheet__grab { display: none; } }
+
+  .act { width: 100%; display: flex; align-items: center; gap: 14px; height: 54px; padding: 0 14px; border-radius: 14px; font-weight: 600; font-size: 15px; transition: background .15s; }
+  .act:hover { background: rgba(255,255,255,.07); }
+  .act i { font-size: 21px; color: #cdbcff; }
+  .act--danger, .act--danger i { color: var(--danger); }
+  .sheet__item { display: flex; gap: 14px; align-items: center; margin-bottom: 14px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+  .sheet__thumb { position: relative; width: 52px; aspect-ratio: 2/3; border-radius: 10px; overflow: hidden; flex: none; background: var(--surf); }
+
+  .card { background: var(--surf); border: 1px solid var(--line); border-radius: 18px; padding: 16px; }
+  .set-sec { margin-bottom: 18px; }
+  .set-sec h3 { font-size: 13px; font-weight: 600; color: var(--dim); margin: 0 0 8px 4px; }
+  .acct { display: flex; align-items: center; gap: 14px; }
+  .acct__av { width: 48px; height: 48px; border-radius: 16px; flex: none; display: grid; place-items: center; background: var(--grad); font-family: var(--display); font-weight: 800; font-size: 20px; }
+  .acct__n { font-weight: 700; font-size: 15.5px; }
+  .acct__s { font-size: 12.5px; color: var(--mute); }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .stat { background: var(--surf); border: 1px solid var(--line); border-radius: 16px; padding: 12px 10px; text-align: center; }
+  .stat b { display: block; font-family: var(--display); font-size: 22px; font-weight: 800; letter-spacing: -.03em; }
+  .stat span { font-size: 12px; color: var(--mute); }
+  .confirm { background: rgba(255,107,142,.1); border: 1px solid rgba(255,107,142,.3); border-radius: 16px; padding: 14px; }
+  .confirm p { font-size: 13.5px; color: #ffc2d0; margin-bottom: 12px; }
+  .confirm div { display: flex; gap: 8px; }
+  .build { text-align: center; font-size: 11.5px; color: var(--dim); margin-top: 6px; }
+
+
+  /* ---------- ao vivo ---------- */
+  .chips--flow { position: static; background: none; }
+  .live { padding: 0 var(--pad); }
+  .live__hint { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--mute); margin: 0 0 14px; }
+  .live__hint i { font-size: 17px; color: #cdbcff; flex: none; }
+  .live__sec { margin-bottom: 26px; }
+  .live__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+  .chlist { display: flex; flex-direction: column; gap: 8px; }
+  .ch { display: flex; align-items: center; border-radius: 18px; background: var(--surf); border: 1px solid var(--line); transition: background .15s, border-color .15s; }
+  .ch:hover { background: var(--surf-2); }
+  .ch.is-on { background: linear-gradient(135deg, rgba(168,119,255,.22), rgba(79,157,255,.12)); border-color: rgba(168,139,255,.6); }
+  .ch__main { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; padding: 10px 0 10px 10px; }
+  .ch__logo { position: relative; width: 54px; height: 54px; flex: none; border-radius: 14px; overflow: hidden; background: var(--surf-3); }
+  .ch__logo .art { object-fit: contain; padding: 7px; }
+  .ch__logo .ph { font-size: 20px; background: none; }
+  .ch__name { font-weight: 600; font-size: 15px; line-height: 1.25; overflow-wrap: anywhere; }
+  .ch__meta { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; margin-top: 4px; font-size: 12.5px; color: var(--mute); min-width: 0; }
+  .ch__meta:empty { display: none; }
+  .ch__time { display: inline-flex; align-items: center; gap: 4px; height: 20px; padding: 0 7px; border-radius: 6px; font-weight: 700; font-size: 11.5px; color: #fff; background: rgba(168,119,255,.28); font-variant-numeric: tabular-nums; }
+  .ch__time i { font-size: 12px; }
+  .ch__q { height: 20px; padding: 0 6px; border-radius: 6px; font-size: 10.5px; font-weight: 700; display: inline-flex; align-items: center; border: 1px solid var(--line-2); color: var(--mute); }
+  .ch__onair { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: 11.5px; color: #cdbcff; }
+  .ch__prog { min-width: 0; flex: 1 1 100%; }
+  .ch__bar { height: 3px; margin-top: 7px; max-width: 220px; }
+  .ch__go { width: 46px; height: 46px; flex: none; margin: 0 6px 0 2px; border-radius: 50%; display: grid; place-items: center; font-size: 21px; color: var(--mute); transition: background .15s, color .15s, transform .15s; }
+  .ch__go:hover { background: rgba(255,255,255,.08); color: #fff; }
+  .ch__go:active { transform: scale(.9); }
+  .ch.is-on .ch__go { background: var(--grad); color: #fff; box-shadow: 0 8px 18px -6px rgba(124,108,255,.8); }
+  .eq { display: inline-flex; align-items: flex-end; gap: 2px; height: 11px; }
+  .eq i { width: 2.5px; height: 100%; border-radius: 2px; background: currentColor; transform-origin: bottom; animation: eq .9s ease-in-out infinite; }
+  .eq i:nth-child(2) { animation-delay: .25s; } .eq i:nth-child(3) { animation-delay: .5s; }
+
+  .pv { position: sticky; top: calc(var(--sat) + var(--hh)); z-index: 15; margin: 0 calc(var(--pad) * -1) 6px; padding: 8px var(--pad) 10px; background: var(--bg); }
+  @media (max-height: 560px) { .pv { position: static; } }
+  .pv__frame { position: relative; aspect-ratio: 16/9; border-radius: 20px; overflow: hidden; background: #000; box-shadow: 0 0 0 1px var(--line-2), 0 24px 44px -20px rgba(0,0,0,.95), 0 0 70px -24px rgba(124,108,255,.7); }
+  .pv__frame video { width: 100%; height: 100%; object-fit: contain; display: block; background: #000; }
+  .pv__hit { position: absolute; inset: 0; width: 100%; }
+  .pv__shade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to top, rgba(4,3,12,.94) 0%, rgba(4,3,12,.1) 52%, rgba(4,3,12,.5) 100%); }
+  .pv__top { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; align-items: center; justify-content: space-between; pointer-events: none; }
+  .pv__top > * { pointer-events: auto; }
+  .pv__top .iconbtn { width: 36px; height: 36px; font-size: 17px; }
+  .pv__live { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 9px; border-radius: 7px; font-size: 11px; font-weight: 800; letter-spacing: .04em; background: rgba(255,59,92,.92); color: #fff; }
+  .pv__live i { width: 6px; height: 6px; border-radius: 50%; background: #fff; animation: pulse 1.4s ease-in-out infinite; }
+  .pv__info { position: absolute; left: 12px; right: 12px; bottom: 12px; display: flex; align-items: flex-end; gap: 10px; pointer-events: none; }
+  .pv__info > * { pointer-events: auto; }
+  .pv__txt { flex: 1; min-width: 0; pointer-events: none; }
+  .pv__name { font-family: var(--display); font-weight: 700; font-size: 17px; line-height: 1.15; letter-spacing: -.02em; text-shadow: 0 1px 8px rgba(0,0,0,.8); }
+  .pv__now { font-size: 12.5px; color: var(--mute); margin-top: 2px; }
+  .pv__err { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: var(--mute); font-size: 13px; background: radial-gradient(circle at 50% 40%, rgba(155,109,255,.18), #05040d 70%); pointer-events: none; }
+  .pv__err i { font-size: 28px; color: var(--dim); }
+  @media (min-width: 860px) {
+    .live.has-pv { display: grid; grid-template-columns: minmax(0, 1fr) min(44%, 560px); gap: 28px; align-items: start; }
+    .live.has-pv .pv { order: 2; margin: 0; padding: 0; background: none; top: calc(var(--sat) + var(--hh) + 16px); }
+  }
+  @media (min-width: 1280px) { .live:not(.has-pv) .chlist { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+  /* ---------- em alta ---------- */
+  .chip i.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; box-shadow: 0 0 0 2px rgba(255,255,255,.14); }
+  .trend { padding: 0 var(--pad); }
+  .trend__sum { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 20px; margin-bottom: 20px; background: linear-gradient(135deg, rgba(168,119,255,.2), rgba(79,157,255,.1)); border: 1px solid rgba(168,139,255,.3); }
+  .trend__big { font-family: var(--display); font-weight: 800; font-size: 34px; letter-spacing: -.04em; line-height: 1; flex: none; }
+  .trend__big small { font-size: 17px; color: var(--mute); font-weight: 700; }
+  .trend__sum p { font-size: 13px; color: var(--mute); line-height: 1.35; }
+  .trend__sum b { display: block; color: var(--text); font-size: 14.5px; font-weight: 700; }
+  .trend__tools { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; font-size: 14px; font-weight: 600; }
+  .trend__cols { display: grid; gap: 28px; }
+  @media (min-width: 860px) { .trend__cols { grid-template-columns: 1fr 1fr; gap: 32px; } }
+  .trend__h { font-family: var(--display); font-weight: 700; font-size: 19px; letter-spacing: -.02em; margin-bottom: 10px; }
+  .ranks { display: flex; flex-direction: column; gap: 8px; }
+  .rank { width: 100%; display: flex; align-items: center; gap: 12px; padding: 8px 10px 8px 2px; border-radius: 18px; background: var(--surf); border: 1px solid var(--line); transition: background .15s, transform .15s; }
+  button.rank:hover { background: var(--surf-2); }
+  button.rank:active { transform: scale(.985); }
+  .rank__n { width: 46px; flex: none; text-align: center; font-family: var(--display); font-weight: 800; font-size: 38px; letter-spacing: -.07em; line-height: 1; color: transparent; -webkit-text-stroke: 1.5px rgba(168,139,255,.8); font-variant-numeric: tabular-nums; }
+  .rank__art { position: relative; width: 54px; flex: none; aspect-ratio: 2/3; border-radius: 10px; overflow: hidden; background: var(--surf-3); }
+  .rank__art .ph { font-size: 18px; }
+  .rank__txt { flex: 1; min-width: 0; }
+  .rank__t { font-weight: 600; font-size: 15px; line-height: 1.25; }
+  .rank__s { font-size: 12.5px; color: var(--mute); margin-top: 3px; display: flex; flex-wrap: wrap; gap: 2px 8px; align-items: center; }
+  .rank__s i { color: #ffd166; font-size: 12px; margin-right: 2px; }
+  .rank__ok { color: var(--ok); font-weight: 700; }
+  .rank__no { color: var(--dim); }
+  .rank__go { width: 40px; height: 40px; flex: none; border-radius: 50%; display: grid; place-items: center; font-size: 20px; background: var(--grad); box-shadow: 0 8px 18px -6px rgba(124,108,255,.8); }
+  .rank.is-off { background: transparent; border-style: dashed; }
+  .rank.is-off .rank__art, .rank.is-off .rank__t { opacity: .5; }
+  .rank.is-off .rank__n { -webkit-text-stroke-color: rgba(190,180,255,.3); }
+  .trend__note { font-size: 11.5px; color: var(--dim); margin: 26px 0 0; line-height: 1.5; }
+  .seg { display: flex; padding: 4px; margin-bottom: 16px; border-radius: 14px; background: var(--surf); border: 1px solid var(--line); }
+  .seg button { flex: 1; height: 38px; border-radius: 10px; text-align: center; font-size: 13.5px; font-weight: 600; color: var(--mute); transition: background .15s, color .15s; }
+  .seg button.is-on { background: var(--surf-3); color: #fff; box-shadow: 0 0 0 1px var(--line-2); }
+
+  /* ---------- ajustes ---------- */
+  .kv { display: flex; justify-content: space-between; align-items: center; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 13.5px; }
+  .kv:last-child { border-bottom: 0; padding-bottom: 0; }
+  .kv > span:first-child { color: var(--mute); flex: none; }
+  .kv b { font-weight: 600; text-align: right; min-width: 0; overflow-wrap: anywhere; }
+  .kv button { color: #cdbcff; font-size: 17px; margin-left: 8px; vertical-align: -3px; }
+  .acct__edit { margin-left: auto; flex: none; }
+  .setform { display: flex; flex-direction: column; gap: 10px; }
+  .setform__btns { display: flex; gap: 8px; margin-top: 4px; }
+  .opt { width: 100%; display: flex; align-items: center; gap: 14px; text-align: left; }
+  .opt__t { font-weight: 600; font-size: 15px; }
+  .opt__s { font-size: 12.5px; color: var(--mute); margin-top: 1px; }
+  .switch { position: relative; width: 46px; height: 28px; flex: none; border-radius: 99px; background: rgba(255,255,255,.16); transition: background .2s; }
+  .switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; transition: transform .2s; }
+  .switch.is-on { background: var(--grad); }
+  .switch.is-on::after { transform: translateX(18px); }
+
+  /* ---------- player ---------- */
+  .player { position: fixed; inset: 0; z-index: 80; background: #000; display: flex; flex-direction: column; padding-top: var(--sat); padding-bottom: var(--sab); animation: fade .25s both; }
+  .player__bar { display: flex; align-items: center; gap: 12px; padding: 8px 12px; }
+  .player__t { min-width: 0; flex: 1; }
+  .player__t b { display: block; font-size: 15px; font-weight: 700; }
+  .player__t span { display: block; font-size: 12.5px; color: var(--mute); }
+  .player__stage { position: relative; flex: 1; min-height: 0; }
+  .player__stage video { width: 100%; height: 100%; background: #000; display: block; }
+  .player__wait { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
+  .player__toast { position: absolute; left: 50%; top: 14px; transform: translateX(-50%); padding: 8px 14px; border-radius: 99px; font-size: 13px; font-weight: 600; background: rgba(21,17,46,.9); border: 1px solid var(--line-2); display: flex; gap: 8px; align-items: center; animation: rise .3s both; pointer-events: none; white-space: nowrap; }
+  .player__toast i { color: #cdbcff; }
+  .player__err { position: absolute; inset: 0; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 24px; text-align: center; color: var(--mute); }
+  .player__err i { font-size: 40px; color: var(--danger); }
+
+  /* ---------- login + onboarding ---------- */
+  .aurora { position: fixed; inset: 0; overflow: hidden; background: var(--bg); }
+  .aurora i { position: absolute; border-radius: 50%; filter: blur(70px); }
+  .aurora i:nth-child(1) { width: 70vmax; height: 70vmax; left: -25vmax; top: -30vmax; background: rgba(155,109,255,.42); animation: drift-a 16s ease-in-out infinite; }
+  .aurora i:nth-child(2) { width: 60vmax; height: 60vmax; right: -25vmax; bottom: -25vmax; background: rgba(79,157,255,.32); animation: drift-b 19s ease-in-out infinite; }
+  .aurora i:nth-child(3) { width: 34vmax; height: 34vmax; right: 6vmax; top: 8vmax; background: rgba(214,120,255,.16); animation: drift-a 23s ease-in-out infinite reverse; }
+  .login { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: calc(24px + var(--sat)) 18px calc(24px + var(--sab)); }
+  .login__card { width: 100%; max-width: 400px; padding: 30px 22px 22px; border-radius: 28px; background: rgba(14,11,32,.72); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--line-2); box-shadow: 0 40px 80px -20px rgba(0,0,0,.8); animation: rise .6s both; }
+  .login__card.is-shake { animation: shake .4s; }
+  .login__brand { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .login__brand .brand__word { font-size: 38px; }
+  .login__sub { text-align: center; color: var(--mute); font-size: 14px; margin-bottom: 24px; }
+  .login form { display: flex; flex-direction: column; gap: 10px; }
+  .field { position: relative; }
+  .field input { width: 100%; height: 58px; padding: 22px 16px 6px; border-radius: 16px; font-size: 16px; background: rgba(255,255,255,.05); border: 1.5px solid var(--line); outline: none; transition: border-color .2s, box-shadow .2s; }
+  .field input:focus { border-color: var(--vio); box-shadow: 0 0 0 4px rgba(155,109,255,.16); }
+  .field input::placeholder { color: var(--dim); }
+  .field label { position: absolute; left: 17px; top: 19px; color: var(--dim); font-size: 15px; pointer-events: none; transition: all .16s ease; }
+  .field.is-up label { top: 8px; font-size: 11.5px; color: #cdbcff; }
+  .field--btn input { padding-right: 52px; }
+  .field__btn { position: absolute; right: 8px; top: 8px; width: 42px; height: 42px; display: grid; place-items: center; font-size: 20px; color: var(--mute); border-radius: 12px; }
+  .alert { display: flex; gap: 10px; align-items: center; padding: 12px 14px; border-radius: 14px; font-size: 13.5px; color: #ffc2d0; background: rgba(255,107,142,.12); border: 1px solid rgba(255,107,142,.3); }
+  .alert i { font-size: 18px; color: var(--danger); }
+  .login__note { text-align: center; color: var(--dim); font-size: 12px; margin-top: 16px; }
+
+  .onb { position: relative; min-height: 100vh; display: flex; flex-direction: column; padding: calc(18px + var(--sat)) 26px calc(30px + var(--sab)); }
+  .onb__skip { align-self: flex-end; color: var(--mute); font-size: 14px; font-weight: 600; height: 32px; }
+  .onb__mid { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .onb__ico { width: 128px; height: 128px; border-radius: 50%; display: grid; place-items: center; font-size: 54px; margin-bottom: 34px; background: radial-gradient(circle at 32% 28%, rgba(182,146,255,.55), rgba(79,157,255,.12) 70%); border: 1px solid var(--line-2); box-shadow: 0 0 80px -10px rgba(155,109,255,.6); animation: rise .5s both; }
+  .onb h1 { font-family: var(--display); font-weight: 800; font-size: 32px; line-height: 1.05; letter-spacing: -.035em; max-width: 13ch; margin-bottom: 12px; animation: rise .5s .05s both; text-wrap: balance; }
+  .onb p { color: var(--mute); font-size: 15.5px; max-width: 30ch; animation: rise .5s .1s both; }
+  .onb__dots { display: flex; justify-content: center; gap: 6px; margin-bottom: 22px; }
+  .onb__dots i { width: 6px; height: 6px; border-radius: 6px; background: rgba(255,255,255,.22); transition: all .3s; }
+  .onb__dots i.is-on { width: 24px; background: var(--grad); }
+
+  .fatal { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 24px; text-align: center; color: var(--mute); }
+
+  #boot-error { display:none; position:fixed; inset:0; background:#090716; color:#ffc2d0; padding:20px; font-family:monospace; font-size:13px; white-space:pre-wrap; overflow:auto; z-index:9999; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<div id="boot-error"></div>
+<script>
+  window.addEventListener('error', function (e) {
+    var el = document.getElementById('boot-error');
+    if (el) { el.style.display = 'block'; el.textContent = 'Erro ao carregar o app:\n' + (e.error && e.error.stack ? e.error.stack : e.message); }
+  });
+</script>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef, useCallback, useMemo, createContext, useContext } = React;
+
+const APP_NAME = 'Nyx';
+const BUILD = '2026-11-15.2';
+const WATCHED_AT = 0.92; // a partir de 92% o item conta como assistido
+
+/* ============================== IndexedDB ============================== */
+// Mesmo banco do app antigo, para manter login, progresso e favoritos.
+const DB_NAME = 'playplus_db';
+const STORE = 'kv';
+let dbPromise = null;
+function openDB() {
+  if (!dbPromise) {
+    dbPromise = new Promise((resolve, reject) => {
+      const req = indexedDB.open(DB_NAME, 1);
+      req.onupgradeneeded = () => { req.result.createObjectStore(STORE); };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => { dbPromise = null; reject(req.error); };
+    });
+  }
+  return dbPromise;
+}
+async function idbSet(key, value) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE, 'readwrite');
+    tx.objectStore(STORE).put(value, key);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+async function idbGet(key) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE, 'readonly');
+    const req = tx.objectStore(STORE).get(key);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+/* ============================== Helpers ============================== */
+function fmtClock(sec) {
+  sec = Math.max(0, Math.floor(sec || 0));
+  const h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), s = sec % 60;
+  const mm = h ? String(m).padStart(2, '0') : String(m);
+  return (h ? h + ':' : '') + mm + ':' + String(s).padStart(2, '0');
+}
+function fmtLeft(sec) {
+  const min = Math.max(1, Math.round((sec || 0) / 60));
+  if (min < 60) return `faltam ${min} min`;
+  return `faltam ${Math.floor(min / 60)} h ${String(min % 60).padStart(2, '0')}`;
+}
+function pctOf(p) {
+  if (!p) return 0;
+  if (p.watched) return 100;
+  if (!p.duration || p.duration <= 0) return 0;
+  return Math.max(0, Math.min(100, Math.round((p.time / p.duration) * 100)));
+}
+function epLabel(p) {
+  if (p.season != null && p.episodeNum != null) return `T${p.season} E${p.episodeNum}`;
+  if (p.episodeNum != null) return `Ep. ${p.episodeNum}`;
+  return p.extraTitle || '';
+}
+function cleanEpTitle(title, seriesName, num) {
+  let t = String(title || '').trim();
+  const m = t.match(/S\d{1,2}\s*E\d{1,3}\s*[-–—:.]?\s*(.*)$/i);
+  if (m) t = m[1].trim();
+  else if (seriesName && t.toLowerCase().startsWith(String(seriesName).toLowerCase())) t = t.slice(seriesName.length).replace(/^[\s\-–—:]+/, '');
+  return t || `Episódio ${num}`;
+}
+function epMinutes(ep) {
+  const inf = ep && ep.info;
+  if (!inf) return null;
+  let secs = Number(inf.duration_secs) || 0;
+  if (!secs && typeof inf.duration === 'string') {
+    const parts = inf.duration.split(':').map(Number);
+    if (parts.length === 3 && parts.every((n) => !isNaN(n))) secs = parts[0] * 3600 + parts[1] * 60 + parts[2];
+  }
+  return secs > 60 ? Math.round(secs / 60) : null;
+}
+function ratingOf(item) {
+  const r5 = parseFloat(item.rating_5based);
+  if (r5 > 0) return (r5 * 2).toFixed(1);
+  const r = parseFloat(item.rating);
+  if (r > 0) return (r > 10 ? r / 10 : r).toFixed(1);
+  return null;
+}
+function nextRef(ep, seasonKey) {
+  if (!ep) return null;
+  return { id: ep.id, episode_num: ep.episode_num, season: seasonKey, title: ep.title || '', container_extension: ep.container_extension };
+}
+// Lista plana, na ordem certa, de todos os episódios com a temporada de cada um.
+function flattenEpisodes(info) {
+  if (!info || !info.episodes) return [];
+  const keys = Object.keys(info.episodes).sort((a, b) => Number(a) - Number(b));
+  const out = [];
+  for (const k of keys) {
+    const list = Array.isArray(info.episodes[k]) ? info.episodes[k] : [];
+    for (const ep of list) out.push({ ep, season: k });
+  }
+  return out;
+}
+
+
+/* ============================== Ao vivo: nome do canal + guia ============================== */
+function b64(s) {
+  try {
+    const bin = atob(String(s || ''));
+    return new TextDecoder('utf-8').decode(Uint8Array.from(bin, (c) => c.charCodeAt(0))).trim();
+  } catch (e) { return ''; }
+}
+function hhmm(ms) { return new Date(ms).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }); }
+// "11:00 Chipre x Montenegro - Disney+" vira { time: '11:00', title: 'Chipre x Montenegro - Disney+' }
+function parseChannel(name) {
+  let title = String(name || '').trim(), time = null, q = null;
+  const mt = title.match(/^(\d{1,2})[:h](\d{2})\s*[-–|]?\s*(\S.*)$/i);
+  if (mt) { time = mt[1].padStart(2, '0') + ':' + mt[2]; title = mt[3]; }
+  const mq = title.match(/^(.*?)[\s\-|]+(4K|UHD|FHD|HD|SD)\W*$/i);
+  if (mq && mq[1].trim()) { q = mq[2].toUpperCase(); title = mq[1].trim(); }
+  return { time, title, q };
+}
+
+const epgCache = new Map();
+const epgQueue = [];
+let epgActive = 0;
+function epgPump() {
+  while (epgActive < 4 && epgQueue.length) {
+    const job = epgQueue.shift();
+    epgActive++;
+    job().finally(() => { epgActive--; epgPump(); });
+  }
+}
+function loadEpg(session, id) {
+  const hit = epgCache.get(id);
+  if (hit && Date.now() - hit.at < 5 * 60000) return hit.promise;
+  const promise = new Promise((resolve) => {
+    epgQueue.push(async () => {
+      try {
+        const url = `${session.server}/player_api.php?username=${encodeURIComponent(session.user)}&password=${encodeURIComponent(session.pass)}&action=get_short_epg&stream_id=${encodeURIComponent(String(id))}&limit=3`;
+        const res = await fetch(url, { signal: AbortSignal.timeout(10000) });
+        const json = await res.json();
+        const list = (json && Array.isArray(json.epg_listings) ? json.epg_listings : [])
+          .map((e) => ({ title: b64(e.title), start: Number(e.start_timestamp) * 1000, stop: Number(e.stop_timestamp) * 1000 }))
+          .filter((e) => e.title);
+        resolve(list);
+      } catch (e) { resolve([]); }
+    });
+    epgPump();
+  });
+  epgCache.set(id, { at: Date.now(), promise });
+  return promise;
+}
+function useEpg(session, item, enabled) {
+  const [now, setNow] = useState(null);
+  const id = item ? item.stream_id : null;
+  useEffect(() => {
+    setNow(null);
+    if (!enabled || id == null) return;
+    let alive = true;
+    loadEpg(session, id).then((list) => {
+      if (!alive) return;
+      const t = Date.now();
+      setNow(list.find((e) => e.start <= t && t < e.stop) || null);
+    });
+    return () => { alive = false; };
+  }, [enabled, id]);
+  return now;
+}
+function useSeen() {
+  const ref = useRef(null);
+  const [seen, setSeen] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || seen) return;
+    if (!('IntersectionObserver' in window)) { setSeen(true); return; }
+    const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { setSeen(true); io.disconnect(); } }, { rootMargin: '200px' });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [seen]);
+  return [ref, seen];
+}
+
+/* ============================== Preferências ============================== */
+const DEFAULT_PREFS = { livePreview: true };
+function usePrefs() {
+  const [prefs, setPrefs] = useState(DEFAULT_PREFS);
+  useEffect(() => { idbGet('prefs').then((p) => { if (p) setPrefs({ ...DEFAULT_PREFS, ...p }); }).catch(() => {}); }, []);
+  const set = useCallback((patch) => {
+    setPrefs((prev) => { const next = { ...prev, ...patch }; idbSet('prefs', next).catch(() => {}); return next; });
+  }, []);
+  return [prefs, set];
+}
+
+/* ============================== Em alta: rankings das plataformas ==============================
+   O arquivo charts/br.json deste repositório é regravado várias vezes ao dia por um GitHub Action
+   (scripts/build-charts.mjs) e traz:
+   - official.netflix: Top 10 OFICIAL do Brasil que a Netflix publica por semana;
+   - daily.<plataforma>: os 10 filmes e 10 séries em alta hoje no catálogo de cada serviço no
+     Brasil, segundo o JustWatch (as plataformas não divulgam ranking próprio).
+   A cópia abaixo é só a reserva para quando o arquivo não puder ser baixado.
+   Cada título é procurado na playlist pelo id do TMDB (quando o servidor informa) ou pelo nome. */
+const CHARTS_URL = 'https://raw.githubusercontent.com/whalancruz-dot/prumo-landing-page/HEAD/charts/br.json';
+const CHARTS_SNAPSHOT = {"country":"BR","official":{"netflix":{"week":"2026-11-08","movies":[{"rank":1,"kind":"movie","title":"Minha Melhor Amiga","original":"Minha Melhor Amiga","year":"2026","poster":"https://images.justwatch.com/poster/340395576/s332/minha-amiga.jpg","tmdbId":"1257147","rating":"6.1","alt":["My Best Friend"],"weeks":1},{"rank":2,"kind":"movie","title":"Em Rota de Colisão","original":"Colisión","year":"2026","poster":"https://images.justwatch.com/poster/356407047/s332/collision-course-2026.jpg","tmdbId":"1571955","rating":"5.7","alt":["Collision Course"],"weeks":2},{"rank":3,"kind":"movie","title":"O Atirador: A Última Batalha","original":"Sniper: The Last Stand","year":"2025","poster":"https://images.justwatch.com/poster/326252549/s332/sniper-the-last-stand.jpg","tmdbId":"1410082","rating":"4.8","alt":["Sniper: The Last Stand"],"weeks":2},{"rank":4,"kind":"movie","title":"A Única Sobrevivente","original":"Одна","year":"2022","poster":"https://images.justwatch.com/poster/334233325/s332/odna.jpg","tmdbId":"610363","rating":"5.9","alt":["The One"],"weeks":1},{"rank":5,"kind":"movie","title":"O Último Destino: Descendência","original":"Final Destination Bloodlines","year":"2025","poster":"https://images.justwatch.com/poster/330351561/s332/o-ultimo-destino-6.jpg","tmdbId":"574475","rating":"6.7","alt":["Final Destination: Bloodlines"],"weeks":2},{"rank":6,"kind":"movie","title":"Feriado Sangrento","original":"Thanksgiving","year":"2023","poster":"https://images.justwatch.com/poster/310003842/s332/thanksgiving.jpg","tmdbId":"1071215","rating":"6.2","alt":["Thanksgiving"],"weeks":1},{"rank":7,"kind":"movie","title":"O Golpe","original":"Heist","year":"2001","poster":"https://images.justwatch.com/poster/327798592/s332/heist.jpg","tmdbId":"11088","rating":"6.5","alt":["Heist"],"weeks":1},{"rank":8,"kind":"movie","title":"O Maravilhoso Natal de Winstead","original":"A Dog's Perfect Christmas","year":"2026","poster":"https://images.justwatch.com/poster/356703270/s332/a-dogs-perfect-christmas.jpg","tmdbId":"1570488","rating":"6.4","alt":["A Dog's Perfect Christmas"],"weeks":1},{"rank":9,"kind":"movie","title":"Cantar!","original":"Sing","year":"2016","poster":"https://images.justwatch.com/poster/306966674/s332/sing.jpg","tmdbId":"335797","rating":"7.1","alt":["Sing"],"weeks":8},{"rank":10,"kind":"movie","title":"Natal no Palácio","original":"Christmas at the Palace","year":"2018","poster":"https://images.justwatch.com/poster/257747977/s332/natal-no-palacio.jpg","tmdbId":"550023","rating":"6.3","alt":["Christmas at the Palace"],"weeks":1}],"series":[{"rank":1,"kind":"series","title":"Dom de Iludir","original":"Dom de Iludir","year":"2026","poster":"https://images.justwatch.com/poster/356358086/s332/dom-de-iludir.jpg","tmdbId":"334700","rating":"5.8","alt":["The Gift of Deceit"],"weeks":2,"season":"The Gift of Deceit: Season 1"},{"rank":2,"kind":"series","title":"Lupin","original":"Lupin","year":"2021","poster":"https://images.justwatch.com/poster/242826014/s332/lupin.jpg","tmdbId":"96677","rating":"7.5","alt":["Lupin"],"weeks":3,"season":"Lupin: Part 4"},{"rank":3,"kind":"series","title":"Troca Suspeita","original":"Bytet","year":"2026","poster":"https://images.justwatch.com/poster/356701933/s332/a-couple-of-lies.jpg","tmdbId":"336240","rating":"6.0","alt":["A Couple of Lies"],"weeks":1,"season":"A Couple of Lies: Limited Series"},{"rank":4,"kind":"series","title":"Um Trabalho do Inferno","original":"Ggoolalba","year":"2026","poster":"https://images.justwatch.com/poster/356618908/s332/um-trabalho-do-inferno.jpg","tmdbId":"289517","rating":"7.0","alt":["Dead-End Job"],"weeks":2,"season":"Dead-End Job: Limited Series"},{"rank":5,"kind":"series","title":"Lupin","original":"Lupin","year":"2021","poster":"https://images.justwatch.com/poster/242826014/s332/lupin.jpg","tmdbId":"96677","rating":"7.5","alt":["Lupin"],"weeks":6,"season":"Lupin: Part 1"},{"rank":6,"kind":"series","title":"VIDA INTERROMPIDA: O CASO NATALLE HOLLOWAY","original":"Taken: Natalee Holloway","year":"2026","poster":"https://images.justwatch.com/poster/355784537/s332/taken-natalee-holloway.jpg","tmdbId":"338684","rating":"6.5","alt":["Taken: Natalee Holloway"],"weeks":1,"season":"Taken: Natalee Holloway: Season 1"},{"rank":7,"kind":"series","title":"Lupin","original":"Lupin","year":"2021","poster":"https://images.justwatch.com/poster/242826014/s332/lupin.jpg","tmdbId":"96677","rating":"7.5","alt":["Lupin"],"weeks":7,"season":"Lupin: Part 3"},{"rank":8,"kind":"series","title":"Lupin","original":"Lupin","year":"2021","poster":"https://images.justwatch.com/poster/242826014/s332/lupin.jpg","tmdbId":"96677","rating":"7.5","alt":["Lupin"],"weeks":6,"season":"Lupin: Part 2"},{"rank":9,"kind":"series","title":"Anestesia","original":"Znieczulenie","year":"2026","poster":"https://images.justwatch.com/poster/356649198/s332/anaesthesia.jpg","tmdbId":"312006","rating":"7.3","alt":["Anaesthesia"],"weeks":1,"season":"Anaesthesia: Season 1"},{"rank":10,"kind":"series","title":"Onde A Máscara Termina","original":"嫁金钗","year":"2026","poster":"https://images.justwatch.com/poster/355574823/s332/onde-a-mascara-termina.jpg","tmdbId":"300146","rating":"7.9","alt":["Where the Mask Ends"],"weeks":3,"season":"Where the Mask Ends: Season 1"}],"updated":"2026-11-15"}},"daily":{"netflix":{"movies":[{"rank":1,"kind":"movie","title":"O Bom Advogado","original":"Un bon avocat","year":"2026","poster":"https://images.justwatch.com/poster/356797147/s332/the-good-lawyer.jpg","tmdbId":"1616419","rating":"6.4"},{"rank":2,"kind":"movie","title":"Godzilla Minus One","original":"ゴジラ-1.0","year":"2023","poster":"https://images.justwatch.com/poster/347744356/s332/godzilla-minus-one.jpg","tmdbId":"940721","rating":"7.7"},{"rank":3,"kind":"movie","title":"O Amor Possível","original":"Ganeunghan sarang","year":"2026","poster":"https://images.justwatch.com/poster/356918161/s332/possible-love.jpg","tmdbId":"1483525","rating":"7.7"},{"rank":4,"kind":"movie","title":"No Coração de Nashville","original":"Heartland","year":"2026","poster":"https://images.justwatch.com/poster/355278075/s332/heartland.jpg","tmdbId":"1543469","rating":"5.7"},{"rank":5,"kind":"movie","title":"Suzane von Richthofen: O Que o Tempo Não Apaga","original":"Suzane von Richthofen: O Que o Tempo Não Apaga","year":"2026","poster":"https://images.justwatch.com/poster/357064859/s332/suzane-von-richthofen-o-que-o-tempo-nao-apaga.jpg","tmdbId":"1664682","rating":"5.5"},{"rank":6,"kind":"movie","title":"Espírito Selvagem","original":"All the Pretty Horses","year":"2000","poster":"https://images.justwatch.com/poster/243983192/s332/all-the-pretty-horses.jpg","tmdbId":"21355","rating":"5.8"},{"rank":7,"kind":"movie","title":"Ne Zha 2","original":"哪吒之魔童闹海","year":"2025","poster":"https://images.justwatch.com/poster/324991865/s332/ne-zha-2.jpg","tmdbId":"980477","rating":"7.9"},{"rank":8,"kind":"movie","title":"A Única Sobrevivente","original":"Одна","year":"2022","poster":"https://images.justwatch.com/poster/334233325/s332/odna.jpg","tmdbId":"610363","rating":"5.9"},{"rank":9,"kind":"movie","title":"Avedon","original":"Avedon","year":"2026","poster":"https://images.justwatch.com/poster/355260209/s332/avedon.jpg","tmdbId":"1666787","rating":"7.4"},{"rank":10,"kind":"movie","title":"Deixar o Mundo Para Trás","original":"Leave the World Behind","year":"2023","poster":"https://images.justwatch.com/poster/310015284/s332/leave-the-world-behind-2023.jpg","tmdbId":"726209","rating":"6.4"}],"series":[{"rank":1,"kind":"series","title":"O Corpo","original":"The Body","year":"2026","poster":"https://images.justwatch.com/poster/348311748/s332/the-body-2026.jpg","tmdbId":"291507","rating":"7.7"},{"rank":2,"kind":"series","title":"Cerco ao Palácio","original":"Palacio","year":"2026","poster":"https://images.justwatch.com/poster/357106974/s332/palace.jpg","tmdbId":"297491","rating":"6.3"},{"rank":3,"kind":"series","title":"Black Doves","original":"Black Doves","year":"2024","poster":"https://images.justwatch.com/poster/321795942/s332/black-doves.jpg","tmdbId":"225385","rating":"7.2"},{"rank":4,"kind":"series","title":"A Imperatriz","original":"Die Kaiserin","year":"2022","poster":"https://images.justwatch.com/poster/301073708/s332/the-empress.jpg","tmdbId":"131488","rating":"7.8"},{"rank":5,"kind":"series","title":"O Plano do Diabo","original":"데블스 플랜","year":"2023","poster":"https://images.justwatch.com/poster/308778707/s332/the-devils-plan.jpg","tmdbId":"214582","rating":"8.3"},{"rank":6,"kind":"series","title":"ChiaroScuro","original":"ChiaroScuro","year":"2026","poster":"https://images.justwatch.com/poster/355066770/s332/chiaroscuro.jpg","tmdbId":"336243","rating":"6.4"},{"rank":7,"kind":"series","title":"O Mentalista","original":"The Mentalist","year":"2008","poster":"https://images.justwatch.com/poster/320894402/s332/o-mentalista.jpg","tmdbId":"5920","rating":"8.2"},{"rank":8,"kind":"series","title":"Lupin","original":"Lupin","year":"2021","poster":"https://images.justwatch.com/poster/242826014/s332/lupin.jpg","tmdbId":"96677","rating":"7.5"},{"rank":9,"kind":"series","title":"A Lei de Alicia","original":"La Ley de Alicia","year":"2026","poster":"https://images.justwatch.com/poster/355536099/s332/la-ley-de-alicia.jpg","tmdbId":"338562","rating":"6.3"},{"rank":10,"kind":"series","title":"A Diplomata","original":"The Diplomat","year":"2023","poster":"https://images.justwatch.com/poster/304992436/s332/the-diplomat.jpg","tmdbId":"203857","rating":"8.1"}],"updated":"2026-11-15"},"prime":{"movies":[{"rank":1,"kind":"movie","title":"Obsession: A Felicidade é Relativa","original":"Obsession","year":"2026","poster":"https://images.justwatch.com/poster/347336871/s332/obsessao-2026.jpg","tmdbId":"1339713","rating":"7.8"},{"rank":2,"kind":"movie","title":"Todo Tempo que Temos","original":"We Live in Time","year":"2024","poster":"https://images.justwatch.com/poster/322044256/s332/we-live-in-time.jpg","tmdbId":"1100099","rating":"7.0"},{"rank":3,"kind":"movie","title":"Insaciável","original":"Saccharine","year":"2026","poster":"https://images.justwatch.com/poster/347909169/s332/saccharine.jpg","tmdbId":"1363387","rating":"5.9"},{"rank":4,"kind":"movie","title":"Crime em Direto","original":"Dead Man's Wire","year":"2026","poster":"https://images.justwatch.com/poster/341957608/s332/crime-em-direto.jpg","tmdbId":"1263012","rating":"6.4"},{"rank":5,"kind":"movie","title":"Massacre no Texas","original":"The Texas Chain Saw Massacre","year":"1974","poster":"https://images.justwatch.com/poster/356464568/s332/o-massacre-da-serra-eletrica.jpg","tmdbId":"30497","rating":"7.4"},{"rank":6,"kind":"movie","title":"Hamlet (2025)","original":"Hamlet","year":"2026","poster":"https://images.justwatch.com/poster/344769164/s332/hamlet-2025.jpg","tmdbId":"843342","rating":"5.9"},{"rank":7,"kind":"movie","title":"Projeto Hail Mary","original":"Project Hail Mary","year":"2026","poster":"https://images.justwatch.com/poster/345533192/s332/projeto-hail-mary.jpg","tmdbId":"687163","rating":"8.2"},{"rank":8,"kind":"movie","title":"Os Voyeurs","original":"The Voyeurs","year":"2021","poster":"https://images.justwatch.com/poster/354589098/s332/the-voyeurs.jpg","tmdbId":"645710","rating":"6.1"},{"rank":9,"kind":"movie","title":"Conselhos de um Serial Killer Aposentado","original":"Psycho Therapy: The Shallow Tale of a Writer Who Decided to Write About a Serial Killer","year":"2025","poster":"https://images.justwatch.com/poster/329364827/s332/conselhos-de-um-serial-killer-aposentado.jpg","tmdbId":"681434","rating":"6.2"},{"rank":10,"kind":"movie","title":"A Renúncia","original":"The Surrender","year":"2025","poster":"https://images.justwatch.com/poster/331287973/s332/the-surrender.jpg","tmdbId":"1339206","rating":"5.4"}],"series":[{"rank":1,"kind":"series","title":"O Senhor dos Anéis: Os Anéis do Poder","original":"The Lord of the Rings: The Rings of Power","year":"2022","poster":"https://images.justwatch.com/poster/356559018/s332/the-lord-of-the-rings-2022.jpg","tmdbId":"84773","rating":"6.8"},{"rank":2,"kind":"series","title":"Campus Drivers","original":"Campus Drivers","year":"2026","poster":"https://images.justwatch.com/poster/357092225/s332/campus-drivers.jpg","tmdbId":"303044","rating":"7.3"},{"rank":3,"kind":"series","title":"O Instituto","original":"The Institute","year":"2025","poster":"https://images.justwatch.com/poster/331844524/s332/the-institute.jpg","tmdbId":"253372","rating":"6.7"},{"rank":4,"kind":"series","title":"Matéria Escura","original":"Dark Matter","year":"2024","poster":"https://images.justwatch.com/poster/354727700/s332/dark-matter-2024.jpg","tmdbId":"196322","rating":"7.6"},{"rank":5,"kind":"series","title":"O Mentalista","original":"The Mentalist","year":"2008","poster":"https://images.justwatch.com/poster/320894402/s332/o-mentalista.jpg","tmdbId":"5920","rating":"8.2"},{"rank":6,"kind":"series","title":"Dexter: Ressurreição","original":"Dexter: Resurrection","year":"2025","poster":"https://images.justwatch.com/poster/335638103/s332/dexter-resurrection.jpg","tmdbId":"259909","rating":"9.0"},{"rank":7,"kind":"series","title":"Amor Disfarçado","original":"나의 유죄인간","year":"2026","poster":"https://images.justwatch.com/poster/354927430/s332/love-in-disguise.jpg","tmdbId":"303745","rating":"7.9"},{"rank":8,"kind":"series","title":"The Chosen - Os Escolhidos","original":"The Chosen","year":"2019","poster":"https://images.justwatch.com/poster/332256278/s332/the-chosen-0.jpg","tmdbId":"85077","rating":"9.1"},{"rank":9,"kind":"series","title":"A Lista Terminal","original":"The Terminal List","year":"2022","poster":"https://images.justwatch.com/poster/288805998/s332/the-terminal-list.jpg","tmdbId":"120911","rating":"7.9"},{"rank":10,"kind":"series","title":"A Mesa Final","original":"파이널 테이블","year":"2026","poster":"https://images.justwatch.com/poster/355253776/s332/final-table.jpg","tmdbId":"316702","rating":"7.1"}],"updated":"2026-11-15"},"disney":{"movies":[{"rank":1,"kind":"movie","title":"Backrooms - O Labirinto","original":"Backrooms","year":"2026","poster":"https://images.justwatch.com/poster/345795924/s332/backrooms.jpg","tmdbId":"1083381","rating":"6.7"},{"rank":2,"kind":"movie","title":"Homem-Aranha: Sem Volta a Casa","original":"Spider-Man: No Way Home","year":"2021","poster":"https://images.justwatch.com/poster/312926520/s332/spider-man-no-way-home.jpg","tmdbId":"634649","rating":"8.1"},{"rank":3,"kind":"movie","title":"Vingadores: Endgame Encore","original":"Avengers Endgame: Encore","year":"2026","poster":"https://images.justwatch.com/poster/355031937/s332/avengers-endgame-encore.jpg","tmdbId":"1786842","rating":null},{"rank":4,"kind":"movie","title":"Toy Story - Os Rivais","original":"Toy Story","year":"1995","poster":"https://images.justwatch.com/poster/304141970/s332/toy-story-os-rivais.jpg","tmdbId":"862","rating":"8.3"},{"rank":5,"kind":"movie","title":"Sombras no Deserto","original":"The Carpenter's Son","year":"2025","poster":"https://images.justwatch.com/poster/341957615/s332/the-carpenters-son.jpg","tmdbId":"1286185","rating":"4.6"},{"rank":6,"kind":"movie","title":"Sonhos","original":"Dreams: Sueños","year":"2025","poster":"https://images.justwatch.com/poster/341626410/s332/dreams-2025.jpg","tmdbId":"1134463","rating":"5.6"},{"rank":7,"kind":"movie","title":"Os Últimos Gângsters de Nova York","original":"Truth and Lies: The Last Gangster","year":"2022","poster":"https://images.justwatch.com/poster/295430669/s332/truth-and-lies-the-last-gangster.jpg","tmdbId":"933521","rating":"6.5"},{"rank":8,"kind":"movie","title":"Lar Doce Inferno","original":"Home Sweet Home: Rebirth","year":"2025","poster":"https://images.justwatch.com/poster/329463317/s332/lar-doce-inferno-2025.jpg","tmdbId":"1353117","rating":"4.1"},{"rank":9,"kind":"movie","title":"O Mago do Kremlin","original":"Le Mage du Kremlin","year":"2026","poster":"https://images.justwatch.com/poster/353603798/s332/o-mago-do-kremlin.jpg","tmdbId":"1291659","rating":"6.1"},{"rank":10,"kind":"movie","title":"Acorda","original":"Wake Up","year":"2024","poster":"https://images.justwatch.com/poster/321466742/s332/wake-up-2024.jpg","tmdbId":"1165466","rating":"5.4"}],"series":[{"rank":1,"kind":"series","title":"VisionQuest","original":"VisionQuest","year":"2026","poster":"https://images.justwatch.com/poster/348281318/s332/visionquest.jpg","tmdbId":"213375","rating":"7.8"},{"rank":2,"kind":"series","title":"Kdabra","original":"Kdabra","year":"2009","poster":"https://images.justwatch.com/poster/307258341/s332/kdabra.jpg","tmdbId":"55219","rating":"5.0"},{"rank":3,"kind":"series","title":"The Killing - Além de um Crime","original":"The Killing","year":"2011","poster":"https://images.justwatch.com/poster/241811644/s332/the-killing-2011.jpg","tmdbId":"34415","rating":"8.3"},{"rank":4,"kind":"series","title":"Nunca Chove em Filadélfia","original":"It's Always Sunny in Philadelphia","year":"2005","poster":"https://images.justwatch.com/poster/261395248/s332/nunca-chove-em-filadelfia.jpg","tmdbId":"2710","rating":"8.8"},{"rank":5,"kind":"series","title":"Dragon Ball Super: Beerus","original":"ドラゴンボール超 ビルス","year":"2026","poster":"https://images.justwatch.com/poster/354620109/s332/dragon-ball-super-beerus.jpg","tmdbId":"312359","rating":"8.9"},{"rank":6,"kind":"series","title":"Looksmaxxing até a Morte","original":"Get Huge: Looksmaxxing to Death","year":"2026","poster":"https://images.justwatch.com/poster/356671510/s332/get-huge-looksmaxxing-to-death.jpg","tmdbId":"340053","rating":"5.8"},{"rank":7,"kind":"series","title":"Fingida","original":"Phony","year":"2026","poster":"https://images.justwatch.com/poster/355252671/s332/phony.jpg","tmdbId":"275139","rating":"6.7"},{"rank":8,"kind":"series","title":"Fúria","original":"Furious","year":"2026","poster":"https://images.justwatch.com/poster/354103249/s332/furious.jpg","tmdbId":"287238","rating":"7.8"},{"rank":9,"kind":"series","title":"Black Clover","original":"Black Clover","year":"2017","poster":"https://images.justwatch.com/poster/289760864/s332/black-clover.jpg","tmdbId":null,"rating":"8.3"},{"rank":10,"kind":"series","title":"The Americans: Rede de Espionagem","original":"The Americans","year":"2013","poster":"https://images.justwatch.com/poster/279050194/s332/the-americans.jpg","tmdbId":"46533","rating":"8.4"}],"updated":"2026-11-15"},"max":{"movies":[{"rank":1,"kind":"movie","title":"O Fim de Oak Street","original":"Flowervale Street","year":"2026","poster":"https://images.justwatch.com/poster/348291213/s332/flowervale-street.jpg","tmdbId":"1101383","rating":"6.2"},{"rank":2,"kind":"movie","title":"Godzilla","original":"Godzilla","year":"1998","poster":"https://images.justwatch.com/poster/176968091/s332/godzilla.jpg","tmdbId":"929","rating":"5.5"},{"rank":3,"kind":"movie","title":"Às Cegas","original":"Sightless","year":"2020","poster":"https://images.justwatch.com/poster/239557851/s332/sightless.jpg","tmdbId":"733156","rating":"5.5"},{"rank":4,"kind":"movie","title":"O Pacto","original":"The Covenant","year":"2006","poster":"https://images.justwatch.com/poster/180593595/s332/o-pacto.jpg","tmdbId":"9954","rating":"5.2"},{"rank":5,"kind":"movie","title":"Vingança e Sedução","original":"Ms .45","year":"1981","poster":"https://images.justwatch.com/poster/11131535/s332/vinganca-duma-mulher.jpg","tmdbId":"22171","rating":"6.8"},{"rank":6,"kind":"movie","title":"Matilda, a Espalha Brasas","original":"Matilda","year":"1996","poster":"https://images.justwatch.com/poster/301989456/s332/matilda.jpg","tmdbId":"10830","rating":"7.0"},{"rank":7,"kind":"movie","title":"Sexta-Feira 13","original":"Friday the 13th","year":"1980","poster":"https://images.justwatch.com/poster/9059503/s332/sexta-feira-13.jpg","tmdbId":"4488","rating":"6.3"},{"rank":8,"kind":"movie","title":"Bingo: O Rei das Manhãs","original":"Bingo: O Rei das Manhãs","year":"2017","poster":"https://images.justwatch.com/poster/57061749/s332/bingo-o-rei-das-manhas.jpg","tmdbId":"429210","rating":"7.9"},{"rank":9,"kind":"movie","title":"Os Caça-Fantasmas II","original":"Ghostbusters II","year":"1989","poster":"https://images.justwatch.com/poster/250809626/s332/os-caca-fantasmas-2.jpg","tmdbId":"2978","rating":"6.6"},{"rank":10,"kind":"movie","title":"Homem-Aranha","original":"Spider-Man","year":"2002","poster":"https://images.justwatch.com/poster/241053787/s332/homem-aranha.jpg","tmdbId":"557","rating":"7.5"}],"series":[{"rank":1,"kind":"series","title":"Cidade de Deus: A Luta Não Para","original":"Cidade de Deus: A Luta Não Para","year":"2024","poster":"https://images.justwatch.com/poster/319883381/s332/cidade-de-deus-a-serie.jpg","tmdbId":"223397","rating":"7.2"},{"rank":2,"kind":"series","title":"War","original":"War","year":"2026","poster":"https://images.justwatch.com/poster/354890779/s332/war.jpg","tmdbId":"298852","rating":"7.1"},{"rank":3,"kind":"series","title":"O Mentalista","original":"The Mentalist","year":"2008","poster":"https://images.justwatch.com/poster/320894402/s332/o-mentalista.jpg","tmdbId":"5920","rating":"8.2"},{"rank":4,"kind":"series","title":"A Idade Dourada","original":"The Gilded Age","year":"2022","poster":"https://images.justwatch.com/poster/260552282/s332/the-gilded-age.jpg","tmdbId":"81723","rating":"8.1"},{"rank":5,"kind":"series","title":"Dragon Ball Super: Beerus","original":"ドラゴンボール超 ビルス","year":"2026","poster":"https://images.justwatch.com/poster/354620109/s332/dragon-ball-super-beerus.jpg","tmdbId":"312359","rating":"8.9"},{"rank":6,"kind":"series","title":"Black Clover","original":"Black Clover","year":"2017","poster":"https://images.justwatch.com/poster/289760864/s332/black-clover.jpg","tmdbId":null,"rating":"8.3"},{"rank":7,"kind":"series","title":"Georgie e Mandy: Seu Primeiro Casamento","original":"Georgie & Mandy's First Marriage","year":"2024","poster":"https://images.justwatch.com/poster/322331691/s332/georgie-and-mandys-first-marriage.jpg","tmdbId":"243875","rating":"7.1"},{"rank":8,"kind":"series","title":"Aeroporto: Área Restrita","original":"Aeroporto: Área Restrita","year":"2017","poster":"https://images.justwatch.com/poster/309816836/s332/aeroporto-area-restrita.jpg","tmdbId":"103972","rating":"8.3"},{"rank":9,"kind":"series","title":"Diários de uma Apotecária","original":"Kusuriya no hitorigoto","year":"2023","poster":"https://images.justwatch.com/poster/353462385/s332/diarios-de-uma-apotecaria.jpg","tmdbId":"220542","rating":"8.6"},{"rank":10,"kind":"series","title":"A Escuta","original":"The Wire","year":"2002","poster":"https://images.justwatch.com/poster/186652216/s332/a-escuta.jpg","tmdbId":"1438","rating":"9.3"}],"updated":"2026-11-15"},"apple":{"movies":[{"rank":1,"kind":"movie","title":"A Arte de Ser Heumann","original":"Being Heumann","year":"2026","poster":"https://images.justwatch.com/poster/355415060/s332/a-arte-de-ser-heumann.jpg","tmdbId":"1050981","rating":"7.0"},{"rank":2,"kind":"movie","title":"Tenzing","original":"Tenzing","year":"2026","poster":"https://images.justwatch.com/poster/354677231/s332/tenzing.jpg","tmdbId":"1288069","rating":"7.4"},{"rank":3,"kind":"movie","title":"Kramer Contra Kramer","original":"Kramer vs. Kramer","year":"1979","poster":"https://images.justwatch.com/poster/338496989/s332/kramer-vs-kramer.jpg","tmdbId":"12102","rating":"7.8"},{"rank":4,"kind":"movie","title":"F1 - O Filme","original":"F1","year":"2025","poster":"https://images.justwatch.com/poster/336298590/s332/f1.jpg","tmdbId":"911430","rating":"7.6"},{"rank":5,"kind":"movie","title":"Assassinos da Lua das Flores","original":"Killers of the Flower Moon","year":"2023","poster":"https://images.justwatch.com/poster/353121656/s332/killers-of-the-flower-moon.jpg","tmdbId":"466420","rating":"7.5"},{"rank":6,"kind":"movie","title":"Comer Orar Amar","original":"Eat Pray Love","year":"2010","poster":"https://images.justwatch.com/poster/344625522/s332/comer-rezar-amar.jpg","tmdbId":"38167","rating":"5.9"},{"rank":7,"kind":"movie","title":"Tetris","original":"Tetris","year":"2023","poster":"https://images.justwatch.com/poster/304360454/s332/tetris.jpg","tmdbId":"726759","rating":"7.4"},{"rank":8,"kind":"movie","title":"Mad Max: Estrada da Fúria","original":"Mad Max: Fury Road","year":"2015","poster":"https://images.justwatch.com/poster/301728736/s332/mad-max-estrada-da-furia.jpg","tmdbId":"76341","rating":"8.1"},{"rank":9,"kind":"movie","title":"O Dia de Ação de Graças de Charlie Brown","original":"A Charlie Brown Thanksgiving","year":"1973","poster":"https://images.justwatch.com/poster/256787922/s332/charlie-brown-e-o-dia-de-acao-de-gracas.jpg","tmdbId":"13479","rating":"7.7"},{"rank":10,"kind":"movie","title":"Missão Solar","original":"Sunshine","year":"2007","poster":"https://images.justwatch.com/poster/300657918/s332/sunshine-alerta-solar.jpg","tmdbId":"1272","rating":"7.2"}],"series":[{"rank":1,"kind":"series","title":"12 12 12","original":"12 12 12","year":"2026","poster":"https://images.justwatch.com/poster/349873010/s332/12-12-12.jpg","tmdbId":"254630","rating":"5.9"},{"rank":2,"kind":"series","title":"Matéria Escura","original":"Dark Matter","year":"2024","poster":"https://images.justwatch.com/poster/354727700/s332/dark-matter-2024.jpg","tmdbId":"196322","rating":"7.6"},{"rank":3,"kind":"series","title":"Noturno","original":"Nocturne","year":"2026","poster":"https://images.justwatch.com/poster/354518072/s332/nocturne.jpg","tmdbId":"292741","rating":"7.4"},{"rank":4,"kind":"series","title":"Slow Horses","original":"Slow Horses","year":"2022","poster":"https://images.justwatch.com/poster/354752348/s332/slow-horses.jpg","tmdbId":"95480","rating":"8.4"},{"rank":5,"kind":"series","title":"O Segredo de Widow's Bay","original":"Widow's Bay","year":"2026","poster":"https://images.justwatch.com/poster/344532012/s332/widows-bay.jpg","tmdbId":"270476","rating":"8.1"},{"rank":6,"kind":"series","title":"Ted Lasso","original":"Ted Lasso","year":"2020","poster":"https://images.justwatch.com/poster/304099436/s332/ted-lasso.jpg","tmdbId":"97546","rating":"8.7"},{"rank":7,"kind":"series","title":"Pluribus","original":"Pluribus","year":"2025","poster":"https://images.justwatch.com/poster/340670021/s332/pluribus.jpg","tmdbId":"225171","rating":"7.9"},{"rank":8,"kind":"series","title":"Silo","original":"Silo","year":"2023","poster":"https://images.justwatch.com/poster/348411463/s332/silo.jpg","tmdbId":"125988","rating":"8.1"},{"rank":9,"kind":"series","title":"Stick","original":"Stick","year":"2025","poster":"https://images.justwatch.com/poster/332253389/s332/stick.jpg","tmdbId":"248830","rating":"7.2"},{"rank":10,"kind":"series","title":"No Meio da Multidão","original":"The Crowded Room","year":"2023","poster":"https://images.justwatch.com/poster/306306802/s332/the-crowded-room.jpg","tmdbId":"123192","rating":"7.7"}],"updated":"2026-11-15"},"globoplay":{"movies":[{"rank":1,"kind":"movie","title":"Respire","original":"Breathe","year":"2024","poster":"https://images.justwatch.com/poster/323081937/s332/breathe-2024.jpg","tmdbId":"720321","rating":"4.3"},{"rank":2,"kind":"movie","title":"Infinimundo","original":"Infinimundo","year":"2024","poster":"https://images.justwatch.com/poster/326195219/s332/infinimundo.jpg","tmdbId":"1314753","rating":"9.0"},{"rank":3,"kind":"movie","title":"Polar Express","original":"The Polar Express","year":"2004","poster":"https://images.justwatch.com/poster/240784204/s332/the-polar-express.jpg","tmdbId":"5255","rating":"6.6"},{"rank":4,"kind":"movie","title":"Uma Jogada de Natal","original":"Holiday Touchdown: A Chiefs Love Story","year":"2024","poster":"https://images.justwatch.com/poster/338806537/s332/holiday-touchdown-a-chiefs-love-story.jpg","tmdbId":"1319443","rating":"6.4"},{"rank":5,"kind":"movie","title":"O Agente Vigarista","original":"Rogue Agent","year":"2022","poster":"https://images.justwatch.com/poster/291391712/s332/rogue-agent.jpg","tmdbId":"846956","rating":"6.5"},{"rank":6,"kind":"movie","title":"Última Noite","original":"Silent Night","year":"2021","poster":"https://images.justwatch.com/poster/262456211/s332/silent-night.jpg","tmdbId":"664574","rating":"5.8"},{"rank":7,"kind":"movie","title":"Covil","original":"Covil","year":"2026","poster":"https://images.justwatch.com/poster/342597512/s332/covil.jpg","tmdbId":"1405945","rating":"5.9"},{"rank":8,"kind":"movie","title":"Os Farofeiros 2","original":"Os Farofeiros 2","year":"2024","poster":"https://images.justwatch.com/poster/321230179/s332/os-farofeiros-2.jpg","tmdbId":"1136897","rating":"5.7"},{"rank":9,"kind":"movie","title":"1917","original":"1917","year":"2019","poster":"https://images.justwatch.com/poster/163075144/s332/1917.jpg","tmdbId":"530915","rating":"8.2"},{"rank":10,"kind":"movie","title":"Cidade de Deus","original":"Cidade de Deus","year":"2002","poster":"https://images.justwatch.com/poster/8707498/s332/cidade-de-deus.jpg","tmdbId":"598","rating":"8.6"}],"series":[{"rank":1,"kind":"series","title":"The Chosen - Os Escolhidos","original":"The Chosen","year":"2019","poster":"https://images.justwatch.com/poster/332256278/s332/the-chosen-0.jpg","tmdbId":"85077","rating":"9.1"},{"rank":2,"kind":"series","title":"From - A Origem do Mal","original":"FROM","year":"2022","poster":"https://images.justwatch.com/poster/344518661/s332/from.jpg","tmdbId":"124364","rating":"7.7"},{"rank":3,"kind":"series","title":"Delegado","original":"Delegado","year":"2026","poster":"https://images.justwatch.com/poster/357137137/s332/delegado.jpg","tmdbId":"336716","rating":null},{"rank":4,"kind":"series","title":"Arcanjo Renegado","original":"Arcanjo Renegado","year":"2020","poster":"https://images.justwatch.com/poster/169452069/s332/arcanjo-renegado.jpg","tmdbId":"99125","rating":"7.8"},{"rank":5,"kind":"series","title":"Chicago Fire","original":"Chicago Fire","year":"2012","poster":"https://images.justwatch.com/poster/261883441/s332/chicago-fire.jpg","tmdbId":"44006","rating":"8.0"},{"rank":6,"kind":"series","title":"Lei & Ordem: Unidade Especial","original":"Law & Order: Special Victims Unit","year":"1999","poster":"https://images.justwatch.com/poster/261792206/s332/law-and-order-special-victims-unit.jpg","tmdbId":"2734","rating":"8.1"},{"rank":7,"kind":"series","title":"Chicago Med: Atendimento de Emergência","original":"Chicago Med","year":"2015","poster":"https://images.justwatch.com/poster/249408561/s332/chicago-med.jpg","tmdbId":"62650","rating":"7.6"},{"rank":8,"kind":"series","title":"This Is Us","original":"This Is Us","year":"2016","poster":"https://images.justwatch.com/poster/83689087/s332/this-is-us.jpg","tmdbId":"67136","rating":"8.7"},{"rank":9,"kind":"series","title":"O Novato","original":"The Rookie","year":"2018","poster":"https://images.justwatch.com/poster/347285049/s332/the-rookie.jpg","tmdbId":"79744","rating":"8.0"},{"rank":10,"kind":"series","title":"Jujutsu Kaisen","original":"Jujutsu Kaisen","year":"2020","poster":"https://images.justwatch.com/poster/335665389/s332/jujutsu-kaisen.jpg","tmdbId":"95479","rating":"8.5"}],"updated":"2026-11-15"},"paramount":{"movies":[{"rank":1,"kind":"movie","title":"Respire","original":"Breathe","year":"2024","poster":"https://images.justwatch.com/poster/323081937/s332/breathe-2024.jpg","tmdbId":"720321","rating":"4.3"},{"rank":2,"kind":"movie","title":"Uma Comédia Nada Romântica","original":"Date Movie","year":"2006","poster":"https://images.justwatch.com/poster/251009512/s332/uma-comedia-nada-romantica.jpg","tmdbId":"10073","rating":"2.8"},{"rank":3,"kind":"movie","title":"A Terra Prometida","original":"Bastarden","year":"2023","poster":"https://images.justwatch.com/poster/319846392/s332/the-bastard.jpg","tmdbId":"980026","rating":"7.7"},{"rank":4,"kind":"movie","title":"Todo Mundo em Pânico","original":"Scary Movie","year":"2026","poster":"https://images.justwatch.com/poster/354125859/s332/todo-mundo-em-panico-2026.jpg","tmdbId":"1273221","rating":"4.8"},{"rank":5,"kind":"movie","title":"Por um Fio","original":"Hanging by a Wire","year":"2026","poster":"https://images.justwatch.com/poster/350686982/s332/por-um-fio-2026.jpg","tmdbId":"1480856","rating":"6.7"},{"rank":6,"kind":"movie","title":"Top Gun: Maverick","original":"Top Gun: Maverick","year":"2022","poster":"https://images.justwatch.com/poster/331624779/s332/top-gun-maverick.jpg","tmdbId":"361743","rating":"8.2"},{"rank":7,"kind":"movie","title":"Forrest Gump","original":"Forrest Gump","year":"1994","poster":"https://images.justwatch.com/poster/350704553/s332/forrest-gump-o-contador-de-historias.jpg","tmdbId":"13","rating":"8.8"},{"rank":8,"kind":"movie","title":"Ajuste de Contas","original":"Reckless","year":"2026","poster":"https://images.justwatch.com/poster/341675941/s332/ajuste-de-contas.jpg","tmdbId":"1449400","rating":"5.2"},{"rank":9,"kind":"movie","title":"WWZ: Guerra Mundial","original":"World War Z","year":"2013","poster":"https://images.justwatch.com/poster/325964234/s332/guerra-mundial-z.jpg","tmdbId":"72190","rating":"7.0"},{"rank":10,"kind":"movie","title":"Haverá Sangue","original":"There Will Be Blood","year":"2007","poster":"https://images.justwatch.com/poster/333605289/s332/sangue-negro.jpg","tmdbId":"7345","rating":"8.2"}],"series":[{"rank":1,"kind":"series","title":"Terra de Bandidos","original":"MobLand","year":"2025","poster":"https://images.justwatch.com/poster/355145290/s332/terra-da-mafia.jpg","tmdbId":"247718","rating":"8.3"},{"rank":2,"kind":"series","title":"Tulsa King","original":"Tulsa King","year":"2022","poster":"https://images.justwatch.com/poster/337316136/s332/tulsa-king.jpg","tmdbId":"153312","rating":"7.9"},{"rank":3,"kind":"series","title":"Dexter: Ressurreição","original":"Dexter: Resurrection","year":"2025","poster":"https://images.justwatch.com/poster/335638103/s332/dexter-resurrection.jpg","tmdbId":"259909","rating":"9.0"},{"rank":4,"kind":"series","title":"De mal a pior","original":"It Gets Worse","year":"2026","poster":"https://images.justwatch.com/poster/356106626/s332/de-mal-a-pior-2026.jpg","tmdbId":"334470","rating":"6.4"},{"rank":5,"kind":"series","title":"Dexter","original":"Dexter","year":"2006","poster":"https://images.justwatch.com/poster/194362582/s332/dexter.jpg","tmdbId":"1405","rating":"8.6"},{"rank":6,"kind":"series","title":"Yellowstone","original":"Yellowstone","year":"2018","poster":"https://images.justwatch.com/poster/317252620/s332/yellowstone-2018.jpg","tmdbId":"73586","rating":"8.6"},{"rank":7,"kind":"series","title":"Pessoas normais","original":"Normal People","year":"2020","poster":"https://images.justwatch.com/poster/355295402/s332/normal-people.jpg","tmdbId":"89905","rating":"8.4"},{"rank":8,"kind":"series","title":"This Is Us","original":"This Is Us","year":"2016","poster":"https://images.justwatch.com/poster/83689087/s332/this-is-us.jpg","tmdbId":"67136","rating":"8.7"},{"rank":9,"kind":"series","title":"Quebra-Cabeça Mortal","original":"The Jigsaw Puzzle Murder","year":"2026","poster":"https://images.justwatch.com/poster/356944528/s332/quebra-cabeca-mortal.jpg","tmdbId":"340784","rating":"6.4"},{"rank":10,"kind":"series","title":"A História de Uma Serva","original":"The Handmaid's Tale","year":"2017","poster":"https://images.justwatch.com/poster/245230722/s332/the-handmaids-tale.jpg","tmdbId":"69478","rating":"8.3"}],"updated":"2026-11-15"},"crunchyroll":{"movies":[{"rank":1,"kind":"movie","title":"O Teu Nome","original":"君の名は。","year":"2016","poster":"https://images.justwatch.com/poster/35724677/s332/teu-nome.jpg","tmdbId":"372058","rating":"8.4"},{"rank":2,"kind":"movie","title":"Suzume","original":"すずめの戸締まり","year":"2022","poster":"https://images.justwatch.com/poster/312563600/s332/suzume-no-tojimari.jpg","tmdbId":"916224","rating":"7.6"},{"rank":3,"kind":"movie","title":"Chainsaw Man - O Filme: Reze Arc","original":"劇場版 チェンソーマン レゼ篇","year":"2025","poster":"https://images.justwatch.com/poster/339907814/s332/chainsaw-man-the-movie-reze-arc.jpg","tmdbId":"1218925","rating":"8.3"},{"rank":4,"kind":"movie","title":"Dragon Ball Super - Super-Herói","original":"ドラゴンボール超 スーパーヒーロー","year":"2022","poster":"https://images.justwatch.com/poster/356379959/s332/dragon-ball-super-super-hero.jpg","tmdbId":"610150","rating":"7.1"},{"rank":5,"kind":"movie","title":"Spy x Family Código - Branco","original":"劇場版 SPY×FAMILY CODE: White","year":"2023","poster":"https://images.justwatch.com/poster/313009442/s332/spy-x-family-code-white.jpg","tmdbId":"1062807","rating":"7.3"},{"rank":6,"kind":"movie","title":"Miss Kobayashi's Dragon Maid: A Lonely Dragon Wants to Be Loved","original":"小林さんちのメイドラゴン さみしがりやの竜","year":"2025","poster":"https://images.justwatch.com/poster/346545455/s332/miss-kobayashis-dragon-maid-a-lonely-dragon-wants-to-be-loved.jpg","tmdbId":"1359607","rating":"7.7"},{"rank":7,"kind":"movie","title":"Overlord: O Reino Sagrado","original":"Overlord Sei Oukoku-hen","year":"2024","poster":"https://images.justwatch.com/poster/321588683/s332/overlord-sei-oukoku-hen.jpg","tmdbId":"1014505","rating":"6.9"},{"rank":8,"kind":"movie","title":"Your Letter","original":"연의 편지","year":"2025","poster":"https://images.justwatch.com/poster/335793239/s332/your-letter-2025.jpg","tmdbId":"717787","rating":"7.3"},{"rank":9,"kind":"movie","title":"Sword of the Stranger","original":"ストレンヂア -無皇刃譚-","year":"2007","poster":"https://images.justwatch.com/poster/203267550/s332/sword-of-the-stranger.jpg","tmdbId":"13980","rating":"7.7"},{"rank":10,"kind":"movie","title":"My Hero Academia: És O Próximo","original":"Boku no Hîrô Akademia za Mûbî Yuâ Nekusuto","year":"2024","poster":"https://images.justwatch.com/poster/347529088/s332/my-hero-academia-the-movie-youre-next.jpg","tmdbId":"1159311","rating":"7.0"}],"series":[{"rank":1,"kind":"series","title":"Dragon Ball Super: Beerus","original":"ドラゴンボール超 ビルス","year":"2026","poster":"https://images.justwatch.com/poster/354620109/s332/dragon-ball-super-beerus.jpg","tmdbId":"312359","rating":"8.9"},{"rank":2,"kind":"series","title":"Black Clover","original":"Black Clover","year":"2017","poster":"https://images.justwatch.com/poster/289760864/s332/black-clover.jpg","tmdbId":null,"rating":"8.3"},{"rank":3,"kind":"series","title":"Diários de uma Apotecária","original":"Kusuriya no hitorigoto","year":"2023","poster":"https://images.justwatch.com/poster/353462385/s332/diarios-de-uma-apotecaria.jpg","tmdbId":"220542","rating":"8.6"},{"rank":4,"kind":"series","title":"Ataque dos Titãs","original":"Shingeki no Kyojin","year":"2013","poster":"https://images.justwatch.com/poster/99030838/s332/ataque-dos-titas.jpg","tmdbId":"1429","rating":"9.1"},{"rank":5,"kind":"series","title":"One Piece","original":"ワンピース","year":"1999","poster":"https://images.justwatch.com/poster/306658306/s332/one-piece.jpg","tmdbId":"37854","rating":"9.0"},{"rank":6,"kind":"series","title":"Jujutsu Kaisen","original":"Jujutsu Kaisen","year":"2020","poster":"https://images.justwatch.com/poster/335665389/s332/jujutsu-kaisen.jpg","tmdbId":"95479","rating":"8.5"},{"rank":7,"kind":"series","title":"The Laid-Off Cheat-Granting Mage Enjoys a Second Lease on Life","original":"追放されたチート付与魔術師は気ままなセカンドライフを謳歌する。 ～俺は武器だけじゃなく、あらゆるものに『強化ポイント』を付与できるし、俺の意思でいつでも効果を解除できるけど、残った人たち大丈夫？～","year":"2026","poster":"https://images.justwatch.com/poster/355154010/s332/the-laid-off-cheat-granting-mage-enjoys-a-second-lease-on-life.jpg","tmdbId":"313346","rating":"7.5"},{"rank":8,"kind":"series","title":"Dragon Ball Super","original":"ドラゴンボール超（スーパー）","year":"2015","poster":"https://images.justwatch.com/poster/336033676/s332/dragon-ball-super.jpg","tmdbId":"62715","rating":"8.3"},{"rank":9,"kind":"series","title":"Dragon Ball","original":"ドラゴンボール","year":"1986","poster":"https://images.justwatch.com/poster/354898526/s332/dragon-ball.jpg","tmdbId":"12609","rating":"8.5"},{"rank":10,"kind":"series","title":"Daemons do Reino das Sombras","original":"黄泉のツガイ","year":"2026","poster":"https://images.justwatch.com/poster/354197036/s332/daemons-of-the-shadow-realm.jpg","tmdbId":"260463","rating":"7.7"}],"updated":"2026-11-15"}}};
+const PLATFORMS = [
+  { id: 'netflix', name: 'Netflix', color: '#e50914' },
+  { id: 'prime', name: 'Prime Video', color: '#1a98ff' },
+  { id: 'disney', name: 'Disney+', color: '#2bd9d9' },
+  { id: 'max', name: 'HBO Max', color: '#9a5cff' },
+  { id: 'apple', name: 'Apple TV+', color: '#e8e8ee' },
+  { id: 'globoplay', name: 'Globoplay', color: '#ff5a36' },
+  { id: 'paramount', name: 'Paramount+', color: '#3b7bff' },
+  { id: 'crunchyroll', name: 'Crunchyroll', color: '#ff7a1a' },
+];
+function chartsStamp(c) {
+  let max = '';
+  for (const group of [c && c.official, c && c.daily]) {
+    for (const v of Object.values(group || {})) if (v && String(v.updated || '') > max) max = String(v.updated);
+  }
+  return max;
+}
+function validCharts(c) { return !!(c && c.daily && typeof c.daily === 'object' && Object.keys(c.daily).length > 0); }
+
+const TITLE_TAGS = /\s(?:4k|uhd|fhd|hd|sd|dublado|legendado|dub|leg|dual|hevc|h265)$/;
+function normTitle(s) {
+  let t = String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/\[[^\]]*\]|\([^)]*\)/g, ' ').replace(/&/g, ' e ').replace(/[^a-z0-9]+/g, ' ').trim();
+  let prev;
+  do { prev = t; t = t.replace(TITLE_TAGS, ''); } while (t !== prev);
+  return t;
+}
+function buildTitleIndex(items) {
+  const byName = new Map(), byTmdb = new Map();
+  const put = (k, rec) => { if (!k) return; const arr = byName.get(k); if (arr) arr.push(rec); else byName.set(k, [rec]); };
+  for (const it of items) {
+    const raw = it.name || it.title || '';
+    const tid = it.tmdb || it.tmdb_id;
+    if (tid && String(tid) !== '0') byTmdb.set(String(tid), it);
+    const full = normTitle(raw);
+    const inPar = raw.match(/[(\[]\s*((?:19|20)\d{2})\s*[)\]]/);
+    const tail = full.match(/^(.+)\s((?:19|20)\d{2})$/);
+    const year = Number(inPar ? inPar[1] : (it.year || (tail ? tail[2] : 0))) || 0;
+    const rec = { item: it, year };
+    put(full, rec);
+    if (tail) put(tail[1], rec); // "Titulo 2010" também responde por "titulo"
+  }
+  return { byName, byTmdb };
+}
+function findInPlaylist(index, entry) {
+  if (entry.tmdbId != null) { const hit = index.byTmdb.get(String(entry.tmdbId)); if (hit) return hit; }
+  const tried = new Set();
+  for (const name of [entry.title, entry.original, ...(entry.alt || [])]) {
+    const k = normTitle(name);
+    if (!k || tried.has(k)) continue;
+    tried.add(k);
+    const hits = index.byName.get(k);
+    if (!hits) continue;
+    const y = Number(entry.year) || 0;
+    if (!y || entry.kind === 'series') return hits[0].item;
+    const exact = hits.find((h) => h.year && Math.abs(h.year - y) <= 1);
+    if (exact) return exact.item;
+    const noYear = hits.find((h) => !h.year);
+    if (noYear) return noYear.item;
+  }
+  return null;
+}
+
+function useCharts(data) {
+  const [charts, setCharts] = useState(CHARTS_SNAPSHOT);
+  const [status, setStatus] = useState('loading'); // loading | live | stale
+  const newer = (next) => setCharts((cur) => (chartsStamp(next) >= chartsStamp(cur) ? next : cur));
+
+  const refresh = useCallback(async () => {
+    setStatus('loading');
+    try {
+      // O parâmetro muda a cada 10 min só para furar o cache do navegador.
+      const res = await fetch(`${CHARTS_URL}?t=${Math.floor(Date.now() / 600000)}`, { signal: AbortSignal.timeout(12000) });
+      if (!res.ok) throw new Error('http_error');
+      const j = await res.json();
+      if (!validCharts(j)) throw new Error('bad_data');
+      newer(j);
+      idbSet('charts', j).catch(() => {});
+      setStatus('live');
+    } catch (e) { setStatus('stale'); }
+  }, []);
+
+  useEffect(() => {
+    idbGet('charts').then((c) => { if (validCharts(c)) newer(c); }).catch(() => {});
+    refresh();
+    // Voltou para o app depois de um tempo? Busca o ranking de novo.
+    let last = Date.now();
+    const onShow = () => { if (!document.hidden && Date.now() - last > 30 * 60000) { last = Date.now(); refresh(); } };
+    document.addEventListener('visibilitychange', onShow);
+    return () => document.removeEventListener('visibilitychange', onShow);
+  }, [refresh]);
+
+  const index = useMemo(() => (data ? { movie: buildTitleIndex(data.movies), series: buildTitleIndex(data.series) } : null), [data]);
+  const match = useCallback((entry) => (index ? findInPlaylist(index[entry.kind], entry) : null), [index]);
+
+  return { charts, status, refresh, match };
+}
+
+/* ============================== Auth ============================== */
+const AuthContext = createContext(null);
+
+function normalizeServer(raw) {
+  let s = raw.trim();
+  if (!/^https?:\/\//i.test(s)) s = 'http://' + s;
+  return s.replace(/\/+$/, '');
+}
+
+async function fetchAccount(server, user, pass, timeout) {
+  const url = `${server}/player_api.php?username=${encodeURIComponent(user)}&password=${encodeURIComponent(pass)}`;
+  const res = await fetch(url, { signal: AbortSignal.timeout(timeout || 12000) });
+  if (!res.ok) throw new Error('http_error');
+  const info = await res.json();
+  if (!info || !info.user_info || String(info.user_info.auth) !== '1') throw new Error('auth_failed');
+  return info.user_info;
+}
+
+function AuthProvider({ children }) {
+  const [session, setSession] = useState(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    idbGet('session').then((s) => { if (s) setSession(s); setReady(true); }).catch(() => setReady(true));
+  }, []);
+
+  const login = useCallback(async (name, serverRaw, user, pass) => {
+    const server = normalizeServer(serverRaw);
+    const info = await fetchAccount(server, user, pass, 12000);
+    const s = { name: name || 'Minha playlist', server, user, pass, exp: info.exp_date || null };
+    await idbSet('session', s);
+    setSession(s);
+    return s;
+  }, []);
+
+  // Edita a playlist atual. Só confere no servidor (e recarrega o catálogo) se o acesso mudou.
+  const update = useCallback(async (name, serverRaw, user, pass) => {
+    const server = normalizeServer(serverRaw);
+    const same = !!session && server === session.server && user === session.user && pass === session.pass;
+    let exp = session ? session.exp : null;
+    if (!same) exp = (await fetchAccount(server, user, pass, 12000)).exp_date || null;
+    const s = { name: (name || '').trim() || 'Minha playlist', server, user, pass, exp };
+    await idbSet('session', s);
+    setSession(s);
+    return { changed: !same };
+  }, [session]);
+
+  const logout = useCallback(async () => {
+    await idbSet('session', null);
+    setSession(null);
+  }, []);
+
+  return <AuthContext.Provider value={{ session, login, update, logout, ready }}>{children}</AuthContext.Provider>;
+}
+function useAuth() { return useContext(AuthContext); }
+
+/* ============================== Xtream ============================== */
+function groupByCat(items) {
+  const map = new Map();
+  for (const it of items) {
+    const k = String(it.category_id);
+    let arr = map.get(k);
+    if (!arr) { arr = []; map.set(k, arr); }
+    arr.push(it);
+  }
+  return map;
+}
+function topRated(items, n) {
+  const scored = items.map((it) => ({ it, score: parseFloat(it.rating_5based || it.rating || 0) || 0 }));
+  const hasRatings = scored.some((s) => s.score > 0);
+  scored.sort(hasRatings
+    ? (a, b) => b.score - a.score || Number(b.it.added || 0) - Number(a.it.added || 0)
+    : (a, b) => Number(b.it.added || 0) - Number(a.it.added || 0));
+  return scored.slice(0, n).map((s) => s.it);
+}
+function newest(items, n) {
+  return [...items].sort((a, b) => Number(b.added || b.last_modified || 0) - Number(a.added || a.last_modified || 0)).slice(0, n);
+}
+
+function useXtream(session) {
+  const [state, setState] = useState({ loading: false, error: null, data: null, done: 0 });
+  const [nonce, setNonce] = useState(0);
+
+  useEffect(() => {
+    if (!session) return;
+    let cancelled = false;
+    setState({ loading: true, error: null, data: null, done: 0 });
+
+    async function api(action) {
+      const url = `${session.server}/player_api.php?username=${encodeURIComponent(session.user)}&password=${encodeURIComponent(session.pass)}&action=${action}`;
+      try {
+        const res = await fetch(url, { signal: AbortSignal.timeout(30000) });
+        if (!res.ok) throw new Error('http_error');
+        const json = await res.json();
+        return Array.isArray(json) ? json : [];
+      } catch (e) {
+        return null;
+      } finally {
+        if (!cancelled) setState((s) => ({ ...s, done: s.done + 1 }));
+      }
+    }
+
+    (async () => {
+      const [movieCats, movies, seriesCats, series, liveCats, live] = await Promise.all([
+        api('get_vod_categories'), api('get_vod_streams'),
+        api('get_series_categories'), api('get_series'),
+        api('get_live_categories'), api('get_live_streams'),
+      ]);
+      if (cancelled) return;
+      if (movies === null && series === null && live === null) {
+        setState({ loading: false, error: 'O servidor não respondeu. Confira sua conexão e tente de novo.', data: null, done: 6 });
+        return;
+      }
+      const withLc = (arr) => (arr || []).map((it) => ({ ...it, name_lc: (it.name || it.title || '').toLowerCase() }));
+      const m = withLc(movies), s = withLc(series), l = withLc(live);
+      setState({
+        loading: false, error: null, done: 6,
+        data: {
+          movieCats: movieCats || [], movies: m, movieByCat: groupByCat(m), movieTop: topRated(m, 10), movieNew: newest(m, 20),
+          seriesCats: seriesCats || [], series: s, seriesByCat: groupByCat(s), seriesTop: topRated(s, 10), seriesNew: newest(s, 20),
+          liveCats: liveCats || [], live: l, liveByCat: groupByCat(l),
+        },
+      });
+    })();
+
+    return () => { cancelled = true; };
+  }, [session && session.server, session && session.user, session && session.pass, nonce]);
+
+  const fetchSeriesInfo = useCallback(async (seriesId) => {
+    const url = `${session.server}/player_api.php?username=${encodeURIComponent(session.user)}&password=${encodeURIComponent(session.pass)}&action=get_series_info&series_id=${encodeURIComponent(String(seriesId))}`;
+    const res = await fetch(url, { signal: AbortSignal.timeout(15000) });
+    return res.json();
+  }, [session]);
+
+  const fetchMovieInfo = useCallback(async (vodId) => {
+    const url = `${session.server}/player_api.php?username=${encodeURIComponent(session.user)}&password=${encodeURIComponent(session.pass)}&action=get_vod_info&vod_id=${encodeURIComponent(String(vodId))}`;
+    const res = await fetch(url, { signal: AbortSignal.timeout(15000) });
+    return res.json();
+  }, [session]);
+
+  const reload = useCallback(() => setNonce((n) => n + 1), []);
+
+  return { ...state, fetchSeriesInfo, fetchMovieInfo, reload };
+}
+
+/* ============================== Progresso ==============================
+   Cada item assistido vira uma entrada { key, type, id, time, duration, watched, playedAt, ... }.
+   - playedAt só muda quando o vídeo realmente toca; é ele que ordena o "Continuar assistindo".
+   - Toda gravação é um merge sobre a entrada atual (nunca sobre uma cópia antiga em memória).
+   - O "próximo episódio" é calculado na leitura, a partir do último episódio tocado. */
+function migrateProgress(raw) {
+  const out = {};
+  for (const [k, p] of Object.entries(raw || {})) {
+    if (!p || typeof p !== 'object') continue;
+    const n = { ...p, key: p.key || k };
+    if (n.ready) { n.time = 0; n.duration = 0; delete n.ready; }
+    if (n.watched == null) n.watched = n.duration > 1 && n.time >= n.duration * 0.95;
+    if (n.playedAt == null) n.playedAt = (n.watched && n.duration === 1) ? 0 : (n.updatedAt || 0);
+    if (n.episodeNum == null && typeof n.extraTitle === 'string') {
+      const m = n.extraTitle.match(/(\d+)/);
+      if (m) n.episodeNum = Number(m[1]);
+    }
+    out[n.key] = n;
+  }
+  return out;
+}
+
+function buildContinue(map) {
+  const out = [];
+  const lastBySeries = new Map();
+  for (const p of Object.values(map)) {
+    if (!p.playedAt) continue;
+    if (p.type === 'movie') {
+      if (!p.watched) out.push({ kind: 'resume', p, at: p.playedAt });
+    } else if (p.type === 'episode' && p.seriesId != null) {
+      const sid = String(p.seriesId);
+      const cur = lastBySeries.get(sid);
+      if (!cur || p.playedAt > cur.playedAt) lastBySeries.set(sid, p);
+    }
+  }
+  for (const p of lastBySeries.values()) {
+    if (!p.watched) { out.push({ kind: 'resume', p, at: p.playedAt }); continue; }
+    if (!p.nextEp) continue; // terminou o último episódio conhecido
+    const nk = `episode-${p.nextEp.id}`;
+    const np = map[nk];
+    const started = np && !np.watched && np.duration > 0;
+    out.push({
+      kind: 'next', at: p.playedAt,
+      p: {
+        key: nk, type: 'episode', id: p.nextEp.id, seriesId: p.seriesId, title: p.title, poster: p.poster,
+        season: p.nextEp.season, episodeNum: p.nextEp.episode_num, epTitle: p.nextEp.title,
+        ext: p.nextEp.container_extension || 'mp4',
+        time: started ? np.time : 0, duration: started ? np.duration : 0, watched: false,
+        nextEp: np ? np.nextEp : undefined,
+      },
+    });
+  }
+  return out.sort((a, b) => b.at - a.at);
+}
+
+function useProgress() {
+  const [map, setMap] = useState({});
+  const mapRef = useRef({});
+
+  const commit = useCallback((next) => {
+    mapRef.current = next;
+    setMap(next);
+    idbSet('progress', next).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    idbGet('progress').then((m) => {
+      const merged = { ...migrateProgress(m), ...mapRef.current };
+      mapRef.current = merged;
+      setMap(merged);
+    }).catch(() => {});
+  }, []);
+
+  const save = useCallback((key, patch) => {
+    const prev = mapRef.current;
+    commit({ ...prev, [key]: { ...(prev[key] || {}), ...patch, key } });
+  }, [commit]);
+
+  const remove = useCallback((key) => {
+    const next = { ...mapRef.current };
+    delete next[key];
+    commit(next);
+  }, [commit]);
+
+  // Tira uma série do "Continuar assistindo" sem apagar o que já foi marcado como assistido.
+  const dismissSeries = useCallback((seriesId) => {
+    const next = {};
+    for (const [k, p] of Object.entries(mapRef.current)) {
+      next[k] = (p.type === 'episode' && String(p.seriesId) === String(seriesId)) ? { ...p, playedAt: 0 } : p;
+    }
+    commit(next);
+  }, [commit]);
+
+  const get = useCallback((key) => mapRef.current[key], []);
+  const continueList = useMemo(() => buildContinue(map), [map]);
+
+  return { map, get, save, remove, dismissSeries, continueList };
+}
+
+/* ============================== Favoritos / histórico ============================== */
+function useFavorites() {
+  const [map, setMap] = useState({});
+  useEffect(() => { idbGet('favorites').then((m) => setMap(m || {})).catch(() => {}); }, []);
+  const isFavorite = useCallback((type, id) => !!map[`${type}-${id}`], [map]);
+  const toggle = useCallback((entry) => {
+    const key = `${entry.type}-${entry.id}`;
+    setMap((prev) => {
+      const next = { ...prev };
+      if (next[key]) delete next[key]; else next[key] = { ...entry, addedAt: Date.now() };
+      idbSet('favorites', next);
+      return next;
+    });
+  }, []);
+  const list = useMemo(() => Object.values(map).sort((a, b) => b.addedAt - a.addedAt), [map]);
+  return { list, isFavorite, toggle };
+}
+
+function useSearchHistory() {
+  const [history, setHistory] = useState([]);
+  useEffect(() => { idbGet('searchHistory').then((h) => setHistory(h || [])).catch(() => {}); }, []);
+  const add = useCallback((term) => {
+    const t = (term || '').trim();
+    if (t.length < 2) return;
+    setHistory((prev) => {
+      const next = [t, ...prev.filter((x) => x.toLowerCase() !== t.toLowerCase())].slice(0, 10);
+      idbSet('searchHistory', next);
+      return next;
+    });
+  }, []);
+  const clear = useCallback(() => { setHistory([]); idbSet('searchHistory', []); }, []);
+  return { history, add, clear };
+}
+
+/* ============================== Marca ============================== */
+let logoSeq = 0;
+function Logo({ size = 30, animated = false }) {
+  const id = useRef('lg' + (++logoSeq)).current;
+  return (
+    <svg width={size} height={size} viewBox="0 0 48 48" aria-hidden="true" style={{ display: 'block', flex: 'none' }}>
+      <defs>
+        <linearGradient id={id + 'g'} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#B692FF" /><stop offset="1" stopColor="#4F9DFF" />
+        </linearGradient>
+        <mask id={id + 'm'}>
+          <rect width="48" height="48" fill="#fff" />
+          <circle cx="30" cy="20" r="16" fill="#000">
+            {animated && <animate attributeName="cx" values="52;30;30;52" keyTimes="0;.35;.75;1" dur="3.2s" repeatCount="indefinite" calcMode="spline" keySplines=".4 0 .2 1;0 0 1 1;.4 0 .2 1" />}
+            {animated && <animate attributeName="cy" values="2;20;20;2" keyTimes="0;.35;.75;1" dur="3.2s" repeatCount="indefinite" calcMode="spline" keySplines=".4 0 .2 1;0 0 1 1;.4 0 .2 1" />}
+          </circle>
+        </mask>
+      </defs>
+      <circle cx="24" cy="24" r="20" fill={`url(#${id}g)`} mask={`url(#${id}m)`} />
+      <path d="M26 13.5 37 20 26 26.5Z" fill="#EEEBFF" stroke="#EEEBFF" strokeWidth="3" strokeLinejoin="round">
+        {animated && <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.4;.72;.85" dur="3.2s" repeatCount="indefinite" />}
+      </path>
+    </svg>
+  );
+}
+function Brand({ size = 28 }) {
+  return <span className="brand"><Logo size={size} /><span className="brand__word">nyx</span></span>;
+}
+
+const STARS = Array.from({ length: 26 }).map((_, i) => ({
+  left: ((i * 37) % 100) + '%', top: ((i * 53 + 11) % 100) + '%', delay: ((i * 0.37) % 3) + 's', scale: 0.6 + ((i * 7) % 10) / 10,
+}));
+function Splash({ status, progress }) {
+  return (
+    <div className="splash">
+      <div className="splash__stars">
+        {STARS.map((s, i) => <i key={i} style={{ left: s.left, top: s.top, animationDelay: s.delay, transform: `scale(${s.scale})` }} />)}
+      </div>
+      <div className="splash__moon">
+        <div className="splash__orbit" />
+        <div style={{ position: 'relative' }}><Logo size={84} animated /></div>
+      </div>
+      <div className="splash__word gradtext">nyx</div>
+      <div className={'bar' + (progress == null ? ' bar--indet' : '')}>
+        <span style={progress == null ? undefined : { width: Math.max(6, progress * 100) + '%' }} />
+      </div>
+      <p className="splash__status">{status || ''}</p>
+    </div>
+  );
+}
+
+/* ============================== Átomos ============================== */
+function Art({ src }) {
+  if (!src) return null;
+  return (
+    <img className="art" src={src} alt="" loading="lazy" decoding="async" referrerPolicy="no-referrer"
+      onLoad={(e) => e.currentTarget.classList.add('on')}
+      onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+  );
+}
+function Spinner() { return <div className="center-pad"><div className="spinner" /></div>; }
+
+function Poster({ item, kind, onClick, grid, tag }) {
+  const img = item.stream_icon || item.cover || '';
+  const live = kind === 'live';
+  return (
+    <button onClick={onClick} className={'poster' + (grid ? ' poster--grid' : '') + (live ? ' poster--live' : '')}>
+      <div className="poster__art">
+        <div className="ph"><i className={live ? 'ri-broadcast-line' : 'ri-film-line'} /></div>
+        <Art src={img} />
+        {tag && <span className="poster__tag">{tag}</span>}
+      </div>
+      <p className="poster__name clamp-2">{item.name || item.title}</p>
+    </button>
+  );
+}
+
+function Row({ title, onMore, children }) {
+  const list = React.Children.toArray(children);
+  if (list.length === 0) return null;
+  return (
+    <section className="row">
+      <div className="row__head">
+        <h2 className="row__title clamp-1">{title}</h2>
+        {onMore && <button className="row__more" onClick={onMore}>Ver tudo</button>}
+      </div>
+      <div className="row__track noscroll">{list}</div>
+    </section>
+  );
+}
+
+function Sentinel({ onVisible }) {
+  const ref = useRef(null);
+  const cb = useRef(onVisible);
+  cb.current = onVisible;
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !('IntersectionObserver' in window)) { cb.current(); return; }
+    const io = new IntersectionObserver((entries) => { if (entries.some((e) => e.isIntersecting)) cb.current(); }, { rootMargin: '600px' });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return <div ref={ref} style={{ height: 1 }} />;
+}
+
+function Sheet({ title, onClose, children }) {
+  const [out, setOut] = useState(false);
+  const close = useCallback(() => { setOut(true); setTimeout(onClose, 190); }, [onClose]);
+  return (
+    <div className={'scrim' + (out ? ' is-out' : '')} onClick={close}>
+      <div className="sheet noscroll" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true">
+        <div className="sheet__grab" />
+        {title && (
+          <div className="sheet__head">
+            <h2 className="sheet__title">{title}</h2>
+            <button className="iconbtn" onClick={close} aria-label="Fechar"><i className="ri-close-line" /></button>
+          </div>
+        )}
+        {typeof children === 'function' ? children(close) : children}
+      </div>
+    </div>
+  );
+}
+
+/* ============================== Início ============================== */
+function Hero({ items, onPlay, onOpen }) {
+  const [i, setI] = useState(0);
+  const [dir, setDir] = useState('');
+  const [tick, setTick] = useState(0); // reinicia o tempo do giro automático a cada troca manual
+  const touch = useRef(null);
+  const count = items.length;
+  useEffect(() => {
+    if (count < 2) return;
+    const t = setInterval(() => { if (!document.hidden) { setDir(''); setI((n) => (n + 1) % count); } }, 8000);
+    return () => clearInterval(t);
+  }, [count, tick]);
+  const go = (n, d) => { if (count < 2) return; setDir(d); setI(((n % count) + count) % count); setTick((t) => t + 1); };
+  const onTouchStart = (e) => { const t = e.touches[0]; touch.current = { x: t.clientX, y: t.clientY }; };
+  const onTouchEnd = (e) => {
+    const s = touch.current; touch.current = null;
+    if (!s) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - s.x, dy = t.clientY - s.y;
+    if (Math.abs(dx) < 42 || Math.abs(dx) < Math.abs(dy) * 1.4) return;
+    if (dx < 0) go(i + 1, 'next'); else go(i - 1, 'prev');
+  };
+  if (!count) return <div style={{ height: 'calc(var(--sat) + var(--hh) + 8px)' }} />;
+  const cur = items[i % count];
+  const it = cur.item;
+  const rating = ratingOf(it);
+  return (
+    <section className="hero" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} onTouchCancel={() => { touch.current = null; }}>
+      {items.map((h, n) => (
+        <div key={h.kind + (h.item.stream_id || h.item.series_id)} className={'hero__bg' + (n === i ? ' is-on' : '')}
+          style={{ backgroundImage: `url("${h.item.stream_icon || h.item.cover || ''}")` }} />
+      ))}
+      <div className="hero__shade" />
+      {count > 1 && <button className="iconbtn iconbtn--glass hero__arrow hero__arrow--l" onClick={() => go(i - 1, 'prev')} aria-label="Destaque anterior"><i className="ri-arrow-left-s-line" /></button>}
+      {count > 1 && <button className="iconbtn iconbtn--glass hero__arrow hero__arrow--r" onClick={() => go(i + 1, 'next')} aria-label="Próximo destaque"><i className="ri-arrow-right-s-line" /></button>}
+      <div className={'hero__in' + (dir ? ' hero__in--' + dir : '')} key={i}>
+        <button className="hero__poster" onClick={() => onOpen(it, cur.kind)} aria-label={`Abrir ${it.name}`}>
+          <div className="ph"><i className="ri-film-line" /></div>
+          <Art src={it.stream_icon || it.cover} />
+        </button>
+        <div className="hero__txt">
+          <h1 className="hero__title clamp-3">{it.name}</h1>
+          <div className="hero__meta">
+            <span className="pill pill--grad">{cur.kind === 'movie' ? 'Filme' : 'Série'}</span>
+            {rating && <span className="pill pill--star"><i className="ri-star-fill" />{rating}</span>}
+            <span>Em alta na sua playlist</span>
+          </div>
+          <div className="hero__actions">
+            {cur.kind === 'movie'
+              ? <button className="btn btn--primary" onClick={() => onPlay(it)}><i className="ri-play-fill" />Assistir</button>
+              : <button className="btn btn--primary" onClick={() => onOpen(it, 'series')}><i className="ri-play-list-2-fill" />Ver episódios</button>}
+            {cur.kind === 'movie' && <button className="btn btn--ghost" onClick={() => onOpen(it, 'movie')}><i className="ri-information-line" />Detalhes</button>}
+          </div>
+          {count > 1 && (
+            <div className="hero__dots">
+              {items.map((_, n) => <button key={n} className={n === i ? 'is-on' : ''} onClick={() => go(n, n < i ? 'prev' : 'next')} aria-label={`Destaque ${n + 1}`} />)}
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ContinueCard({ entry, onPlay, onMenu }) {
+  const { p, kind } = entry;
+  const pct = pctOf(p);
+  const label = p.type === 'episode' ? epLabel(p) : '';
+  const left = p.duration > 0 && p.time > 0 ? fmtLeft(p.duration - p.time) : null;
+  return (
+    <div className="cont">
+      <button className="cont__art" onClick={onPlay} aria-label={`Continuar ${p.title}`}>
+        <div className="ph"><i className="ri-film-line" /></div>
+        <Art src={p.poster} />
+        <div className="cont__shade" />
+        <span className="cont__play"><i className="ri-play-fill" /></span>
+        <div className="cont__info">
+          <p className="cont__title clamp-1">{p.title}</p>
+          <p className="cont__sub">
+            {label && <b>{label}</b>}
+            <span className="clamp-1">{kind === 'next' ? 'Próximo episódio' : (left || 'Começar')}</span>
+          </p>
+        </div>
+        <div className="cont__bar track"><span style={{ width: pct + '%' }} /></div>
+      </button>
+      <button className="iconbtn iconbtn--glass cont__menu" onClick={onMenu} aria-label="Mais opções"><i className="ri-more-2-fill" /></button>
+    </div>
+  );
+}
+
+function TopCard({ rank, item, onClick }) {
+  return (
+    <button className="top" onClick={onClick} aria-label={`${rank}. ${item.name}`}>
+      <span className="top__n">{rank}</span>
+      <div className="top__art"><div className="ph"><i className="ri-film-line" /></div><Art src={item.stream_icon || item.cover} /></div>
+    </button>
+  );
+}
+
+/* ============================== Navegar por categoria ============================== */
+const GRID_PAGE = 60;
+const ROWS_PAGE = 6;
+
+function Browse({ title, kind, items, cats, byCat, selected, onSelect, onOpen }) {
+  const [rows, setRows] = useState(ROWS_PAGE);
+  const [shown, setShown] = useState(GRID_PAGE);
+  useEffect(() => { setShown(GRID_PAGE); window.scrollTo(0, 0); }, [selected]);
+
+  const usable = useMemo(() => cats.filter((c) => (byCat.get(String(c.category_id)) || []).length > 0), [cats, byCat]);
+  const list = selected != null ? (byCat.get(String(selected)) || []) : null;
+
+  if (items.length === 0) {
+    return (
+      <div className="page">
+        <h1 className="page__title">{title}</h1>
+        <div className="empty">
+          <div className="empty__ico"><i className="ri-moon-clear-line" /></div>
+          <h3>Nada por aqui</h3>
+          <p>Sua playlist não trouxe itens nesta seção.</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="page">
+      <h1 className="page__title">{title}</h1>
+      <div className="chips noscroll">
+        <button className={'chip' + (selected == null ? ' is-on' : '')} onClick={() => onSelect(null)}>Tudo</button>
+        {usable.map((c) => (
+          <button key={c.category_id} className={'chip' + (String(selected) === String(c.category_id) ? ' is-on' : '')} onClick={() => onSelect(c.category_id)}>
+            {c.category_name}
+          </button>
+        ))}
+      </div>
+
+      {list ? (
+        <>
+          <div className="grid">
+            {list.slice(0, shown).map((it) => <Poster key={it.stream_id || it.series_id} item={it} kind={kind} grid onClick={() => onOpen(it, kind)} />)}
+          </div>
+          {shown < list.length && <Sentinel key={shown} onVisible={() => setShown((n) => n + GRID_PAGE)} />}
+        </>
+      ) : (
+        <>
+          {usable.slice(0, rows).map((c) => (
+            <Row key={c.category_id} title={c.category_name} onMore={() => onSelect(c.category_id)}>
+              {(byCat.get(String(c.category_id)) || []).slice(0, 18).map((it) => <Poster key={it.stream_id || it.series_id} item={it} kind={kind} onClick={() => onOpen(it, kind)} />)}
+            </Row>
+          ))}
+          {rows < usable.length && <Sentinel key={rows} onVisible={() => setRows((n) => n + ROWS_PAGE)} />}
+          {usable.length === 0 && (
+            <div className="grid">
+              {items.slice(0, shown).map((it) => <Poster key={it.stream_id || it.series_id} item={it} kind={kind} grid onClick={() => onOpen(it, kind)} />)}
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
+
+/* ============================== Ao vivo ============================== */
+function ChannelRow({ item, session, active, onSelect, onPlay }) {
+  const [ref, seen] = useSeen();
+  const now = useEpg(session, item, seen && !!item.epg_channel_id);
+  const c = useMemo(() => parseChannel(item.name), [item.name]);
+  const pct = now && now.stop > now.start ? Math.max(0, Math.min(100, ((Date.now() - now.start) / (now.stop - now.start)) * 100)) : 0;
+  return (
+    <div ref={ref} className={'ch' + (active ? ' is-on' : '')}>
+      <button className="ch__main" onClick={onSelect}>
+        <div className="ch__logo"><div className="ph"><i className="ri-broadcast-line" /></div><Art src={item.stream_icon} /></div>
+        <div style={{ minWidth: 0, flex: 1 }}>
+          <p className="ch__name">{c.title}</p>
+          <div className="ch__meta">
+            {c.time && <span className="ch__time"><i className="ri-time-line" />{c.time}</span>}
+            {c.q && <span className="ch__q">{c.q}</span>}
+            {active && <span className="ch__onair"><span className="eq"><i /><i /><i /></span>Na prévia</span>}
+            {now && <span className="ch__prog clamp-1">Agora: {now.title}</span>}
+          </div>
+          {now && pct > 0 && <div className="track ch__bar"><span style={{ width: pct + '%' }} /></div>}
+        </div>
+      </button>
+      <button className="ch__go" onClick={onPlay} aria-label={`Assistir ${c.title} em tela cheia`}><i className="ri-play-fill" /></button>
+    </div>
+  );
+}
+
+// Janela de pré-visualização: toca o canal sem som enquanto a pessoa percorre a lista.
+function LivePreview({ item, session, url, suspended, onFull, onClose }) {
+  const videoRef = useRef(null);
+  const mutedRef = useRef(true);
+  const [state, setState] = useState('load');
+  const [muted, setMuted] = useState(true);
+  const now = useEpg(session, item, !!item.epg_channel_id);
+  const c = useMemo(() => parseChannel(item.name), [item.name]);
+
+  useEffect(() => {
+    if (suspended) return;
+    const video = videoRef.current;
+    let hls = null;
+    setState('load');
+    video.muted = mutedRef.current;
+    const onPlaying = () => setState('play');
+    const onWaiting = () => setState((s) => (s === 'err' ? s : 'load'));
+    const fail = () => setState('err');
+    const start = () => {
+      const p = video.play();
+      if (p && p.catch) p.catch(() => {
+        // O navegador barrou o som automático: volta a tocar mudo.
+        mutedRef.current = true; video.muted = true; setMuted(true);
+        const p2 = video.play(); if (p2 && p2.catch) p2.catch(() => {});
+      });
+    };
+    video.addEventListener('playing', onPlaying);
+    video.addEventListener('waiting', onWaiting);
+    if (video.canPlayType('application/vnd.apple.mpegurl') !== '') { video.onerror = fail; video.src = url; start(); }
+    else if (window.Hls && window.Hls.isSupported()) {
+      hls = new window.Hls({ maxBufferLength: 10 });
+      hls.loadSource(url);
+      hls.attachMedia(video);
+      hls.on(window.Hls.Events.MANIFEST_PARSED, start);
+      hls.on(window.Hls.Events.ERROR, (_, d) => { if (d.fatal) fail(); });
+    } else fail();
+    return () => {
+      video.removeEventListener('playing', onPlaying);
+      video.removeEventListener('waiting', onWaiting);
+      video.onerror = null;
+      if (hls) hls.destroy();
+      video.pause();
+      video.removeAttribute('src');
+      video.load();
+    };
+  }, [url, suspended]);
+
+  const toggleMute = () => {
+    const next = !mutedRef.current;
+    mutedRef.current = next; setMuted(next);
+    if (videoRef.current) videoRef.current.muted = next;
+  };
+
+  return (
+    <div className="pv">
+      <div className="pv__frame">
+        <video ref={videoRef} playsInline webkit-playsinline="true" muted />
+        <div className="pv__shade" />
+        {state === 'load' && !suspended && <div className="player__wait"><div className="spinner" /></div>}
+        {state === 'err' && <div className="pv__err"><i className="ri-signal-wifi-off-line" /><span>Sem sinal neste canal agora</span></div>}
+        <button className="pv__hit" onClick={onFull} aria-label={`Assistir ${c.title} em tela cheia`} />
+        <div className="pv__top">
+          <span className="pv__live"><i />AO VIVO</span>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button className="iconbtn iconbtn--glass" onClick={toggleMute} aria-label={muted ? 'Ligar o som' : 'Desligar o som'}><i className={muted ? 'ri-volume-mute-line' : 'ri-volume-up-line'} /></button>
+            <button className="iconbtn iconbtn--glass" onClick={onClose} aria-label="Fechar pré-visualização"><i className="ri-close-line" /></button>
+          </div>
+        </div>
+        <div className="pv__info">
+          <div className="pv__txt">
+            <p className="pv__name clamp-2">{c.title}</p>
+            {now && <p className="pv__now clamp-1">{now.title}, até {hhmm(now.stop)}</p>}
+          </div>
+          <button className="btn btn--primary btn--sm" onClick={onFull}><i className="ri-fullscreen-line" />Assistir</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const LIVE_PEEK = 5;
+function Live({ data, session, liveUrl, selected, onSelect, onPlay, previewOn, suspended }) {
+  const [rows, setRows] = useState(ROWS_PAGE);
+  const [shown, setShown] = useState(GRID_PAGE);
+  const [pv, setPv] = useState(null);
+  useEffect(() => { setShown(GRID_PAGE); window.scrollTo(0, 0); }, [selected]);
+
+  // Ao entrar, volta a mostrar o último canal visto.
+  useEffect(() => {
+    if (!previewOn) { setPv(null); return; }
+    let alive = true;
+    idbGet('lastLive').then((id) => {
+      if (!alive || id == null) return;
+      const it = data.live.find((x) => String(x.stream_id) === String(id));
+      if (it) setPv((cur) => cur || it);
+    }).catch(() => {});
+    return () => { alive = false; };
+  }, [previewOn, data]);
+
+  const cats = data.liveCats, byCat = data.liveByCat;
+  const usable = useMemo(() => cats.filter((c) => (byCat.get(String(c.category_id)) || []).length > 0), [cats, byCat]);
+  const list = selected != null ? (byCat.get(String(selected)) || []) : (usable.length === 0 ? data.live : null);
+
+  const remember = (it) => { idbSet('lastLive', it.stream_id).catch(() => {}); };
+  const play = (it) => { remember(it); if (previewOn) setPv(it); onPlay(it); };
+  const pick = (it) => {
+    if (!previewOn || (pv && pv.stream_id === it.stream_id)) { play(it); return; }
+    remember(it); setPv(it);
+  };
+  const row = (it) => <ChannelRow key={it.stream_id} item={it} session={session} active={!!pv && pv.stream_id === it.stream_id} onSelect={() => pick(it)} onPlay={() => play(it)} />;
+
+  if (data.live.length === 0) {
+    return (
+      <div className="page">
+        <h1 className="page__title">Ao vivo</h1>
+        <div className="empty">
+          <div className="empty__ico"><i className="ri-moon-clear-line" /></div>
+          <h3>Nada por aqui</h3>
+          <p>Sua playlist não trouxe canais ao vivo.</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="page">
+      <h1 className="page__title">Ao vivo</h1>
+      <div className={'chips noscroll' + (pv ? ' chips--flow' : '')}>
+        <button className={'chip' + (selected == null ? ' is-on' : '')} onClick={() => onSelect(null)}>Tudo</button>
+        {usable.map((c) => (
+          <button key={c.category_id} className={'chip' + (String(selected) === String(c.category_id) ? ' is-on' : '')} onClick={() => onSelect(c.category_id)}>
+            {c.category_name}<small>{byCat.get(String(c.category_id)).length}</small>
+          </button>
+        ))}
+      </div>
+
+      <div className={'live' + (pv ? ' has-pv' : '')}>
+        {pv && <LivePreview item={pv} session={session} url={liveUrl(pv)} suspended={suspended} onFull={() => play(pv)} onClose={() => setPv(null)} />}
+        <div>
+          {previewOn && !pv && <p className="live__hint"><i className="ri-picture-in-picture-2-line" />Toque em um canal para espiar o que está passando. Toque de novo para abrir em tela cheia.</p>}
+          {list ? (
+            <>
+              <div className="chlist">{list.slice(0, shown).map(row)}</div>
+              {shown < list.length && <Sentinel key={shown} onVisible={() => setShown((n) => n + GRID_PAGE)} />}
+            </>
+          ) : (
+            <>
+              {usable.slice(0, rows).map((c) => {
+                const all = byCat.get(String(c.category_id));
+                return (
+                  <section key={c.category_id} className="live__sec">
+                    <div className="live__head">
+                      <h2 className="row__title clamp-1">{c.category_name}</h2>
+                      {all.length > LIVE_PEEK && <button className="row__more" onClick={() => onSelect(c.category_id)}>Ver todos os {all.length}</button>}
+                    </div>
+                    <div className="chlist">{all.slice(0, LIVE_PEEK).map(row)}</div>
+                  </section>
+                );
+              })}
+              {rows < usable.length && <Sentinel key={rows} onVisible={() => setRows((n) => n + ROWS_PAGE)} />}
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ============================== Em alta ============================== */
+function RankRow({ entry, found, onOpen }) {
+  const sub = (
+    <span className="rank__s">
+      {found ? <span className="rank__ok">Na sua playlist</span> : <span className="rank__no">Fora da sua playlist</span>}
+      {entry.season && <span>{entry.season.replace(((entry.alt && entry.alt[0]) || entry.title) + ': ', '').replace(/^Season (\d+)$/i, 'Temporada $1').replace(/^Part (\d+)$/i, 'Parte $1').replace(/^Limited Series$/i, 'Minissérie')}</span>}
+      {entry.year && <span>{entry.year}</span>}
+      {entry.rating && <span><i className="ri-star-fill" />{entry.rating}</span>}
+      {entry.weeks > 1 && <span>{entry.weeks} semanas no Top 10</span>}
+    </span>
+  );
+  const body = (
+    <>
+      <span className="rank__n">{entry.rank}</span>
+      <div className="rank__art"><div className="ph"><i className="ri-film-line" /></div><Art src={entry.poster || (found && (found.stream_icon || found.cover)) || ''} /></div>
+      <div className="rank__txt"><p className="rank__t clamp-2">{entry.title}</p>{sub}</div>
+      {found && <span className="rank__go"><i className="ri-play-fill" /></span>}
+    </>
+  );
+  return found
+    ? <button className="rank" onClick={() => onOpen(found, entry.kind)}>{body}</button>
+    : <div className="rank is-off">{body}</div>;
+}
+
+const dayMonth = (iso) => (iso ? new Date(iso + 'T12:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) : '');
+
+function Trending({ charts, onOpen }) {
+  const [platId, setPlatId] = useState('netflix');
+  const [mode, setMode] = useState('official'); // só vale para quem tem ranking oficial
+  const [onlyMine, setOnlyMine] = useState(false);
+  const all = charts.charts;
+  const plats = PLATFORMS.filter((p) => (all.daily && all.daily[p.id]) || (all.official && all.official[p.id]));
+  const plat = plats.find((p) => p.id === platId) || plats[0];
+  const official = plat && all.official ? all.official[plat.id] : null;
+  const daily = plat && all.daily ? all.daily[plat.id] : null;
+  const isOfficial = !!official && (mode === 'official' || !daily);
+  const d = isOfficial ? official : daily;
+
+  const rows = useMemo(() => {
+    if (!d) return null;
+    const map = (arr) => (arr || []).map((entry) => ({ entry, found: charts.match(entry) }));
+    return { series: map(d.series), movies: map(d.movies) };
+  }, [d, charts.match]);
+  const total = rows ? rows.series.length + rows.movies.length : 0;
+  const mine = rows ? [...rows.series, ...rows.movies].filter((r) => r.found).length : 0;
+
+  const section = (title, list) => {
+    const vis = onlyMine ? list.filter((r) => r.found) : list;
+    return (
+      <section>
+        <h2 className="trend__h">{title}</h2>
+        {vis.length === 0
+          ? <p className="hint">Nenhum destes está na sua playlist hoje.</p>
+          : <div className="ranks">{vis.map((r) => <RankRow key={r.entry.kind + r.entry.rank} entry={r.entry} found={r.found} onOpen={onOpen} />)}</div>}
+      </section>
+    );
+  };
+
+  return (
+    <div className="page">
+      <h1 className="page__title">Em alta</h1>
+      <div className="chips noscroll">
+        {plats.map((p) => (
+          <button key={p.id} className={'chip' + (plat && p.id === plat.id ? ' is-on' : '')} onClick={() => { setPlatId(p.id); window.scrollTo(0, 0); }}>
+            <i className="dot" style={{ background: p.color }} />{p.name}
+          </button>
+        ))}
+      </div>
+
+      <div className="trend">
+        {official && daily && (
+          <div className="seg" role="tablist">
+            <button role="tab" aria-selected={isOfficial} className={isOfficial ? 'is-on' : ''} onClick={() => setMode('official')}>Top 10 oficial</button>
+            <button role="tab" aria-selected={!isOfficial} className={!isOfficial ? 'is-on' : ''} onClick={() => setMode('daily')}>Em alta hoje</button>
+          </div>
+        )}
+
+        {rows && (
+          <>
+            <div className="trend__sum">
+              <span className="trend__big gradtext">{mine}<small style={{ WebkitTextFillColor: 'var(--mute)' }}>/{total}</small></span>
+              <p>
+                <b>{mine === 0 ? 'Nenhum título na sua playlist' : mine === 1 ? '1 título está na sua playlist' : `${mine} títulos estão na sua playlist`}</b>
+                {isOfficial
+                  ? `Top 10 oficial da ${plat.name} no Brasil, semana até ${dayMonth(d.week)}`
+                  : `Em alta no catálogo ${plat.name} Brasil, atualizado em ${dayMonth(d.updated)}`}
+              </p>
+            </div>
+            <button className="trend__tools opt" onClick={() => setOnlyMine((v) => !v)} role="switch" aria-checked={onlyMine}>
+              <span style={{ flex: 1 }}>Mostrar só o que tenho</span>
+              <span className={'switch' + (onlyMine ? ' is-on' : '')} />
+            </button>
+            <div className="trend__cols">
+              {section(isOfficial ? 'Top 10 séries' : 'Séries em alta', rows.series)}
+              {section(isOfficial ? 'Top 10 filmes' : 'Filmes em alta', rows.movies)}
+            </div>
+            <p className="trend__note">
+              {isOfficial
+                ? 'Fonte: Netflix Top 10 (netflix.com/tudum/top10). A Netflix divulga este ranking uma vez por semana, às terças.'
+                : `Fonte: tendências diárias do JustWatch para o catálogo ${plat.name}. A plataforma não divulga ranking próprio.`}
+              {charts.status === 'stale' && ' Não deu para baixar a versão mais nova agora; esta é a última salva. '}
+              {charts.status === 'stale' && <button style={{ color: '#cdbcff', fontWeight: 600 }} onClick={charts.refresh}>Tentar de novo</button>}
+            </p>
+          </>
+        )}
+        {!rows && (
+          <div className="empty">
+            <div className="empty__ico"><i className="ri-fire-line" /></div>
+            <h3>Ranking indisponível</h3>
+            <p>Não há dados desta plataforma agora.</p>
+            <button className="btn btn--ghost btn--sm" style={{ marginTop: 8 }} onClick={charts.refresh}>Tentar de novo</button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ============================== Busca ============================== */
+const RESULTS_LIMIT = 90;
+const KIND_LABEL = { movie: 'Filme', series: 'Série', live: 'Canal' };
+
+function SearchScreen({ data, onOpen, history, addHistory, clearHistory }) {
+  const [raw, setRaw] = useState('');
+  const [q, setQ] = useState('');
+  const [seg, setSeg] = useState('all');
+
+  useEffect(() => { const t = setTimeout(() => setQ(raw.trim()), 220); return () => clearTimeout(t); }, [raw]);
+
+  const found = useMemo(() => {
+    if (!q) return null;
+    const term = q.toLowerCase();
+    const pick = (arr, kind) => { const out = []; for (const x of arr) if (x.name_lc.includes(term)) out.push({ item: x, kind }); return out; };
+    return { movie: pick(data.movies, 'movie'), series: pick(data.series, 'series'), live: pick(data.live, 'live') };
+  }, [q, data]);
+
+  const results = useMemo(() => {
+    if (!found) return [];
+    return seg === 'all' ? [...found.series, ...found.movie, ...found.live] : found[seg];
+  }, [found, seg]);
+
+  const suggestions = useMemo(() => [
+    ...data.seriesTop.slice(0, 6).map((item) => ({ item, kind: 'series' })),
+    ...data.movieTop.slice(0, 6).map((item) => ({ item, kind: 'movie' })),
+  ], [data]);
+
+  const total = found ? found.movie.length + found.series.length + found.live.length : 0;
+  const open = (r) => { addHistory(q); onOpen(r.item, r.kind); };
+
+  return (
+    <div className="page">
+      <div className="search">
+        <div className="search__box">
+          <i className="ri-search-2-line" />
+          <input className="search__input" value={raw} autoFocus enterKeyHint="search" autoComplete="off" autoCorrect="off" spellCheck="false"
+            placeholder="Buscar filmes, séries e canais"
+            onChange={(e) => setRaw(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') { addHistory(raw); e.currentTarget.blur(); } }} />
+          {raw && <button className="search__clear" onClick={() => setRaw('')} aria-label="Limpar busca"><i className="ri-close-line" /></button>}
+        </div>
+
+        {!q && history.length > 0 && (
+          <>
+            <div className="search__h"><h2>Buscas recentes</h2><button onClick={clearHistory}>Limpar</button></div>
+            <div className="recent">
+              {history.map((h) => <button key={h} onClick={() => setRaw(h)}><i className="ri-history-line" />{h}</button>)}
+            </div>
+          </>
+        )}
+
+        {!q && suggestions.length > 0 && <div className="search__h"><h2>Mais bem avaliados</h2></div>}
+
+        {q && (
+          <div className="search__seg noscroll">
+            {[['all', 'Tudo', total], ['series', 'Séries', found.series.length], ['movie', 'Filmes', found.movie.length], ['live', 'Canais', found.live.length]].map(([id, label, n]) => (
+              <button key={id} className={'chip' + (seg === id ? ' is-on' : '')} onClick={() => setSeg(id)}>{label}<small>{n}</small></button>
+            ))}
+          </div>
+        )}
+        {q && results.length > RESULTS_LIMIT && <p className="hint">Mostrando {RESULTS_LIMIT} de {results.length}. Digite mais para refinar.</p>}
+      </div>
+
+      {!q && (
+        <div className="grid">
+          {suggestions.map((r) => <Poster key={r.kind + (r.item.stream_id || r.item.series_id)} item={r.item} kind={r.kind} grid onClick={() => onOpen(r.item, r.kind)} />)}
+        </div>
+      )}
+
+      {q && results.length > 0 && (
+        <div className="grid">
+          {results.slice(0, RESULTS_LIMIT).map((r) => (
+            <Poster key={r.kind + (r.item.stream_id || r.item.series_id)} item={r.item} kind={r.kind} grid tag={seg === 'all' ? KIND_LABEL[r.kind] : null} onClick={() => open(r)} />
+          ))}
+        </div>
+      )}
+
+      {q && results.length === 0 && (
+        <div className="empty">
+          <div className="empty__ico"><i className="ri-search-eye-line" /></div>
+          <h3>Nada encontrado</h3>
+          <p>Nenhum título com “{q}”. Tente outra grafia ou menos palavras.</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ============================== Player ============================== */
+function Player({ playable, onProgress, onClose }) {
+  const videoRef = useRef(null);
+  const hlsRef = useRef(null);
+  const [err, setErr] = useState(null);
+  const [waiting, setWaiting] = useState(true);
+  const [toast, setToast] = useState(null);
+  const cbRef = useRef(onProgress);
+  cbRef.current = onProgress;
+  const closeRef = useRef(onClose);
+  closeRef.current = onClose;
+
+  useEffect(() => {
+    const video = videoRef.current;
+    const isLive = !!playable.isLive;
+    const isHls = playable.url.includes('.m3u8');
+    const nativeHls = video.canPlayType('application/vnd.apple.mpegurl') !== '';
+    setErr(null); setWaiting(true);
+
+    /* ----- retomada: só começa a gravar progresso depois que o salto deu certo -----
+       Antes, se o salto falhava, o vídeo começava do zero e sobrescrevia o ponto salvo. */
+    const target = !isLive && playable.resumeAt > 3 ? playable.resumeAt : 0;
+    let seekDone = target === 0;
+    let attempts = 0;
+    let lastSave = 0;
+    let toastTimer = null;
+
+    function markSeekDone(ok) {
+      if (seekDone) return;
+      seekDone = true;
+      if (ok) { setToast(`Retomando de ${fmtClock(target)}`); toastTimer = setTimeout(() => setToast(null), 2600); }
+    }
+    function trySeek() {
+      if (seekDone) return;
+      if (video.readyState < 1 || video.seeking) return;
+      if (Math.abs(video.currentTime - target) < 2.5) { markSeekDone(true); return; }
+      if (attempts >= 8) { markSeekDone(false); return; }
+      attempts++;
+      try { video.currentTime = target; } catch (e) {}
+    }
+    function flush() {
+      if (isLive || !seekDone) return;
+      const d = video.duration;
+      if (!isFinite(d) || d <= 0) return;
+      lastSave = Date.now();
+      cbRef.current(video.currentTime, d);
+    }
+
+    const onTime = () => {
+      if (!seekDone) { trySeek(); return; }
+      if (Date.now() - lastSave > 3000) flush();
+    };
+    const onSeeked = () => { if (!seekDone) trySeek(); else flush(); };
+    const onWaiting = () => setWaiting(true);
+    const onPlaying = () => { setWaiting(false); trySeek(); };
+    const onCanPlay = () => { setWaiting(false); trySeek(); };
+    const onHidden = () => { if (document.hidden) flush(); };
+    const onEndFullscreen = () => {
+      // Entrar em Picture-in-Picture também dispara este evento no iOS.
+      if (video.webkitPresentationMode === 'picture-in-picture') return;
+      flush();
+      closeRef.current();
+    };
+
+    video.addEventListener('loadedmetadata', trySeek);
+    video.addEventListener('loadeddata', trySeek);
+    video.addEventListener('canplay', onCanPlay);
+    video.addEventListener('playing', onPlaying);
+    video.addEventListener('waiting', onWaiting);
+    video.addEventListener('timeupdate', onTime);
+    video.addEventListener('seeked', onSeeked);
+    video.addEventListener('pause', flush);
+    video.addEventListener('ended', flush);
+    video.addEventListener('webkitendfullscreen', onEndFullscreen);
+    document.addEventListener('visibilitychange', onHidden);
+    window.addEventListener('pagehide', flush);
+
+    if (isHls && nativeHls) {
+      video.onerror = () => setErr('Este canal não respondeu. Tente de novo em instantes.');
+      video.src = playable.url;
+    } else if (isHls && window.Hls && window.Hls.isSupported()) {
+      const hls = new window.Hls();
+      hlsRef.current = hls;
+      hls.loadSource(playable.url);
+      hls.attachMedia(video);
+      hls.on(window.Hls.Events.ERROR, (_, d) => {
+        if (d.fatal) setErr('Este canal não tocou neste navegador. Fora do Safari, a TV ao vivo é limitada.');
+      });
+    } else if (isHls) {
+      setErr('Este navegador não reproduz TV ao vivo.');
+    } else {
+      video.onerror = () => setErr('Não foi possível reproduzir este vídeo. O arquivo pode estar fora do ar.');
+      video.src = playable.url;
+    }
+
+    return () => {
+      // Grava a posição exata ANTES de desmontar o vídeo.
+      flush();
+      clearTimeout(toastTimer);
+      video.removeEventListener('loadedmetadata', trySeek);
+      video.removeEventListener('loadeddata', trySeek);
+      video.removeEventListener('canplay', onCanPlay);
+      video.removeEventListener('playing', onPlaying);
+      video.removeEventListener('waiting', onWaiting);
+      video.removeEventListener('timeupdate', onTime);
+      video.removeEventListener('seeked', onSeeked);
+      video.removeEventListener('pause', flush);
+      video.removeEventListener('ended', flush);
+      video.removeEventListener('webkitendfullscreen', onEndFullscreen);
+      document.removeEventListener('visibilitychange', onHidden);
+      window.removeEventListener('pagehide', flush);
+      video.onerror = null;
+      if (hlsRef.current) { hlsRef.current.destroy(); hlsRef.current = null; }
+      video.pause();
+      video.removeAttribute('src');
+      video.load();
+    };
+  }, [playable.url]);
+
+  return (
+    <div className="player">
+      <div className="player__bar">
+        <button className="iconbtn" onClick={onClose} aria-label="Fechar player"><i className="ri-arrow-down-s-line" /></button>
+        <div className="player__t">
+          <b className="clamp-1">{playable.title}</b>
+          {playable.subtitle && <span className="clamp-1">{playable.subtitle}</span>}
+        </div>
+        {playable.isLive && <span className="pill pill--grad">Ao vivo</span>}
+      </div>
+      <div className="player__stage">
+        <video ref={videoRef} controls autoPlay playsInline webkit-playsinline="true" />
+        {waiting && !err && <div className="player__wait"><div className="spinner" /></div>}
+        {toast && <div className="player__toast"><i className="ri-history-line" />{toast}</div>}
+        {err && (
+          <div className="player__err">
+            <i className="ri-error-warning-line" />
+            <p style={{ maxWidth: '32ch' }}>{err}</p>
+            <button className="btn btn--ghost btn--sm" onClick={onClose}>Fechar player</button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ============================== Detalhes ============================== */
+function Plot({ text }) {
+  const [open, setOpen] = useState(false);
+  if (!text) return null;
+  const long = text.length > 190;
+  return (
+    <>
+      <p className={'detail__plot' + (long && !open ? ' clamp-3' : '')}>{text}</p>
+      {long ? <button className="detail__more" onClick={() => setOpen((o) => !o)}>{open ? 'Ver menos' : 'Ler mais'}</button> : <div style={{ height: 14 }} />}
+    </>
+  );
+}
+
+function DetailShell({ title, poster, backdrop, meta, fav, onFav, onClose, children }) {
+  return (
+    <div className="detail noscroll">
+      <div className="detail__top">
+        <button className="iconbtn iconbtn--glass" onClick={onClose} aria-label="Voltar"><i className="ri-arrow-left-line" /></button>
+        <button className={'iconbtn iconbtn--glass' + (fav ? ' is-on' : '')} onClick={onFav} aria-label={fav ? 'Tirar dos favoritos' : 'Adicionar aos favoritos'}>
+          <i className={fav ? 'ri-heart-3-fill' : 'ri-heart-3-line'} />
+        </button>
+      </div>
+      <div className="detail__hero">
+        <div className={'detail__bg' + (backdrop ? '' : ' detail__bg--blur')} style={{ backgroundImage: `url("${backdrop || poster || ''}")` }} />
+        <div className="detail__shade" />
+        <div className="detail__id">
+          <div className="detail__poster"><div className="ph"><i className="ri-film-line" /></div><Art src={poster} /></div>
+          <div style={{ minWidth: 0, paddingBottom: 4 }}>
+            <h1 className="detail__title clamp-3">{title}</h1>
+            {meta && <div className="detail__meta">{meta}</div>}
+          </div>
+        </div>
+      </div>
+      <div className="detail__body">{children}</div>
+    </div>
+  );
+}
+
+function SeriesDetail({ series, focusEpisodeId, fetchSeriesInfo, onClose, onPlayEpisode, onToggleWatched, progressMap, isFavorite, onToggleFavorite }) {
+  const [info, setInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [failed, setFailed] = useState(false);
+  const [seasonNum, setSeasonNum] = useState(null);
+  const [hereId, setHereId] = useState(null);
+  const placed = useRef(false);
+
+  useEffect(() => {
+    let alive = true;
+    placed.current = false;
+    setLoading(true); setFailed(false); setInfo(null); setSeasonNum(null);
+    fetchSeriesInfo(series.series_id)
+      .then((d) => { if (alive) { setInfo(d); setLoading(false); } })
+      .catch(() => { if (alive) { setFailed(true); setLoading(false); } });
+    return () => { alive = false; };
+  }, [series.series_id]);
+
+  const flat = useMemo(() => flattenEpisodes(info), [info]);
+  const seasons = useMemo(() => { const seen = []; for (const f of flat) if (!seen.includes(f.season)) seen.push(f.season); return seen; }, [flat]);
+  const indexById = useMemo(() => { const m = new Map(); flat.forEach((f, i) => m.set(String(f.ep.id), i)); return m; }, [flat]);
+
+  // Onde a pessoa parou: o último episódio que realmente tocou; se ele já acabou, o seguinte.
+  const resume = useMemo(() => {
+    let lastIdx = -1, lastP = null;
+    flat.forEach((f, i) => {
+      const p = progressMap[`episode-${f.ep.id}`];
+      if (p && p.playedAt && (!lastP || p.playedAt > lastP.playedAt)) { lastP = p; lastIdx = i; }
+    });
+    if (lastIdx < 0) return null;
+    if (!lastP.watched) return { ...flat[lastIdx], p: lastP, kind: 'resume' };
+    const nx = flat[lastIdx + 1];
+    if (!nx) return null;
+    const np = progressMap[`episode-${nx.ep.id}`];
+    return { ...nx, p: np && !np.watched ? np : null, kind: 'next' };
+  }, [flat, progressMap]);
+
+  // Ao abrir: vai direto para a temporada certa e rola até o episódio.
+  useEffect(() => {
+    if (placed.current || flat.length === 0) return;
+    placed.current = true;
+    let target = null;
+    if (focusEpisodeId != null && indexById.has(String(focusEpisodeId))) target = flat[indexById.get(String(focusEpisodeId))];
+    else if (resume) target = resume;
+    setSeasonNum(target ? target.season : seasons[0]);
+    if (target) {
+      const id = String(target.ep.id);
+      setHereId(id);
+      setTimeout(() => {
+        const el = document.getElementById('ep-' + id);
+        if (el) el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      }, 420);
+    }
+  }, [flat, indexById, resume, focusEpisodeId, seasons]);
+
+  function play(f) {
+    const nx = flat[indexById.get(String(f.ep.id)) + 1];
+    setHereId(String(f.ep.id));
+    onPlayEpisode({
+      id: f.ep.id, seriesId: series.series_id, seriesName: series.name, cover: series.cover || (info && info.info && info.info.cover) || '',
+      season: f.season, episodeNum: f.ep.episode_num, epTitle: f.ep.title || '', ext: f.ep.container_extension || 'mp4',
+      nextEp: nx ? nextRef(nx.ep, nx.season) : null,
+    });
+  }
+
+  const meta = info && info.info ? info.info : {};
+  const cover = series.cover || meta.cover || '';
+  const backdrop = Array.isArray(meta.backdrop_path) && meta.backdrop_path[0] ? meta.backdrop_path[0] : '';
+  const plot = meta.plot || series.plot || '';
+  const rating = ratingOf({ ...series, ...meta });
+  const year = String(meta.releaseDate || meta.release_date || series.releaseDate || '').slice(0, 4);
+  const fav = isFavorite('series', series.series_id);
+  const episodes = flat.filter((f) => f.season === seasonNum);
+  const here = hereId || (resume && String(resume.ep.id));
+
+  return (
+    <DetailShell
+      title={series.name} poster={cover} backdrop={backdrop} fav={fav} onClose={onClose}
+      onFav={() => onToggleFavorite({ type: 'series', id: series.series_id, name: series.name, poster: cover })}
+      meta={<>
+        {rating && <span className="pill pill--star"><i className="ri-star-fill" />{rating}</span>}
+        {year && /^\d{4}$/.test(year) && <span className="pill">{year}</span>}
+        {seasons.length > 0 && <span className="pill">{seasons.length} {seasons.length === 1 ? 'temporada' : 'temporadas'}</span>}
+      </>}
+    >
+      <Plot text={plot} />
+      {meta.genre && <p className="detail__facts"><b>Gênero</b> {meta.genre}</p>}
+      {meta.cast && <p className="detail__facts clamp-2"><b>Elenco</b> {meta.cast}</p>}
+
+      {loading && <Spinner />}
+      {failed && (
+        <div className="empty">
+          <div className="empty__ico"><i className="ri-wifi-off-line" /></div>
+          <h3>Episódios indisponíveis</h3>
+          <p>O servidor não respondeu. Feche e abra a série para tentar de novo.</p>
+        </div>
+      )}
+
+      {!loading && resume && (
+        <button className="resume" onClick={() => play(resume)}>
+          <span className="resume__play"><i className="ri-play-fill" /></span>
+          <span className="resume__txt">
+            <span className="resume__k">{resume.kind === 'next' ? 'Próximo episódio' : 'Continuar de onde parou'}</span>
+            <p className="resume__t clamp-1">T{resume.season} E{resume.ep.episode_num} {cleanEpTitle(resume.ep.title, series.name, resume.ep.episode_num)}</p>
+            <span className="track" style={{ display: 'block' }}><span style={{ width: pctOf(resume.p) + '%' }} /></span>
+            {resume.p && resume.p.duration > 0 && (
+              <span className="resume__foot"><span>{fmtClock(resume.p.time)}</span><span>{fmtLeft(resume.p.duration - resume.p.time)}</span></span>
+            )}
+          </span>
+        </button>
+      )}
+
+      {!loading && seasons.length > 0 && (
+        <>
+          <div className="seasons noscroll">
+            {seasons.map((s) => (
+              <button key={s} className={'chip' + (s === seasonNum ? ' is-on' : '')} onClick={() => setSeasonNum(s)}>Temporada {s}</button>
+            ))}
+          </div>
+          <div className="eps">
+            {episodes.map((f) => {
+              const ep = f.ep;
+              const p = progressMap[`episode-${ep.id}`];
+              const watched = !!(p && p.watched);
+              const pct = pctOf(p);
+              const isHere = String(ep.id) === here;
+              const mins = epMinutes(ep);
+              return (
+                <div key={ep.id} id={'ep-' + ep.id} className={'ep' + (isHere ? ' is-here' : '') + (watched ? ' is-watched' : '')}>
+                  <button className="ep__main" onClick={() => play(f)}>
+                    <div className="ep__thumb">
+                      <div className="ph"><i className="ri-play-circle-line" /></div>
+                      <Art src={(ep.info && ep.info.movie_image) || cover} />
+                      {isHere && <div className="ep__playing"><i className="ri-play-fill" /></div>}
+                      {pct > 0 && <div className="track"><span style={{ width: pct + '%' }} /></div>}
+                    </div>
+                    <div style={{ minWidth: 0, flex: 1 }}>
+                      <p className="ep__n">
+                        E{ep.episode_num}
+                        {isHere && !watched ? <span className="ep__here">Você parou aqui</span> : (mins && <span>{mins} min</span>)}
+                      </p>
+                      <p className="ep__t clamp-2">{cleanEpTitle(ep.title, series.name, ep.episode_num)}</p>
+                    </div>
+                  </button>
+                  <button className={'ep__check' + (watched ? ' is-on' : '')} onClick={() => onToggleWatched(f, series, cover)}
+                    aria-label={watched ? 'Marcar como não assistido' : 'Marcar como assistido'}>
+                    <i className={watched ? 'ri-checkbox-circle-fill' : 'ri-checkbox-blank-circle-line'} />
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
+
+      {!loading && !failed && seasons.length === 0 && (
+        <div className="empty">
+          <div className="empty__ico"><i className="ri-moon-clear-line" /></div>
+          <h3>Sem episódios</h3>
+          <p>Esta série ainda não tem episódios na sua playlist.</p>
+        </div>
+      )}
+    </DetailShell>
+  );
+}
+
+function MovieDetail({ movie, fetchMovieInfo, onClose, onPlay, progressMap, isFavorite, onToggleFavorite }) {
+  const [info, setInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let alive = true;
+    setLoading(true); setInfo(null);
+    fetchMovieInfo(movie.stream_id).then((d) => { if (alive) { setInfo(d); setLoading(false); } }).catch(() => { if (alive) setLoading(false); });
+    return () => { alive = false; };
+  }, [movie.stream_id]);
+
+  const p = progressMap[`movie-${movie.stream_id}`];
+  const inProgress = !!(p && !p.watched && p.duration > 0 && p.time > 3);
+  const pct = pctOf(p);
+  const fav = isFavorite('movie', movie.stream_id);
+  const meta = info && info.info && !Array.isArray(info.info) ? info.info : {};
+  const backdrop = Array.isArray(meta.backdrop_path) && meta.backdrop_path[0] ? meta.backdrop_path[0] : '';
+  const rating = ratingOf({ ...movie, ...meta });
+  const year = String(meta.releasedate || meta.releaseDate || meta.year || '').slice(0, 4);
+
+  return (
+    <DetailShell
+      title={movie.name} poster={movie.stream_icon || meta.movie_image} backdrop={backdrop} fav={fav} onClose={onClose}
+      onFav={() => onToggleFavorite({ type: 'movie', id: movie.stream_id, name: movie.name, poster: movie.stream_icon, container_extension: movie.container_extension })}
+      meta={<>
+        {rating && <span className="pill pill--star"><i className="ri-star-fill" />{rating}</span>}
+        {/^\d{4}$/.test(year) && <span className="pill">{year}</span>}
+        {meta.duration && <span className="pill">{meta.duration}</span>}
+        {p && p.watched && <span className="pill"><i className="ri-check-line" />Assistido</span>}
+      </>}
+    >
+      <div style={{ display: 'flex', gap: 10, margin: '4px 0 18px' }}>
+        <button className="btn btn--primary" style={{ flex: 1 }} onClick={() => onPlay(movie)}>
+          <i className="ri-play-fill" />{inProgress ? `Continuar de ${fmtClock(p.time)}` : 'Assistir'}
+        </button>
+        {inProgress && <button className="btn btn--ghost" onClick={() => onPlay(movie, true)} aria-label="Assistir do início"><i className="ri-restart-line" /></button>}
+      </div>
+      {inProgress && (
+        <div style={{ marginBottom: 18 }}>
+          <div className="track"><span style={{ width: pct + '%' }} /></div>
+          <div className="resume__foot"><span>{pct}% assistido</span><span>{fmtLeft(p.duration - p.time)}</span></div>
+        </div>
+      )}
+      {loading ? <Spinner /> : (
+        <>
+          <Plot text={meta.plot || meta.description} />
+          {meta.genre && <p className="detail__facts"><b>Gênero</b> {meta.genre}</p>}
+          {meta.director && <p className="detail__facts"><b>Direção</b> {meta.director}</p>}
+          {(meta.cast || meta.actors) && <p className="detail__facts clamp-2"><b>Elenco</b> {meta.cast || meta.actors}</p>}
+        </>
+      )}
+    </DetailShell>
+  );
+}
+
+/* ============================== Login ============================== */
+function Field({ label, value, onChange, type = 'text', placeholder, right }) {
+  const [focused, setFocused] = useState(false);
+  const up = focused || (value && value.length > 0);
+  return (
+    <div className={'field' + (up ? ' is-up' : '') + (right ? ' field--btn' : '')}>
+      <input value={value} onChange={onChange} type={type} autoComplete="off" autoCapitalize="none" autoCorrect="off" spellCheck="false"
+        placeholder={focused ? (placeholder || '') : ''} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
+      <label>{label}</label>
+      {right}
+    </div>
+  );
+}
+
+function LoginScreen() {
+  const { login } = useAuth();
+  const [name, setName] = useState('');
+  const [server, setServer] = useState('');
+  const [user, setUser] = useState('');
+  const [pass, setPass] = useState('');
+  const [showPass, setShowPass] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [shake, setShake] = useState(false);
+
+  function fail(msg) { setError(msg); setShake(true); setTimeout(() => setShake(false), 420); }
+
+  async function submit(e) {
+    e.preventDefault();
+    if (!server || !user || !pass) { fail('Preencha servidor, usuário e senha.'); return; }
+    setLoading(true); setError(null);
+    try { await login(name, server, user, pass); }
+    catch (err) { fail(err.message === 'auth_failed' ? 'Usuário ou senha não conferem.' : 'O servidor não respondeu. Confira o endereço e a conexão.'); }
+    finally { setLoading(false); }
+  }
+
+  return (
+    <>
+      <div className="aurora"><i /><i /><i /></div>
+      <div className="login">
+        <div className={'login__card' + (shake ? ' is-shake' : '')}>
+          <div className="login__brand"><Logo size={60} /><span className="brand__word gradtext">nyx</span></div>
+          <p className="login__sub">Entre com os dados da sua playlist Xtream</p>
+          <form onSubmit={submit}>
+            <Field label="Nome da playlist (opcional)" value={name} onChange={(e) => setName(e.target.value)} />
+            <Field label="Endereço do servidor" value={server} onChange={(e) => setServer(e.target.value)} placeholder="http://dominio.com:8080" />
+            <Field label="Usuário" value={user} onChange={(e) => setUser(e.target.value)} />
+            <Field label="Senha" value={pass} onChange={(e) => setPass(e.target.value)} type={showPass ? 'text' : 'password'}
+              right={<button type="button" className="field__btn" onClick={() => setShowPass((s) => !s)} aria-label={showPass ? 'Ocultar senha' : 'Mostrar senha'}><i className={showPass ? 'ri-eye-off-line' : 'ri-eye-line'} /></button>} />
+            {error && <div className="alert"><i className="ri-error-warning-fill" /><span>{error}</span></div>}
+            <button className="btn btn--primary btn--block" style={{ marginTop: 8 }} disabled={loading} type="submit">
+              {loading && <span className="spinner" style={{ width: 18, height: 18, borderWidth: 2, borderTopColor: '#fff', borderRightColor: '#fff' }} />}
+              {loading ? 'Conectando' : 'Entrar'}
+            </button>
+          </form>
+          <p className="login__note">Seus dados ficam salvos só neste aparelho.</p>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ============================== Shell ============================== */
+const TABS = [
+  { id: 'home', label: 'Início', icon: 'ri-home-5' },
+  { id: 'trending', label: 'Em alta', icon: 'ri-fire' },
+  { id: 'movies', label: 'Filmes', icon: 'ri-film' },
+  { id: 'series', label: 'Séries', icon: 'ri-tv-2' },
+  { id: 'live', label: 'Ao vivo', icon: 'ri-broadcast' },
+  { id: 'favorites', label: 'Favoritos', icon: 'ri-heart-3' },
+];
+
+function Header({ tab, setTab, onOpenSettings, initial }) {
+  const [solid, setSolid] = useState(false);
+  useEffect(() => {
+    const on = () => setSolid(window.scrollY > 24);
+    on();
+    window.addEventListener('scroll', on, { passive: true });
+    return () => window.removeEventListener('scroll', on);
+  }, []);
+  return (
+    <header className={'header' + (solid || tab !== 'home' ? ' is-solid' : '')}>
+      <div className="header__in">
+        <button onClick={() => { setTab('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} aria-label="Ir para o início"><Brand /></button>
+        <nav className="header__tabs">
+          {TABS.map((t) => <button key={t.id} className={'header__tab' + (tab === t.id ? ' is-on' : '')} onClick={() => setTab(t.id)}>{t.label}</button>)}
+        </nav>
+        <div className="header__sp" />
+        <button className={'iconbtn' + (tab === 'search' ? ' is-on' : '')} onClick={() => setTab('search')} aria-label="Buscar"><i className="ri-search-2-line" /></button>
+        <button className="iconbtn" onClick={onOpenSettings} aria-label="Ajustes" style={{ fontFamily: 'var(--display)', fontWeight: 800, fontSize: 16 }}>{initial}</button>
+      </div>
+    </header>
+  );
+}
+
+function BottomNav({ tab, setTab }) {
+  return (
+    <nav className="nav">
+      {TABS.map((t) => (
+        <button key={t.id} className={'nav__item' + (tab === t.id ? ' is-on' : '')} onClick={() => setTab(t.id)}>
+          <i className={t.icon + (tab === t.id ? '-fill' : '-line')} />
+          <span className="clamp-1">{t.label}</span>
+        </button>
+      ))}
+    </nav>
+  );
+}
+
+function SettingsSheet({ onClose, session, data, onLogout, onReload, prefs, setPrefs }) {
+  const { update } = useAuth();
+  const [confirming, setConfirming] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [showPass, setShowPass] = useState(false);
+  const [acct, setAcct] = useState(null);
+  const [form, setForm] = useState({ name: session.name || '', server: session.server, user: session.user, pass: session.pass });
+  const [saving, setSaving] = useState(false);
+  const [formErr, setFormErr] = useState(null);
+
+  // Situação da conta direto do servidor (validade, conexões).
+  useEffect(() => {
+    let alive = true;
+    fetchAccount(session.server, session.user, session.pass, 10000).then((u) => { if (alive) setAcct(u); }).catch(() => {});
+    return () => { alive = false; };
+  }, [session]);
+
+  async function handleReset() {
+    await Promise.allSettled([
+      idbSet('progress', {}), idbSet('favorites', {}), idbSet('searchHistory', []),
+      idbSet('onboarding_seen', false), idbSet('session', null),
+      idbSet('prefs', null), idbSet('charts', null), idbSet('lastLive', null),
+    ]);
+    window.location.reload();
+  }
+
+  async function saveForm(e, close) {
+    e.preventDefault();
+    if (!form.server.trim() || !form.user.trim() || !form.pass) { setFormErr('Preencha servidor, usuário e senha.'); return; }
+    setSaving(true); setFormErr(null);
+    try {
+      const r = await update(form.name, form.server, form.user.trim(), form.pass);
+      if (r.changed) close(); else setEditing(false);
+    } catch (err) {
+      setFormErr(err.message === 'auth_failed' ? 'Usuário ou senha não conferem. Nada foi alterado.' : 'O servidor não respondeu. Nada foi alterado.');
+    } finally { setSaving(false); }
+  }
+
+  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+  let host = session.server;
+  try { host = new URL(session.server).host; } catch (e) {}
+  const expRaw = (acct && acct.exp_date) || session.exp;
+  const exp = expRaw && Number(expRaw) > 0 ? new Date(Number(expRaw) * 1000).toLocaleDateString('pt-BR') : null;
+  const status = acct ? ({ active: 'Ativa', expired: 'Vencida', banned: 'Bloqueada', disabled: 'Desativada' }[String(acct.status || '').toLowerCase()] || acct.status) : null;
+  const maxCon = acct && Number(acct.max_connections) > 0 ? Number(acct.max_connections) : null;
+  const n = (v) => v.toLocaleString('pt-BR');
+
+  return (
+    <Sheet title="Ajustes" onClose={onClose}>
+      {(close) => (
+        <>
+          <div className="set-sec">
+            <h3>Playlist atual</h3>
+            {!editing ? (
+              <div className="card">
+                <div className="acct" style={{ marginBottom: 8 }}>
+                  <div className="acct__av">{(session.name || 'N').trim().charAt(0).toUpperCase()}</div>
+                  <div style={{ minWidth: 0 }}>
+                    <p className="acct__n clamp-1">{session.name}</p>
+                    <p className="acct__s clamp-1">{host}</p>
+                  </div>
+                  <button className="btn btn--ghost btn--sm acct__edit" onClick={() => { setForm({ name: session.name || '', server: session.server, user: session.user, pass: session.pass }); setFormErr(null); setEditing(true); }}><i className="ri-pencil-line" style={{ fontSize: 16 }} />Editar</button>
+                </div>
+                <div className="kv"><span>Servidor</span><b>{session.server}</b></div>
+                <div className="kv"><span>Usuário</span><b>{session.user}</b></div>
+                <div className="kv"><span>Senha</span><b>{showPass ? session.pass : '•'.repeat(Math.min(10, Math.max(6, session.pass.length)))}
+                  <button onClick={() => setShowPass((v) => !v)} aria-label={showPass ? 'Ocultar senha' : 'Mostrar senha'}><i className={showPass ? 'ri-eye-off-line' : 'ri-eye-line'} /></button></b></div>
+                {status && <div className="kv"><span>Situação</span><b style={status === 'Ativa' ? { color: 'var(--ok)' } : { color: 'var(--danger)' }}>{status}{String(acct.is_trial) === '1' ? ' (teste)' : ''}</b></div>}
+                <div className="kv"><span>Válida até</span><b>{exp || 'Sem data de vencimento'}</b></div>
+                {maxCon && <div className="kv"><span>Telas ao mesmo tempo</span><b>{Number(acct.active_cons) || 0} de {maxCon} em uso</b></div>}
+              </div>
+            ) : (
+              <form className="card setform" onSubmit={(e) => saveForm(e, close)}>
+                <Field label="Nome da playlist" value={form.name} onChange={set('name')} />
+                <Field label="Endereço do servidor" value={form.server} onChange={set('server')} placeholder="http://dominio.com:8080" />
+                <Field label="Usuário" value={form.user} onChange={set('user')} />
+                <Field label="Senha" value={form.pass} onChange={set('pass')} type={showPass ? 'text' : 'password'}
+                  right={<button type="button" className="field__btn" onClick={() => setShowPass((v) => !v)} aria-label={showPass ? 'Ocultar senha' : 'Mostrar senha'}><i className={showPass ? 'ri-eye-off-line' : 'ri-eye-line'} /></button>} />
+                {formErr && <div className="alert"><i className="ri-error-warning-fill" /><span>{formErr}</span></div>}
+                <p className="opt__s">Mudar servidor, usuário ou senha recarrega o catálogo. O acesso novo é conferido antes de salvar.</p>
+                <div className="setform__btns">
+                  <button type="button" className="btn btn--ghost btn--sm" style={{ flex: 1 }} onClick={() => setEditing(false)} disabled={saving}>Cancelar</button>
+                  <button type="submit" className="btn btn--primary btn--sm" style={{ flex: 1 }} disabled={saving}>{saving ? 'Conferindo' : 'Salvar'}</button>
+                </div>
+              </form>
+            )}
+          </div>
+
+          <div className="set-sec stats">
+            <div className="stat"><b>{n(data.movies.length)}</b><span>filmes</span></div>
+            <div className="stat"><b>{n(data.series.length)}</b><span>séries</span></div>
+            <div className="stat"><b>{n(data.live.length)}</b><span>canais</span></div>
+          </div>
+
+          <div className="set-sec">
+            <h3>Ao vivo</h3>
+            <button className="card opt" role="switch" aria-checked={prefs.livePreview} onClick={() => setPrefs({ livePreview: !prefs.livePreview })}>
+              <span style={{ flex: 1, minWidth: 0 }}>
+                <span className="opt__t" style={{ display: 'block' }}>Pré-visualizar canais</span>
+                <span className="opt__s" style={{ display: 'block' }}>Um toque mostra o canal em uma janela sem som; o segundo abre em tela cheia. Usa uma das telas da sua conta.</span>
+              </span>
+              <span className={'switch' + (prefs.livePreview ? ' is-on' : '')} />
+            </button>
+          </div>
+
+          <div className="set-sec">
+            <button className="act" onClick={() => { close(); onReload(); }}><i className="ri-refresh-line" />Atualizar catálogo</button>
+            <button className="act" onClick={() => { close(); onLogout(); }}><i className="ri-logout-box-r-line" />Sair da playlist</button>
+            {!confirming && <button className="act act--danger" onClick={() => setConfirming(true)}><i className="ri-delete-bin-6-line" />Apagar dados deste aparelho</button>}
+            {confirming && (
+              <div className="confirm">
+                <p>Isso apaga progresso, favoritos, buscas e ajustes, e sai da playlist. Não dá para desfazer.</p>
+                <div>
+                  <button className="btn btn--ghost btn--sm" style={{ flex: 1 }} onClick={() => setConfirming(false)}>Cancelar</button>
+                  <button className="btn btn--danger btn--sm" style={{ flex: 1 }} onClick={handleReset}>Apagar tudo</button>
+                </div>
+              </div>
+            )}
+          </div>
+          <p className="build">{APP_NAME} {BUILD}</p>
+        </>
+      )}
+    </Sheet>
+  );
+}
+
+function AppContent() {
+  const { session, logout } = useAuth();
+  const { loading, error, data, done, fetchSeriesInfo, fetchMovieInfo, reload } = useXtream(session);
+  const progress = useProgress();
+  const { history, add: addHistory, clear: clearHistory } = useSearchHistory();
+  const { list: favoritesList, isFavorite, toggle: toggleFavorite } = useFavorites();
+  const [prefs, setPrefs] = usePrefs();
+  const charts = useCharts(data);
+
+  const [tab, setTabRaw] = useState('home');
+  const [cat, setCat] = useState({ movie: null, series: null, live: null });
+  const [playable, setPlayable] = useState(null);
+  const [openSeries, setOpenSeries] = useState(null); // { series, focusEpisodeId }
+  const [openMovie, setOpenMovie] = useState(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [menuFor, setMenuFor] = useState(null);
+  const extraRef = useRef({}); // dados resolvidos depois do play (próximo episódio, temporada)
+
+  const setTab = useCallback((t) => { setTabRaw(t); window.scrollTo(0, 0); }, []);
+  const overlay = !!(playable || openSeries || openMovie || settingsOpen || menuFor);
+  useEffect(() => { document.body.classList.toggle('locked', overlay); return () => document.body.classList.remove('locked'); }, [overlay]);
+
+  useEffect(() => {
+    function onKey(e) {
+      if (e.key !== 'Escape') return;
+      if (playable) setPlayable(null);
+      else if (openSeries) setOpenSeries(null);
+      else if (openMovie) setOpenMovie(null);
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [playable, openSeries, openMovie]);
+
+  const cred = session ? `${encodeURIComponent(session.user)}/${encodeURIComponent(session.pass)}` : '';
+
+  function resumePoint(key) {
+    const p = progress.get(key);
+    return p && !p.watched && p.time > 3 ? p.time : 0;
+  }
+
+  function playMovie(item, fromStart) {
+    const ext = item.container_extension || 'mp4';
+    const key = `movie-${item.stream_id}`;
+    setPlayable({
+      key, url: `${session.server}/movie/${cred}/${item.stream_id}.${ext}`,
+      title: item.name, resumeAt: fromStart ? 0 : resumePoint(key),
+      meta: { type: 'movie', id: item.stream_id, title: item.name, poster: item.stream_icon || '', ext },
+    });
+  }
+
+  const liveUrl = (item) => `${session.server}/live/${cred}/${item.stream_id}.m3u8`;
+  function playLive(item) {
+    idbSet('lastLive', item.stream_id).catch(() => {});
+    setPlayable({ key: `live-${item.stream_id}`, url: liveUrl(item), title: item.name, isLive: true, resumeAt: 0 });
+  }
+
+  // r: { id, seriesId, seriesName, cover, season, episodeNum, epTitle, ext, nextEp }
+  function playEpisode(r) {
+    const key = `episode-${r.id}`;
+    const ext = r.ext || 'mp4';
+    const meta = { type: 'episode', id: r.id, seriesId: r.seriesId, title: r.seriesName, poster: r.cover || '', ext };
+    if (r.season != null) meta.season = r.season;
+    if (r.episodeNum != null) meta.episodeNum = r.episodeNum;
+    if (r.epTitle) meta.epTitle = r.epTitle;
+    if (r.nextEp !== undefined) meta.nextEp = r.nextEp;
+
+    // Sem "próximo episódio" conhecido (ex.: progresso antigo)? Descobre em segundo plano.
+    if (r.nextEp === undefined || r.season == null) {
+      fetchSeriesInfo(r.seriesId).then((info) => {
+        const flat = flattenEpisodes(info);
+        const idx = flat.findIndex((f) => String(f.ep.id) === String(r.id));
+        if (idx < 0) return;
+        const nx = flat[idx + 1];
+        extraRef.current[key] = {
+          season: flat[idx].season, episodeNum: flat[idx].ep.episode_num, epTitle: flat[idx].ep.title || '',
+          nextEp: nx ? nextRef(nx.ep, nx.season) : null,
+        };
+      }).catch(() => {});
+    }
+
+    const label = r.season != null ? `T${r.season} E${r.episodeNum}` : (r.episodeNum != null ? `Ep. ${r.episodeNum}` : '');
+    setPlayable({
+      key, url: `${session.server}/series/${cred}/${r.id}.${ext}`,
+      title: r.seriesName, subtitle: [label, r.epTitle ? cleanEpTitle(r.epTitle, r.seriesName, r.episodeNum) : ''].filter(Boolean).join(' '),
+      resumeAt: resumePoint(key), meta,
+    });
+  }
+
+  const handleProgress = useCallback((pl, time, duration) => {
+    if (!pl.meta) return;
+    const now = Date.now();
+    progress.save(pl.key, {
+      ...pl.meta, ...(extraRef.current[pl.key] || {}),
+      time, duration, watched: duration > 0 && time / duration >= WATCHED_AT,
+      playedAt: now, updatedAt: now,
+    });
+  }, [progress.save]);
+
+  function openItem(item, kind) {
+    if (kind === 'series') setOpenSeries({ series: item });
+    else if (kind === 'movie') setOpenMovie(item);
+    else if (kind === 'live') playLive(item);
+  }
+
+  function findSeries(p) {
+    return data.series.find((s) => String(s.series_id) === String(p.seriesId)) || { series_id: p.seriesId, name: p.title, cover: p.poster };
+  }
+  function findMovie(p) {
+    return data.movies.find((m) => String(m.stream_id) === String(p.id)) || { stream_id: p.id, name: p.title, stream_icon: p.poster, container_extension: p.ext };
+  }
+
+  function resumeEntry(entry) {
+    const p = entry.p;
+    if (p.type === 'movie') { playMovie(findMovie(p)); return; }
+    playEpisode({
+      id: p.id, seriesId: p.seriesId, seriesName: p.title, cover: p.poster, season: p.season, episodeNum: p.episodeNum,
+      epTitle: p.epTitle, ext: p.ext, nextEp: p.nextEp,
+    });
+  }
+  function detailsForEntry(entry) {
+    const p = entry.p;
+    if (p.type === 'movie') setOpenMovie(findMovie(p));
+    else setOpenSeries({ series: findSeries(p), focusEpisodeId: p.id });
+  }
+  function removeEntry(entry) {
+    if (entry.p.type === 'movie') progress.remove(entry.p.key);
+    else progress.dismissSeries(entry.p.seriesId);
+  }
+
+  function toggleWatched(f, series, cover) {
+    const key = `episode-${f.ep.id}`;
+    const p = progress.get(key);
+    if (p && p.watched) {
+      progress.save(key, { watched: false, time: 0, updatedAt: Date.now() });
+    } else {
+      progress.save(key, {
+        type: 'episode', id: f.ep.id, seriesId: series.series_id, title: series.name, poster: cover,
+        season: f.season, episodeNum: f.ep.episode_num, epTitle: f.ep.title || '', ext: f.ep.container_extension || 'mp4',
+        watched: true, playedAt: (p && p.playedAt) || 0, updatedAt: Date.now(),
+      });
+    }
+  }
+
+  const heroItems = useMemo(() => {
+    if (!data) return [];
+    const m = data.movieTop.slice(0, 3).map((item) => ({ item, kind: 'movie' }));
+    const s = data.seriesTop.slice(0, 2).map((item) => ({ item, kind: 'series' }));
+    const out = [];
+    for (let i = 0; i < 3; i++) { if (m[i]) out.push(m[i]); if (s[i]) out.push(s[i]); }
+    return out.filter((h) => h.item.stream_icon || h.item.cover);
+  }, [data]);
+
+  // Top 10 oficial da Netflix, só com o que existe na playlist (aparece no Início).
+  const netflixMine = useMemo(() => {
+    const d = charts.charts.official && charts.charts.official.netflix;
+    if (!d || !data) return [];
+    const seen = new Set();
+    return [...(d.series || []), ...(d.movies || [])]
+      .map((entry) => ({ entry, found: charts.match(entry) }))
+      .filter((r) => {
+        if (!r.found) return false;
+        const k = r.entry.kind + (r.found.stream_id || r.found.series_id);
+        if (seen.has(k)) return false; // várias temporadas da mesma série contam uma vez
+        seen.add(k);
+        return true;
+      })
+      .sort((a, b) => a.entry.rank - b.entry.rank);
+  }, [charts.charts, charts.match, data]);
+
+  if (loading) return <Splash status={done < 6 ? `Carregando catálogo ${done} de 6` : 'Organizando sua playlist'} progress={done / 6} />;
+  if (error) return (
+    <div className="fatal">
+      <div className="empty__ico"><i className="ri-wifi-off-line" /></div>
+      <p style={{ maxWidth: '30ch' }}>{error}</p>
+      <button className="btn btn--primary" onClick={reload}><i className="ri-refresh-line" />Tentar de novo</button>
+      <button className="btn btn--ghost btn--sm" onClick={logout}>Usar outra playlist</button>
+    </div>
+  );
+  if (!data) return null;
+
+  const goCat = (tabId, kind) => (id) => { setCat((c) => ({ ...c, [kind]: id })); setTab(tabId); };
+  const setKindCat = (kind) => (id) => setCat((c) => ({ ...c, [kind]: id }));
+  const movieCatsHome = data.movieCats.filter((c) => (data.movieByCat.get(String(c.category_id)) || []).length > 0).slice(0, 5);
+  const seriesCatsHome = data.seriesCats.filter((c) => (data.seriesByCat.get(String(c.category_id)) || []).length > 0).slice(0, 3);
+
+  return (
+    <>
+      <Header tab={tab} setTab={setTab} onOpenSettings={() => setSettingsOpen(true)} initial={(session.name || 'N').trim().charAt(0).toUpperCase()} />
+
+      {tab === 'home' && (
+        <div className="page page--home">
+          <Hero items={heroItems} onPlay={(m) => playMovie(m)} onOpen={openItem} />
+          {progress.continueList.length > 0 && (
+            <Row title="Continuar assistindo">
+              {progress.continueList.map((entry) => (
+                <ContinueCard key={entry.p.key} entry={entry} onPlay={() => resumeEntry(entry)} onMenu={() => setMenuFor(entry)} />
+              ))}
+            </Row>
+          )}
+          {netflixMine.length >= 3 && (
+            <Row title="No Top 10 da Netflix esta semana" onMore={() => setTab('trending')}>
+              {netflixMine.map((r) => (
+                <TopCard key={r.entry.kind + r.entry.rank} rank={r.entry.rank} item={{ name: r.entry.title, stream_icon: r.found.stream_icon || r.found.cover || r.entry.poster }} onClick={() => openItem(r.found, r.entry.kind)} />
+              ))}
+            </Row>
+          )}
+          <Row title="Top 10 filmes">
+            {data.movieTop.map((it, i) => <TopCard key={it.stream_id} rank={i + 1} item={it} onClick={() => openItem(it, 'movie')} />)}
+          </Row>
+          <Row title="Top 10 séries">
+            {data.seriesTop.map((it, i) => <TopCard key={it.series_id} rank={i + 1} item={it} onClick={() => openItem(it, 'series')} />)}
+          </Row>
+          <Row title="Filmes que acabaram de chegar" onMore={() => setTab('movies')}>
+            {data.movieNew.map((m) => <Poster key={m.stream_id} item={m} kind="movie" onClick={() => openItem(m, 'movie')} />)}
+          </Row>
+          <Row title="Séries que acabaram de chegar" onMore={() => setTab('series')}>
+            {data.seriesNew.map((s) => <Poster key={s.series_id} item={s} kind="series" onClick={() => openItem(s, 'series')} />)}
+          </Row>
+          {movieCatsHome.map((c) => (
+            <Row key={'m' + c.category_id} title={c.category_name} onMore={() => goCat('movies', 'movie')(c.category_id)}>
+              {data.movieByCat.get(String(c.category_id)).slice(0, 18).map((m) => <Poster key={m.stream_id} item={m} kind="movie" onClick={() => openItem(m, 'movie')} />)}
+            </Row>
+          ))}
+          {seriesCatsHome.map((c) => (
+            <Row key={'s' + c.category_id} title={c.category_name} onMore={() => goCat('series', 'series')(c.category_id)}>
+              {data.seriesByCat.get(String(c.category_id)).slice(0, 18).map((s) => <Poster key={s.series_id} item={s} kind="series" onClick={() => openItem(s, 'series')} />)}
+            </Row>
+          ))}
+        </div>
+      )}
+
+      {tab === 'movies' && <Browse title="Filmes" kind="movie" items={data.movies} cats={data.movieCats} byCat={data.movieByCat} selected={cat.movie} onSelect={setKindCat('movie')} onOpen={openItem} />}
+      {tab === 'series' && <Browse title="Séries" kind="series" items={data.series} cats={data.seriesCats} byCat={data.seriesByCat} selected={cat.series} onSelect={setKindCat('series')} onOpen={openItem} />}
+      {tab === 'live' && <Live data={data} session={session} liveUrl={liveUrl} selected={cat.live} onSelect={setKindCat('live')} onPlay={playLive} previewOn={prefs.livePreview} suspended={!!playable} />}
+      {tab === 'trending' && <Trending charts={charts} onOpen={openItem} />}
+
+      {tab === 'favorites' && (
+        <div className="page">
+          <h1 className="page__title">Favoritos</h1>
+          {favoritesList.length === 0 ? (
+            <div className="empty">
+              <div className="empty__ico"><i className="ri-heart-3-line" /></div>
+              <h3>Sua lista está vazia</h3>
+              <p>Toque no coração dentro de um filme ou série para guardar aqui.</p>
+              <button className="btn btn--ghost btn--sm" style={{ marginTop: 8 }} onClick={() => setTab('home')}>Explorar o catálogo</button>
+            </div>
+          ) : (
+            <div className="grid" style={{ marginTop: 12 }}>
+              {favoritesList.map((f) => (
+                <Poster key={`${f.type}-${f.id}`} grid item={{ name: f.name, stream_icon: f.poster }} tag={f.type === 'movie' ? 'Filme' : 'Série'}
+                  onClick={() => {
+                    if (f.type === 'movie') setOpenMovie(findMovie({ id: f.id, title: f.name, poster: f.poster, ext: f.container_extension }));
+                    else setOpenSeries({ series: findSeries({ seriesId: f.id, title: f.name, poster: f.poster }) });
+                  }} />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {tab === 'search' && <SearchScreen data={data} onOpen={openItem} history={history} addHistory={addHistory} clearHistory={clearHistory} />}
+
+      <BottomNav tab={tab} setTab={setTab} />
+
+      {openSeries && (
+        <SeriesDetail key={openSeries.series.series_id} series={openSeries.series} focusEpisodeId={openSeries.focusEpisodeId}
+          fetchSeriesInfo={fetchSeriesInfo} onClose={() => setOpenSeries(null)} onPlayEpisode={playEpisode} onToggleWatched={toggleWatched}
+          progressMap={progress.map} isFavorite={isFavorite} onToggleFavorite={toggleFavorite} />
+      )}
+      {openMovie && (
+        <MovieDetail key={openMovie.stream_id} movie={openMovie} fetchMovieInfo={fetchMovieInfo} onClose={() => setOpenMovie(null)}
+          onPlay={playMovie} progressMap={progress.map} isFavorite={isFavorite} onToggleFavorite={toggleFavorite} />
+      )}
+      {playable && <Player playable={playable} onProgress={(t, d) => handleProgress(playable, t, d)} onClose={() => setPlayable(null)} />}
+
+      {menuFor && (
+        <Sheet onClose={() => setMenuFor(null)}>
+          {(close) => (
+            <>
+              <div className="sheet__item">
+                <div className="sheet__thumb"><div className="ph" style={{ fontSize: 18 }}><i className="ri-film-line" /></div><Art src={menuFor.p.poster} /></div>
+                <div style={{ minWidth: 0 }}>
+                  <p className="clamp-1" style={{ fontWeight: 700, fontSize: 16 }}>{menuFor.p.title}</p>
+                  <p className="clamp-1" style={{ color: 'var(--mute)', fontSize: 13 }}>
+                    {menuFor.p.type === 'episode' ? epLabel(menuFor.p) : 'Filme'}{menuFor.p.duration > 0 && menuFor.p.time > 0 ? `, parou em ${fmtClock(menuFor.p.time)}` : ''}
+                  </p>
+                </div>
+              </div>
+              <button className="act" onClick={() => { const e = menuFor; close(); resumeEntry(e); }}><i className="ri-play-fill" />{menuFor.kind === 'next' ? 'Assistir próximo episódio' : 'Continuar assistindo'}</button>
+              <button className="act" onClick={() => { const e = menuFor; close(); detailsForEntry(e); }}><i className="ri-information-line" />{menuFor.p.type === 'episode' ? 'Ver episódios' : 'Ver detalhes'}</button>
+              <button className="act act--danger" onClick={() => { const e = menuFor; close(); removeEntry(e); }}><i className="ri-close-circle-line" />Tirar de Continuar assistindo</button>
+            </>
+          )}
+        </Sheet>
+      )}
+
+      {settingsOpen && <SettingsSheet onClose={() => setSettingsOpen(false)} session={session} data={data} onLogout={logout} onReload={reload} prefs={prefs} setPrefs={setPrefs} />}
+    </>
+  );
+}
+
+/* ============================== Onboarding ============================== */
+function useOnboarding() {
+  const [seen, setSeen] = useState(null);
+  useEffect(() => { idbGet('onboarding_seen').then((v) => setSeen(!!v)).catch(() => setSeen(false)); }, []);
+  const complete = useCallback(() => { idbSet('onboarding_seen', true); setSeen(true); }, []);
+  return { seen, complete };
+}
+
+const ONBOARDING_STEPS = [
+  { icon: null, title: 'Sua noite de cinema começa aqui', text: 'O Nyx organiza sua playlist Xtream em um catálogo bonito de navegar.' },
+  { icon: 'ri-search-2-line', title: 'Ache qualquer título em segundos', text: 'Filmes, séries e canais por categoria, com uma busca que responde enquanto você digita.' },
+  { icon: 'ri-history-line', title: 'Volte exatamente de onde parou', text: 'O Nyx guarda o minuto, o episódio e a temporada. É só apertar play.' },
+];
+
+function Onboarding({ onDone }) {
+  const [step, setStep] = useState(0);
+  const touchX = useRef(null);
+  const last = step === ONBOARDING_STEPS.length - 1;
+  const next = () => (last ? onDone() : setStep((s) => s + 1));
+  const back = () => setStep((s) => Math.max(0, s - 1));
+  const s = ONBOARDING_STEPS[step];
+  return (
+    <>
+      <div className="aurora"><i /><i /><i /></div>
+      <div className="onb"
+        onTouchStart={(e) => { touchX.current = e.touches[0].clientX; }}
+        onTouchEnd={(e) => {
+          if (touchX.current === null) return;
+          const dx = e.changedTouches[0].clientX - touchX.current;
+          if (dx < -40) next(); else if (dx > 40) back();
+          touchX.current = null;
+        }}>
+        <button className="onb__skip" onClick={onDone} style={{ visibility: last ? 'hidden' : 'visible' }}>Pular</button>
+        <div className="onb__mid" key={step}>
+          <div className="onb__ico">{s.icon ? <i className={s.icon} /> : <Logo size={76} />}</div>
+          <h1>{s.title}</h1>
+          <p>{s.text}</p>
+        </div>
+        <div className="onb__dots">{ONBOARDING_STEPS.map((_, i) => <i key={i} className={i === step ? 'is-on' : ''} />)}</div>
+        <button className="btn btn--primary btn--block" onClick={next}>{last ? 'Conectar minha playlist' : 'Continuar'}</button>
+      </div>
+    </>
+  );
+}
+
+function Root() {
+  const { session, ready } = useAuth();
+  const { seen, complete } = useOnboarding();
+  if (!ready || seen === null) return <Splash />;
+  if (session) return <AppContent />;
+  if (!seen) return <Onboarding onDone={complete} />;
+  return <LoginScreen />;
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<AuthProvider><Root /></AuthProvider>);
+</script>
+</body>
+</html>

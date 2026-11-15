@@ -1,0 +1,27 @@
+name: Atualizar rankings das plataformas
+
+on:
+  schedule:
+    - cron: '17 */4 * * *' # a cada 4 horas
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  charts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node scripts/build-charts.mjs
+      - name: Gravar se mudou
+        run: |
+          git add charts
+          if git diff --cached --quiet; then echo "Sem mudanças"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Atualiza rankings das plataformas"
+          git push
