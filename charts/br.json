@@ -498,12 +498,12 @@
     {
      "rank": 10,
      "kind": "series",
-     "title": "A Diplomata",
-     "original": "The Diplomat",
-     "year": "2023",
-     "poster": "https://images.justwatch.com/poster/304992436/s332/the-diplomat.jpg",
-     "tmdbId": "203857",
-     "rating": "8.1"
+     "title": "8 em Istambul",
+     "original": "Bir Başkadır",
+     "year": "2020",
+     "poster": "https://images.justwatch.com/poster/234129839/s332/bir-baskadir.jpg",
+     "tmdbId": "112745",
+     "rating": "8.4"
     }
    ],
    "updated": "2026-11-15"
@@ -543,6 +543,16 @@
     {
      "rank": 4,
      "kind": "movie",
+     "title": "Hamlet (2025)",
+     "original": "Hamlet",
+     "year": "2026",
+     "poster": "https://images.justwatch.com/poster/344769164/s332/hamlet-2025.jpg",
+     "tmdbId": "843342",
+     "rating": "5.9"
+    },
+    {
+     "rank": 5,
+     "kind": "movie",
      "title": "Crime em Direto",
      "original": "Dead Man's Wire",
      "year": "2026",
@@ -551,7 +561,7 @@
      "rating": "6.4"
     },
     {
-     "rank": 5,
+     "rank": 6,
      "kind": "movie",
      "title": "Massacre no Texas",
      "original": "The Texas Chain Saw Massacre",
@@ -559,16 +569,6 @@
      "poster": "https://images.justwatch.com/poster/356464568/s332/o-massacre-da-serra-eletrica.jpg",
      "tmdbId": "30497",
      "rating": "7.4"
-    },
-    {
-     "rank": 6,
-     "kind": "movie",
-     "title": "Hamlet (2025)",
-     "original": "Hamlet",
-     "year": "2026",
-     "poster": "https://images.justwatch.com/poster/344769164/s332/hamlet-2025.jpg",
-     "tmdbId": "843342",
-     "rating": "5.9"
     },
     {
      "rank": 7,
@@ -705,12 +705,12 @@
     {
      "rank": 10,
      "kind": "series",
-     "title": "A Mesa Final",
-     "original": "파이널 테이블",
-     "year": "2026",
-     "poster": "https://images.justwatch.com/poster/355253776/s332/final-table.jpg",
-     "tmdbId": "316702",
-     "rating": "7.1"
+     "title": "The Boys",
+     "original": "The Boys",
+     "year": "2019",
+     "poster": "https://images.justwatch.com/poster/318597086/s332/the-boys.jpg",
+     "tmdbId": "76479",
+     "rating": "8.5"
     }
    ],
    "updated": "2026-11-15"
@@ -1558,16 +1558,6 @@
     {
      "rank": 2,
      "kind": "movie",
-     "title": "Uma Comédia Nada Romântica",
-     "original": "Date Movie",
-     "year": "2006",
-     "poster": "https://images.justwatch.com/poster/251009512/s332/uma-comedia-nada-romantica.jpg",
-     "tmdbId": "10073",
-     "rating": "2.8"
-    },
-    {
-     "rank": 3,
-     "kind": "movie",
      "title": "A Terra Prometida",
      "original": "Bastarden",
      "year": "2023",
@@ -1576,7 +1566,7 @@
      "rating": "7.7"
     },
     {
-     "rank": 4,
+     "rank": 3,
      "kind": "movie",
      "title": "Todo Mundo em Pânico",
      "original": "Scary Movie",
@@ -1586,7 +1576,7 @@
      "rating": "4.8"
     },
     {
-     "rank": 5,
+     "rank": 4,
      "kind": "movie",
      "title": "Por um Fio",
      "original": "Hanging by a Wire",
@@ -1596,7 +1586,7 @@
      "rating": "6.7"
     },
     {
-     "rank": 6,
+     "rank": 5,
      "kind": "movie",
      "title": "Top Gun: Maverick",
      "original": "Top Gun: Maverick",
@@ -1606,7 +1596,7 @@
      "rating": "8.2"
     },
     {
-     "rank": 7,
+     "rank": 6,
      "kind": "movie",
      "title": "Forrest Gump",
      "original": "Forrest Gump",
@@ -1616,7 +1606,7 @@
      "rating": "8.8"
     },
     {
-     "rank": 8,
+     "rank": 7,
      "kind": "movie",
      "title": "Ajuste de Contas",
      "original": "Reckless",
@@ -1624,6 +1614,16 @@
      "poster": "https://images.justwatch.com/poster/341675941/s332/ajuste-de-contas.jpg",
      "tmdbId": "1449400",
      "rating": "5.2"
+    },
+    {
+     "rank": 8,
+     "kind": "movie",
+     "title": "Uma Comédia Nada Romântica",
+     "original": "Date Movie",
+     "year": "2006",
+     "poster": "https://images.justwatch.com/poster/251009512/s332/uma-comedia-nada-romantica.jpg",
+     "tmdbId": "10073",
+     "rating": "2.8"
     },
     {
      "rank": 9,
@@ -1683,7 +1683,7 @@
      "title": "De mal a pior",
      "original": "It Gets Worse",
      "year": "2026",
-     "poster": "https://images.justwatch.com/poster/356106626/s332/de-mal-a-pior-2026.jpg",
+     "poster": "https://images.justwatch.com/poster/357157987/s332/de-mal-a-pior-2026.jpg",
      "tmdbId": "334470",
      "rating": "6.4"
     },
