@@ -418,7 +418,6 @@
   .trend__big small { font-size: 17px; color: var(--mute); font-weight: 700; }
   .trend__sum p { font-size: 13px; color: var(--mute); line-height: 1.35; }
   .trend__sum b { display: block; color: var(--text); font-size: 14.5px; font-weight: 700; }
-  .trend__tools { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; font-size: 14px; font-weight: 600; }
   .trend__cols { display: grid; gap: 28px; }
   @media (min-width: 860px) { .trend__cols { grid-template-columns: 1fr 1fr; gap: 32px; } }
   .trend__h { font-family: var(--display); font-weight: 700; font-size: 19px; letter-spacing: -.02em; margin-bottom: 10px; }
@@ -529,7 +528,7 @@
 const { useState, useEffect, useRef, useCallback, useMemo, createContext, useContext } = React;
 
 const APP_NAME = 'Nyx';
-const BUILD = '2026-11-15.2';
+const BUILD = '2026-11-15.3';
 const WATCHED_AT = 0.92; // a partir de 92% o item conta como assistido
 
 /* ============================== IndexedDB ============================== */
@@ -1616,7 +1615,6 @@ const dayMonth = (iso) => (iso ? new Date(iso + 'T12:00:00').toLocaleDateString(
 function Trending({ charts, onOpen }) {
   const [platId, setPlatId] = useState('netflix');
   const [mode, setMode] = useState('official'); // só vale para quem tem ranking oficial
-  const [onlyMine, setOnlyMine] = useState(false);
   const all = charts.charts;
   const plats = PLATFORMS.filter((p) => (all.daily && all.daily[p.id]) || (all.official && all.official[p.id]));
   const plat = plats.find((p) => p.id === platId) || plats[0];
@@ -1634,13 +1632,12 @@ function Trending({ charts, onOpen }) {
   const mine = rows ? [...rows.series, ...rows.movies].filter((r) => r.found).length : 0;
 
   const section = (title, list) => {
-    const vis = onlyMine ? list.filter((r) => r.found) : list;
     return (
       <section>
         <h2 className="trend__h">{title}</h2>
-        {vis.length === 0
-          ? <p className="hint">Nenhum destes está na sua playlist hoje.</p>
-          : <div className="ranks">{vis.map((r) => <RankRow key={r.entry.kind + r.entry.rank} entry={r.entry} found={r.found} onOpen={onOpen} />)}</div>}
+        {list.length === 0
+          ? <p className="hint">Sem títulos nesta lista agora.</p>
+          : <div className="ranks">{list.map((r) => <RankRow key={r.entry.kind + r.entry.rank} entry={r.entry} found={r.found} onOpen={onOpen} />)}</div>}
       </section>
     );
   };
@@ -1675,10 +1672,6 @@ function Trending({ charts, onOpen }) {
                   : `Em alta no catálogo ${plat.name} Brasil, atualizado em ${dayMonth(d.updated)}`}
               </p>
             </div>
-            <button className="trend__tools opt" onClick={() => setOnlyMine((v) => !v)} role="switch" aria-checked={onlyMine}>
-              <span style={{ flex: 1 }}>Mostrar só o que tenho</span>
-              <span className={'switch' + (onlyMine ? ' is-on' : '')} />
-            </button>
             <div className="trend__cols">
               {section(isOfficial ? 'Top 10 séries' : 'Séries em alta', rows.series)}
               {section(isOfficial ? 'Top 10 filmes' : 'Filmes em alta', rows.movies)}
