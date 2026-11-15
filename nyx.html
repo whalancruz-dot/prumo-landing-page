@@ -220,12 +220,20 @@
   .poster--live .art { object-fit: contain; padding: 14%; }
   @media (min-width: 860px) { .poster { width: 156px; } .poster--live { width: 128px; } .poster__name { font-size: 13.5px; } }
 
-  /* ---------- top 10 ---------- */
-  .top { display: flex; align-items: flex-end; }
-  .top__n { font-family: var(--display); font-weight: 800; font-size: 104px; line-height: .78; letter-spacing: -.08em; color: transparent; -webkit-text-stroke: 2px rgba(168, 139, 255, .75); margin-right: -9px; padding: 0 0 2px 4px; user-select: none; }
-  .top__art { position: relative; width: 104px; aspect-ratio: 2/3; border-radius: 14px; overflow: hidden; background: var(--surf); box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 14px 26px -12px rgba(0,0,0,.9); transition: transform .2s; }
-  .top:active .top__art { transform: scale(.95); }
-  @media (min-width: 860px) { .top__n { font-size: 150px; } .top__art { width: 140px; } }
+  .row__sub { font-size: 12.5px; color: var(--mute); margin-top: 2px; }
+  .poster--lg { width: 148px; }
+  .poster--lg .poster__art { border-radius: 18px; }
+  .poster--lg .poster__tag { top: auto; bottom: 8px; left: 8px; height: 24px; padding: 0 9px; border-radius: 99px; font-size: 11px; }
+  .poster--lg .poster__tag i.dot { width: 7px; height: 7px; margin-right: 6px; box-shadow: none; }
+  @media (min-width: 860px) { .poster--lg { width: 184px; } }
+  .tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding: 0 var(--pad); }
+  @media (min-width: 560px) { .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 860px) { .tiles { grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; } }
+  .tile { display: flex; align-items: center; gap: 10px; min-height: 60px; padding: 10px 14px; border-radius: 16px; font-weight: 600; font-size: 13.5px; line-height: 1.2; background: linear-gradient(135deg, rgba(168,119,255,.17), rgba(79,157,255,.07)); border: 1px solid var(--line); transition: transform .15s, border-color .15s; }
+  .tile:hover { border-color: var(--line-2); }
+  .tile:active { transform: scale(.97); }
+  .tile i { font-size: 19px; color: #cdbcff; flex: none; }
+  .versions { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
 
   /* ---------- continue cards ---------- */
   .cont { position: relative; width: 272px; }
@@ -411,7 +419,7 @@
   @media (min-width: 1280px) { .live:not(.has-pv) .chlist { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
   /* ---------- em alta ---------- */
-  .chip i.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; box-shadow: 0 0 0 2px rgba(255,255,255,.14); }
+  i.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; box-shadow: 0 0 0 2px rgba(255,255,255,.14); }
   .trend { padding: 0 var(--pad); }
   .trend__sum { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 20px; margin-bottom: 20px; background: linear-gradient(135deg, rgba(168,119,255,.2), rgba(79,157,255,.1)); border: 1px solid rgba(168,139,255,.3); }
   .trend__big { font-family: var(--display); font-weight: 800; font-size: 34px; letter-spacing: -.04em; line-height: 1; flex: none; }
@@ -528,7 +536,7 @@
 const { useState, useEffect, useRef, useCallback, useMemo, createContext, useContext } = React;
 
 const APP_NAME = 'Nyx';
-const BUILD = '2026-11-15.3';
+const BUILD = '2026-11-15.5';
 const WATCHED_AT = 0.92; // a partir de 92% o item conta como assistido
 
 /* ============================== IndexedDB ============================== */
@@ -748,16 +756,91 @@ function chartsStamp(c) {
 }
 function validCharts(c) { return !!(c && c.daily && typeof c.daily === 'object' && Object.keys(c.daily).length > 0); }
 
-const TITLE_TAGS = /\s(?:4k|uhd|fhd|hd|sd|dublado|legendado|dub|leg|dual|hevc|h265)$/;
+// Marcas de versão que os servidores penduram no nome e que não fazem parte do título.
+const TAG_WORDS = new Set(['4k', 'uhd', 'fhd', 'hd', 'sd', 'dublado', 'legendado', 'dub', 'leg', 'dual', 'hevc', 'h265']);
+const STOP_WORDS = new Set(['a', 'o', 'as', 'os', 'de', 'da', 'do', 'das', 'dos', 'e', 'em', 'no', 'na', 'um', 'uma', 'the', 'of', 'and', 'an']);
 function normTitle(s) {
-  let t = String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
-    .replace(/\[[^\]]*\]|\([^)]*\)/g, ' ').replace(/&/g, ' e ').replace(/[^a-z0-9]+/g, ' ').trim();
-  let prev;
-  do { prev = t; t = t.replace(TITLE_TAGS, ''); } while (t !== prev);
-  return t;
+  return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/\[[^\]]*\]|\([^)]*\)/g, ' ').replace(/&/g, ' e ').replace(/[^a-z0-9]+/g, ' ').trim()
+    .split(' ').filter((w) => w && !TAG_WORDS.has(w)).join(' ');
 }
+const sigTokens = (norm) => norm.split(' ').filter((w) => w && !STOP_WORDS.has(w));
+// Chave que identifica o mesmo título em entradas diferentes da playlist
+// ("Padrões de Morte (2026)" e "Padrões de Morte (2026) Leg" têm a mesma chave).
+function titleKey(it) {
+  const raw = it.name || it.title || '';
+  const full = normTitle(raw);
+  const inPar = raw.match(/[(\[]\s*((?:19|20)\d{2})\s*[)\]]/);
+  const tail = inPar ? null : full.match(/^(.+)\s((?:19|20)\d{2})$/);
+  const year = inPar ? inPar[1] : (tail ? tail[2] : (/^(19|20)\d{2}$/.test(String(it.year || '')) ? String(it.year) : ''));
+  return { base: (tail ? tail[1] : full) || raw.toLowerCase(), year };
+}
+const isLeg = (it) => /(^|[^a-z])leg(endado)?([^a-z]|$)|\[l\]/i.test(it.name || '');
+const is4k = (it) => /(^|[^a-z0-9])(4k|uhd)([^a-z0-9]|$)/i.test(it.name || '');
+function variantLabel(it) {
+  const m = (it.name || '').match(/(^|[^a-z0-9])(4k|uhd|fhd|hd|sd)([^a-z0-9]|$)/i);
+  const q = m ? ({ uhd: '4K' }[m[2].toLowerCase()] || m[2].toUpperCase()) : '';
+  return (isLeg(it) ? 'Legendado' : 'Dublado') + (q ? ' ' + q : '');
+}
+// Junta as entradas repetidas: sobra um representante por título (de preferência o dublado comum)
+// e as outras versões ficam em .variants, para escolher dentro dos detalhes.
+function groupTitles(items) {
+  // Primeiro por nome; dentro do nome, por ano. Entrada sem ano se junta ao único ano conhecido
+  // ("Cantar! [4K]" + "Cantar! (2016)"), mas anos diferentes continuam separados (refilmagens).
+  const byBase = new Map();
+  for (const it of items) {
+    const k = titleKey(it);
+    it._y = k.year;
+    const arr = byBase.get(k.base);
+    if (arr) arr.push(it); else byBase.set(k.base, [it]);
+    it._k = k.base;
+  }
+  const groups = new Map();
+  for (const [base, arr] of byBase) {
+    const years = new Set(arr.map((x) => x._y).filter(Boolean));
+    const only = years.size === 1 ? [...years][0] : '';
+    for (const it of arr) {
+      it._k = base + '|' + (it._y || only);
+      const g = groups.get(it._k);
+      if (g) g.push(it); else groups.set(it._k, [it]);
+    }
+  }
+  const reps = [], repOf = new Map();
+  const score = (x) => (isLeg(x) ? 2 : 0) + (is4k(x) ? 1 : 0);
+  for (const g of groups.values()) {
+    let r = g[0];
+    if (g.length > 1) { r = g.reduce((a, b) => (score(b) < score(a) ? b : a)); for (const x of g) x.variants = g; }
+    reps.push(r); repOf.set(r._k, r);
+  }
+  return { reps, repOf };
+}
+function groupByCatUniq(items, repOf) {
+  const map = new Map(), seen = new Map();
+  for (const it of items) {
+    const k = String(it.category_id);
+    let arr = map.get(k), had = seen.get(k);
+    if (!arr) { arr = []; map.set(k, arr); had = new Set(); seen.set(k, had); }
+    const r = repOf.get(it._k) || it;
+    if (had.has(r)) continue;
+    had.add(r); arr.push(r);
+  }
+  return map;
+}
+// Rankings: a mesma série pode aparecer várias vezes (uma por temporada). Fica uma linha só.
+function uniqEntries(arr) {
+  const seen = new Map(), out = [];
+  for (const e of arr || []) {
+    const k = e.tmdbId ? 't' + e.tmdbId : 'n' + normTitle(e.title);
+    const prev = seen.get(k);
+    if (prev) { prev.parts = (prev.parts || 1) + 1; prev.weeks = Math.max(prev.weeks || 0, e.weeks || 0); continue; }
+    const c = { ...e };
+    seen.set(k, c); out.push(c);
+  }
+  return out.map((e, i) => ({ ...e, rank: i + 1, season: e.parts > 1 ? '' : e.season }));
+}
+
 function buildTitleIndex(items) {
-  const byName = new Map(), byTmdb = new Map();
+  const byName = new Map(), byTmdb = new Map(), byToken = new Map();
   const put = (k, rec) => { if (!k) return; const arr = byName.get(k); if (arr) arr.push(rec); else byName.set(k, [rec]); };
   for (const it of items) {
     const raw = it.name || it.title || '';
@@ -767,14 +850,21 @@ function buildTitleIndex(items) {
     const inPar = raw.match(/[(\[]\s*((?:19|20)\d{2})\s*[)\]]/);
     const tail = full.match(/^(.+)\s((?:19|20)\d{2})$/);
     const year = Number(inPar ? inPar[1] : (it.year || (tail ? tail[2] : 0))) || 0;
-    const rec = { item: it, year };
+    const rec = { item: it, year, tokens: new Set(sigTokens(tail && !inPar ? tail[1] : full)) };
     put(full, rec);
     if (tail) put(tail[1], rec); // "Titulo 2010" também responde por "titulo"
+    for (const t of rec.tokens) { const arr = byToken.get(t); if (arr) arr.push(rec); else byToken.set(t, [rec]); }
   }
-  return { byName, byTmdb };
+  return { byName, byTmdb, byToken };
 }
+const subset = (a, b) => { if (a.size === 0) return false; for (const x of a) if (!b.has(x)) return false; return true; };
+// Procura um título dos rankings na playlist. Três tentativas, da mais segura para a mais solta:
+//  1) id do TMDB; 2) nome igual; 3) nome parecido, como a busca faria: as palavras do nome da
+//     playlist estão no título/título original do ranking (ou o contrário) e o ano confere.
+//     Ex.: "From - A Origem do Mal" (From, 2022) casa com "Origem (2022) From".
 function findInPlaylist(index, entry) {
   if (entry.tmdbId != null) { const hit = index.byTmdb.get(String(entry.tmdbId)); if (hit) return hit; }
+  const y = Number(entry.year) || 0;
   const tried = new Set();
   for (const name of [entry.title, entry.original, ...(entry.alt || [])]) {
     const k = normTitle(name);
@@ -782,14 +872,44 @@ function findInPlaylist(index, entry) {
     tried.add(k);
     const hits = index.byName.get(k);
     if (!hits) continue;
-    const y = Number(entry.year) || 0;
     if (!y || entry.kind === 'series') return hits[0].item;
     const exact = hits.find((h) => h.year && Math.abs(h.year - y) <= 1);
     if (exact) return exact.item;
     const noYear = hits.find((h) => !h.year);
     if (noYear) return noYear.item;
   }
-  return null;
+
+  const T = new Set(sigTokens(normTitle(entry.title)));
+  const O = new Set(sigTokens(normTitle(entry.original)));
+  const U = new Set([...T, ...O]);
+  for (const a of entry.alt || []) for (const t of sigTokens(normTitle(a))) U.add(t);
+  let best = null, bestScore = -1;
+  const seen = new Set();
+  for (const tok of U) {
+    const recs = index.byToken.get(tok);
+    if (!recs || recs.length > 4000) continue;
+    for (const rec of recs) {
+      if (seen.has(rec)) continue;
+      seen.add(rec);
+      const A = subset(rec.tokens, U);                       // tudo que está no nome da playlist está no ranking
+      const viaT = subset(T, rec.tokens), viaO = subset(O, rec.tokens);
+      const B = viaT || viaO;                                // o título do ranking está inteiro no nome da playlist
+      if (!A && !B) continue;
+      const yearOk = !!(y && rec.year && Math.abs(rec.year - y) <= 1);
+      const yearBad = !!(y && rec.year && !yearOk);
+      let ok = false;
+      if (A && B) ok = !yearBad || entry.kind === 'series';
+      else if (yearOk) {
+        // Só uma direção bate: exige ano igual e não aceita casar por uma palavra solta.
+        const small = A ? rec.tokens.size : (viaT ? T.size : O.size);
+        ok = small >= 2 || rec.tokens.size <= 2;
+      }
+      if (!ok) continue;
+      const score = (yearOk ? 100 : 0) + (A && B ? 50 : 0) - Math.abs(rec.tokens.size - T.size);
+      if (score > bestScore) { bestScore = score; best = rec; }
+    }
+  }
+  return best ? best.item : null;
 }
 
 function useCharts(data) {
@@ -941,12 +1061,14 @@ function useXtream(session) {
         return;
       }
       const withLc = (arr) => (arr || []).map((it) => ({ ...it, name_lc: (it.name || it.title || '').toLowerCase() }));
-      const m = withLc(movies), s = withLc(series), l = withLc(live);
+      const mAll = withLc(movies), sAll = withLc(series), l = withLc(live);
+      const mg = groupTitles(mAll), sg = groupTitles(sAll);
+      const m = mg.reps, s = sg.reps;
       setState({
         loading: false, error: null, done: 6,
         data: {
-          movieCats: movieCats || [], movies: m, movieByCat: groupByCat(m), movieTop: topRated(m, 10), movieNew: newest(m, 20),
-          seriesCats: seriesCats || [], series: s, seriesByCat: groupByCat(s), seriesTop: topRated(s, 10), seriesNew: newest(s, 20),
+          movieCats: movieCats || [], movies: m, movieAll: mAll, movieByCat: groupByCatUniq(mAll, mg.repOf), movieTop: topRated(m, 10), movieNew: newest(m, 40),
+          seriesCats: seriesCats || [], series: s, seriesAll: sAll, seriesByCat: groupByCatUniq(sAll, sg.repOf), seriesTop: topRated(s, 10), seriesNew: newest(s, 40),
           liveCats: liveCats || [], live: l, liveByCat: groupByCat(l),
         },
       });
@@ -1167,11 +1289,11 @@ function Art({ src }) {
 }
 function Spinner() { return <div className="center-pad"><div className="spinner" /></div>; }
 
-function Poster({ item, kind, onClick, grid, tag }) {
+function Poster({ item, kind, onClick, grid, tag, large }) {
   const img = item.stream_icon || item.cover || '';
   const live = kind === 'live';
   return (
-    <button onClick={onClick} className={'poster' + (grid ? ' poster--grid' : '') + (live ? ' poster--live' : '')}>
+    <button onClick={onClick} className={'poster' + (grid ? ' poster--grid' : '') + (live ? ' poster--live' : '') + (large ? ' poster--lg' : '')}>
       <div className="poster__art">
         <div className="ph"><i className={live ? 'ri-broadcast-line' : 'ri-film-line'} /></div>
         <Art src={img} />
@@ -1182,13 +1304,16 @@ function Poster({ item, kind, onClick, grid, tag }) {
   );
 }
 
-function Row({ title, onMore, children }) {
+function Row({ title, sub, onMore, children }) {
   const list = React.Children.toArray(children);
   if (list.length === 0) return null;
   return (
     <section className="row">
       <div className="row__head">
-        <h2 className="row__title clamp-1">{title}</h2>
+        <div style={{ minWidth: 0 }}>
+          <h2 className="row__title clamp-1">{title}</h2>
+          {sub && <p className="row__sub clamp-1">{sub}</p>}
+        </div>
         {onMore && <button className="row__more" onClick={onMore}>Ver tudo</button>}
       </div>
       <div className="row__track noscroll">{list}</div>
@@ -1274,7 +1399,7 @@ function Hero({ items, onPlay, onOpen }) {
           <div className="hero__meta">
             <span className="pill pill--grad">{cur.kind === 'movie' ? 'Filme' : 'Série'}</span>
             {rating && <span className="pill pill--star"><i className="ri-star-fill" />{rating}</span>}
-            <span>Em alta na sua playlist</span>
+            <span>{cur.label || 'Novo na sua playlist'}</span>
           </div>
           <div className="hero__actions">
             {cur.kind === 'movie'
@@ -1319,12 +1444,19 @@ function ContinueCard({ entry, onPlay, onMenu }) {
   );
 }
 
-function TopCard({ rank, item, onClick }) {
+function Versions({ item, idField, onPick }) {
+  const list = item.variants;
+  if (!list || list.length < 2) return null;
+  const labels = list.map(variantLabel);
+  const clash = new Set(labels).size !== labels.length;
   return (
-    <button className="top" onClick={onClick} aria-label={`${rank}. ${item.name}`}>
-      <span className="top__n">{rank}</span>
-      <div className="top__art"><div className="ph"><i className="ri-film-line" /></div><Art src={item.stream_icon || item.cover} /></div>
-    </button>
+    <div className="versions">
+      {list.map((v, i) => (
+        <button key={v[idField]} className={'chip' + (v[idField] === item[idField] ? ' is-on' : '')} onClick={() => onPick(v)}>
+          {clash ? `Versão ${i + 1}` : labels[i]}
+        </button>
+      ))}
+    </div>
   );
 }
 
@@ -1339,6 +1471,21 @@ function Browse({ title, kind, items, cats, byCat, selected, onSelect, onOpen })
 
   const usable = useMemo(() => cats.filter((c) => (byCat.get(String(c.category_id)) || []).length > 0), [cats, byCat]);
   const list = selected != null ? (byCat.get(String(selected)) || []) : null;
+  // Na visão "Tudo", um título que já saiu numa fileira não volta na fileira de outra categoria.
+  const rowItems = useMemo(() => {
+    const used = new Set(), out = [];
+    for (const c of usable.slice(0, rows)) {
+      const picked = [];
+      for (const it of byCat.get(String(c.category_id)) || []) {
+        if (picked.length >= 18) break;
+        const k = it._k || it;
+        if (used.has(k)) continue;
+        used.add(k); picked.push(it);
+      }
+      if (picked.length > 0) out.push({ c, picked });
+    }
+    return out;
+  }, [usable, rows, byCat]);
 
   if (items.length === 0) {
     return (
@@ -1374,9 +1521,9 @@ function Browse({ title, kind, items, cats, byCat, selected, onSelect, onOpen })
         </>
       ) : (
         <>
-          {usable.slice(0, rows).map((c) => (
+          {rowItems.map(({ c, picked }) => (
             <Row key={c.category_id} title={c.category_name} onMore={() => onSelect(c.category_id)}>
-              {(byCat.get(String(c.category_id)) || []).slice(0, 18).map((it) => <Poster key={it.stream_id || it.series_id} item={it} kind={kind} onClick={() => onOpen(it, kind)} />)}
+              {picked.map((it) => <Poster key={it.stream_id || it.series_id} item={it} kind={kind} onClick={() => onOpen(it, kind)} />)}
             </Row>
           ))}
           {rows < usable.length && <Sentinel key={rows} onVisible={() => setRows((n) => n + ROWS_PAGE)} />}
@@ -1587,11 +1734,12 @@ function Live({ data, session, liveUrl, selected, onSelect, onPlay, previewOn, s
 }
 
 /* ============================== Em alta ============================== */
-function RankRow({ entry, found, onOpen }) {
+function RankRow({ entry, found, onOpen, onSearch }) {
   const sub = (
     <span className="rank__s">
-      {found ? <span className="rank__ok">Na sua playlist</span> : <span className="rank__no">Fora da sua playlist</span>}
+      {found ? <span className="rank__ok">Na sua playlist</span> : <span className="rank__no">Não achei na playlist, toque para buscar</span>}
       {entry.season && <span>{entry.season.replace(((entry.alt && entry.alt[0]) || entry.title) + ': ', '').replace(/^Season (\d+)$/i, 'Temporada $1').replace(/^Part (\d+)$/i, 'Parte $1').replace(/^Limited Series$/i, 'Minissérie')}</span>}
+      {entry.parts > 1 && <span>{entry.parts} temporadas no ranking</span>}
       {entry.year && <span>{entry.year}</span>}
       {entry.rating && <span><i className="ri-star-fill" />{entry.rating}</span>}
       {entry.weeks > 1 && <span>{entry.weeks} semanas no Top 10</span>}
@@ -1607,12 +1755,12 @@ function RankRow({ entry, found, onOpen }) {
   );
   return found
     ? <button className="rank" onClick={() => onOpen(found, entry.kind)}>{body}</button>
-    : <div className="rank is-off">{body}</div>;
+    : <button className="rank is-off" onClick={() => onSearch(entry.title)} aria-label={`Procurar ${entry.title} na playlist`}>{body}</button>;
 }
 
 const dayMonth = (iso) => (iso ? new Date(iso + 'T12:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) : '');
 
-function Trending({ charts, onOpen }) {
+function Trending({ charts, onOpen, onSearch }) {
   const [platId, setPlatId] = useState('netflix');
   const [mode, setMode] = useState('official'); // só vale para quem tem ranking oficial
   const all = charts.charts;
@@ -1625,7 +1773,7 @@ function Trending({ charts, onOpen }) {
 
   const rows = useMemo(() => {
     if (!d) return null;
-    const map = (arr) => (arr || []).map((entry) => ({ entry, found: charts.match(entry) }));
+    const map = (arr) => uniqEntries(arr).map((entry) => ({ entry, found: charts.match(entry) }));
     return { series: map(d.series), movies: map(d.movies) };
   }, [d, charts.match]);
   const total = rows ? rows.series.length + rows.movies.length : 0;
@@ -1637,7 +1785,7 @@ function Trending({ charts, onOpen }) {
         <h2 className="trend__h">{title}</h2>
         {list.length === 0
           ? <p className="hint">Sem títulos nesta lista agora.</p>
-          : <div className="ranks">{list.map((r) => <RankRow key={r.entry.kind + r.entry.rank} entry={r.entry} found={r.found} onOpen={onOpen} />)}</div>}
+          : <div className="ranks">{list.map((r) => <RankRow key={r.entry.kind + r.entry.rank} entry={r.entry} found={r.found} onOpen={onOpen} onSearch={onSearch} />)}</div>}
       </section>
     );
   };
@@ -1673,8 +1821,8 @@ function Trending({ charts, onOpen }) {
               </p>
             </div>
             <div className="trend__cols">
-              {section(isOfficial ? 'Top 10 séries' : 'Séries em alta', rows.series)}
-              {section(isOfficial ? 'Top 10 filmes' : 'Filmes em alta', rows.movies)}
+              {section(isOfficial ? 'Séries no Top 10' : 'Séries em alta', rows.series)}
+              {section(isOfficial ? 'Filmes no Top 10' : 'Filmes em alta', rows.movies)}
             </div>
             <p className="trend__note">
               {isOfficial
@@ -1702,9 +1850,9 @@ function Trending({ charts, onOpen }) {
 const RESULTS_LIMIT = 90;
 const KIND_LABEL = { movie: 'Filme', series: 'Série', live: 'Canal' };
 
-function SearchScreen({ data, onOpen, history, addHistory, clearHistory }) {
-  const [raw, setRaw] = useState('');
-  const [q, setQ] = useState('');
+function SearchScreen({ data, onOpen, history, addHistory, clearHistory, seed }) {
+  const [raw, setRaw] = useState(seed || '');
+  const [q, setQ] = useState(seed || '');
   const [seg, setSeg] = useState('all');
 
   useEffect(() => { const t = setTimeout(() => setQ(raw.trim()), 220); return () => clearTimeout(t); }, [raw]);
@@ -1970,7 +2118,7 @@ function DetailShell({ title, poster, backdrop, meta, fav, onFav, onClose, child
   );
 }
 
-function SeriesDetail({ series, focusEpisodeId, fetchSeriesInfo, onClose, onPlayEpisode, onToggleWatched, progressMap, isFavorite, onToggleFavorite }) {
+function SeriesDetail({ series, focusEpisodeId, fetchSeriesInfo, onClose, onPlayEpisode, onToggleWatched, progressMap, isFavorite, onToggleFavorite, onPickVersion }) {
   const [info, setInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [failed, setFailed] = useState(false);
@@ -2055,6 +2203,7 @@ function SeriesDetail({ series, focusEpisodeId, fetchSeriesInfo, onClose, onPlay
         {seasons.length > 0 && <span className="pill">{seasons.length} {seasons.length === 1 ? 'temporada' : 'temporadas'}</span>}
       </>}
     >
+      <Versions item={series} idField="series_id" onPick={onPickVersion} />
       <Plot text={plot} />
       {meta.genre && <p className="detail__facts"><b>Gênero</b> {meta.genre}</p>}
       {meta.cast && <p className="detail__facts clamp-2"><b>Elenco</b> {meta.cast}</p>}
@@ -2136,7 +2285,7 @@ function SeriesDetail({ series, focusEpisodeId, fetchSeriesInfo, onClose, onPlay
   );
 }
 
-function MovieDetail({ movie, fetchMovieInfo, onClose, onPlay, progressMap, isFavorite, onToggleFavorite }) {
+function MovieDetail({ movie, fetchMovieInfo, onClose, onPlay, progressMap, isFavorite, onToggleFavorite, onPickVersion }) {
   const [info, setInfo] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -2167,6 +2316,7 @@ function MovieDetail({ movie, fetchMovieInfo, onClose, onPlay, progressMap, isFa
         {p && p.watched && <span className="pill"><i className="ri-check-line" />Assistido</span>}
       </>}
     >
+      <Versions item={movie} idField="stream_id" onPick={onPickVersion} />
       <div style={{ display: 'flex', gap: 10, margin: '4px 0 18px' }}>
         <button className="btn btn--primary" style={{ flex: 1 }} onClick={() => onPlay(movie)}>
           <i className="ri-play-fill" />{inProgress ? `Continuar de ${fmtClock(p.time)}` : 'Assistir'}
@@ -2263,7 +2413,7 @@ const TABS = [
   { id: 'favorites', label: 'Favoritos', icon: 'ri-heart-3' },
 ];
 
-function Header({ tab, setTab, onOpenSettings, initial }) {
+function Header({ tab, setTab, onOpenSettings, onSearchOpen, initial }) {
   const [solid, setSolid] = useState(false);
   useEffect(() => {
     const on = () => setSolid(window.scrollY > 24);
@@ -2279,7 +2429,7 @@ function Header({ tab, setTab, onOpenSettings, initial }) {
           {TABS.map((t) => <button key={t.id} className={'header__tab' + (tab === t.id ? ' is-on' : '')} onClick={() => setTab(t.id)}>{t.label}</button>)}
         </nav>
         <div className="header__sp" />
-        <button className={'iconbtn' + (tab === 'search' ? ' is-on' : '')} onClick={() => setTab('search')} aria-label="Buscar"><i className="ri-search-2-line" /></button>
+        <button className={'iconbtn' + (tab === 'search' ? ' is-on' : '')} onClick={() => { if (onSearchOpen) onSearchOpen(); setTab('search'); }} aria-label="Buscar"><i className="ri-search-2-line" /></button>
         <button className="iconbtn" onClick={onOpenSettings} aria-label="Ajustes" style={{ fontFamily: 'var(--display)', fontWeight: 800, fontSize: 16 }}>{initial}</button>
       </div>
     </header>
@@ -2441,6 +2591,7 @@ function AppContent() {
   const [openMovie, setOpenMovie] = useState(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [menuFor, setMenuFor] = useState(null);
+  const [searchSeed, setSearchSeed] = useState('');
   const extraRef = useRef({}); // dados resolvidos depois do play (próximo episódio, temporada)
 
   const setTab = useCallback((t) => { setTabRaw(t); window.scrollTo(0, 0); }, []);
@@ -2530,10 +2681,10 @@ function AppContent() {
   }
 
   function findSeries(p) {
-    return data.series.find((s) => String(s.series_id) === String(p.seriesId)) || { series_id: p.seriesId, name: p.title, cover: p.poster };
+    return data.seriesAll.find((s) => String(s.series_id) === String(p.seriesId)) || { series_id: p.seriesId, name: p.title, cover: p.poster };
   }
   function findMovie(p) {
-    return data.movies.find((m) => String(m.stream_id) === String(p.id)) || { stream_id: p.id, name: p.title, stream_icon: p.poster, container_extension: p.ext };
+    return data.movieAll.find((m) => String(m.stream_id) === String(p.id)) || { stream_id: p.id, name: p.title, stream_icon: p.poster, container_extension: p.ext };
   }
 
   function resumeEntry(entry) {
@@ -2568,31 +2719,84 @@ function AppContent() {
     }
   }
 
-  const heroItems = useMemo(() => {
+  // Tudo o que está em alta nas plataformas E existe na playlist, sem repetir título.
+  // Percorre os rankings por posição (todos os 1º lugares, depois os 2º...) para misturar as plataformas.
+  const trendMine = useMemo(() => {
     if (!data) return [];
-    const m = data.movieTop.slice(0, 3).map((item) => ({ item, kind: 'movie' }));
-    const s = data.seriesTop.slice(0, 2).map((item) => ({ item, kind: 'series' }));
-    const out = [];
-    for (let i = 0; i < 3; i++) { if (m[i]) out.push(m[i]); if (s[i]) out.push(s[i]); }
-    return out.filter((h) => h.item.stream_icon || h.item.cover);
-  }, [data]);
-
-  // Top 10 oficial da Netflix, só com o que existe na playlist (aparece no Início).
-  const netflixMine = useMemo(() => {
-    const d = charts.charts.official && charts.charts.official.netflix;
-    if (!d || !data) return [];
-    const seen = new Set();
-    return [...(d.series || []), ...(d.movies || [])]
-      .map((entry) => ({ entry, found: charts.match(entry) }))
-      .filter((r) => {
-        if (!r.found) return false;
-        const k = r.entry.kind + (r.found.stream_id || r.found.series_id);
-        if (seen.has(k)) return false; // várias temporadas da mesma série contam uma vez
+    const c = charts.charts, out = [], seen = new Set();
+    const lists = [];
+    for (const p of PLATFORMS) {
+      const off = c.official && c.official[p.id];
+      const day = c.daily && c.daily[p.id];
+      if (off) lists.push({ p, label: `Top 10 da ${p.name}`, rows: [uniqEntries(off.series), uniqEntries(off.movies)] });
+      if (day) lists.push({ p, label: `Em alta: ${p.name}`, rows: [uniqEntries(day.series), uniqEntries(day.movies)] });
+    }
+    for (let i = 0; i < 10; i++) {
+      for (const l of lists) for (const arr of l.rows) {
+        const entry = arr[i];
+        if (!entry) continue;
+        const item = charts.match(entry);
+        if (!item) continue;
+        const k = entry.kind + item._k;
+        if (seen.has(k)) continue;
         seen.add(k);
-        return true;
-      })
-      .sort((a, b) => a.entry.rank - b.entry.rank);
-  }, [charts.charts, charts.match, data]);
+        out.push({ item, kind: entry.kind, plat: l.p, label: l.label });
+      }
+    }
+    return out;
+  }, [data, charts.charts, charts.match]);
+
+  // Monta o Início de cima para baixo; um título que já apareceu não volta em outra fileira.
+  const home = useMemo(() => {
+    if (!data) return null;
+    const used = new Set();
+    const img = (it) => it.stream_icon || it.cover;
+    const take = (list, kind, n, needImg) => {
+      const out = [];
+      for (const it of list) {
+        if (out.length >= n) break;
+        const k = kind + it._k;
+        if (used.has(k) || (needImg && !img(it))) continue;
+        used.add(k); out.push(it);
+      }
+      return out;
+    };
+    const hero = [];
+    for (const t of trendMine) {
+      if (hero.length >= 5) break;
+      if (!img(t.item)) continue;
+      used.add(t.kind + t.item._k);
+      hero.push({ item: t.item, kind: t.kind, label: t.label });
+    }
+    if (hero.length < 5) {
+      const fm = take(data.movieNew, 'movie', 5, true), fs = take(data.seriesNew, 'series', 5, true);
+      for (let i = 0; hero.length < 5 && (fm[i] || fs[i]); i++) {
+        if (fm[i]) hero.push({ item: fm[i], kind: 'movie' });
+        if (fs[i] && hero.length < 5) hero.push({ item: fs[i], kind: 'series' });
+      }
+    }
+    const trend = [];
+    for (const t of trendMine) {
+      if (trend.length >= 16) break;
+      const k = t.kind + t.item._k;
+      if (used.has(k)) continue;
+      used.add(k); trend.push(t);
+    }
+    const newMovies = take(data.movieNew, 'movie', 18);
+    const newSeries = take(data.seriesNew, 'series', 18);
+    const mc = data.movieCats.filter((c) => (data.movieByCat.get(String(c.category_id)) || []).length > 0);
+    const sc = data.seriesCats.filter((c) => (data.seriesByCat.get(String(c.category_id)) || []).length > 0);
+    const catRows = [];
+    for (let i = 0; i < 4; i++) {
+      if (mc[i]) catRows.push({ c: mc[i], kind: 'movie', tab: 'movies', items: take(data.movieByCat.get(String(mc[i].category_id)), 'movie', 16) });
+      if (sc[i] && i < 3) catRows.push({ c: sc[i], kind: 'series', tab: 'series', items: take(data.seriesByCat.get(String(sc[i].category_id)), 'series', 16) });
+    }
+    const tiles = [
+      ...mc.slice(0, 8).map((c) => ({ c, kind: 'movie', tab: 'movies', icon: 'ri-film-line' })),
+      ...sc.slice(0, 6).map((c) => ({ c, kind: 'series', tab: 'series', icon: 'ri-tv-2-line' })),
+    ];
+    return { hero, trend, newMovies, newSeries, catRows: catRows.filter((r) => r.items.length >= 4), tiles };
+  }, [data, trendMine]);
 
   if (loading) return <Splash status={done < 6 ? `Carregando catálogo ${done} de 6` : 'Organizando sua playlist'} progress={done / 6} />;
   if (error) return (
@@ -2607,16 +2811,18 @@ function AppContent() {
 
   const goCat = (tabId, kind) => (id) => { setCat((c) => ({ ...c, [kind]: id })); setTab(tabId); };
   const setKindCat = (kind) => (id) => setCat((c) => ({ ...c, [kind]: id }));
-  const movieCatsHome = data.movieCats.filter((c) => (data.movieByCat.get(String(c.category_id)) || []).length > 0).slice(0, 5);
-  const seriesCatsHome = data.seriesCats.filter((c) => (data.seriesByCat.get(String(c.category_id)) || []).length > 0).slice(0, 3);
+  const openFav = (f) => {
+    if (f.type === 'movie') setOpenMovie(findMovie({ id: f.id, title: f.name, poster: f.poster, ext: f.container_extension }));
+    else setOpenSeries({ series: findSeries({ seriesId: f.id, title: f.name, poster: f.poster }) });
+  };
 
   return (
     <>
-      <Header tab={tab} setTab={setTab} onOpenSettings={() => setSettingsOpen(true)} initial={(session.name || 'N').trim().charAt(0).toUpperCase()} />
+      <Header tab={tab} setTab={setTab} onSearchOpen={() => setSearchSeed('')} onOpenSettings={() => setSettingsOpen(true)} initial={(session.name || 'N').trim().charAt(0).toUpperCase()} />
 
       {tab === 'home' && (
         <div className="page page--home">
-          <Hero items={heroItems} onPlay={(m) => playMovie(m)} onOpen={openItem} />
+          <Hero items={home.hero} onPlay={(m) => playMovie(m)} onOpen={openItem} />
           {progress.continueList.length > 0 && (
             <Row title="Continuar assistindo">
               {progress.continueList.map((entry) => (
@@ -2624,42 +2830,49 @@ function AppContent() {
               ))}
             </Row>
           )}
-          {netflixMine.length >= 3 && (
-            <Row title="No Top 10 da Netflix esta semana" onMore={() => setTab('trending')}>
-              {netflixMine.map((r) => (
-                <TopCard key={r.entry.kind + r.entry.rank} rank={r.entry.rank} item={{ name: r.entry.title, stream_icon: r.found.stream_icon || r.found.cover || r.entry.poster }} onClick={() => openItem(r.found, r.entry.kind)} />
+          <Row title="Em alta que você tem" sub="Dos rankings das plataformas, direto na sua playlist" onMore={() => setTab('trending')}>
+            {home.trend.map((t) => (
+              <Poster key={t.kind + (t.item.stream_id || t.item.series_id)} large item={t.item} kind={t.kind}
+                tag={<><i className="dot" style={{ background: t.plat.color }} />{t.plat.name}</>} onClick={() => openItem(t.item, t.kind)} />
+            ))}
+          </Row>
+          {favoritesList.length > 0 && (
+            <Row title="Minha lista" onMore={() => setTab('favorites')}>
+              {favoritesList.slice(0, 18).map((f) => (
+                <Poster key={`${f.type}-${f.id}`} item={{ name: f.name, stream_icon: f.poster }} onClick={() => openFav(f)} />
               ))}
             </Row>
           )}
-          <Row title="Top 10 filmes">
-            {data.movieTop.map((it, i) => <TopCard key={it.stream_id} rank={i + 1} item={it} onClick={() => openItem(it, 'movie')} />)}
+          <Row title="Filmes recém-chegados" onMore={() => setTab('movies')}>
+            {home.newMovies.map((m) => <Poster key={m.stream_id} item={m} kind="movie" onClick={() => openItem(m, 'movie')} />)}
           </Row>
-          <Row title="Top 10 séries">
-            {data.seriesTop.map((it, i) => <TopCard key={it.series_id} rank={i + 1} item={it} onClick={() => openItem(it, 'series')} />)}
+          <Row title="Séries recém-chegadas" onMore={() => setTab('series')}>
+            {home.newSeries.map((x) => <Poster key={x.series_id} item={x} kind="series" onClick={() => openItem(x, 'series')} />)}
           </Row>
-          <Row title="Filmes que acabaram de chegar" onMore={() => setTab('movies')}>
-            {data.movieNew.map((m) => <Poster key={m.stream_id} item={m} kind="movie" onClick={() => openItem(m, 'movie')} />)}
-          </Row>
-          <Row title="Séries que acabaram de chegar" onMore={() => setTab('series')}>
-            {data.seriesNew.map((s) => <Poster key={s.series_id} item={s} kind="series" onClick={() => openItem(s, 'series')} />)}
-          </Row>
-          {movieCatsHome.map((c) => (
-            <Row key={'m' + c.category_id} title={c.category_name} onMore={() => goCat('movies', 'movie')(c.category_id)}>
-              {data.movieByCat.get(String(c.category_id)).slice(0, 18).map((m) => <Poster key={m.stream_id} item={m} kind="movie" onClick={() => openItem(m, 'movie')} />)}
+          {home.catRows.map((r) => (
+            <Row key={r.kind + r.c.category_id} title={r.c.category_name} onMore={() => goCat(r.tab, r.kind)(r.c.category_id)}>
+              {r.items.map((it) => <Poster key={it.stream_id || it.series_id} item={it} kind={r.kind} onClick={() => openItem(it, r.kind)} />)}
             </Row>
           ))}
-          {seriesCatsHome.map((c) => (
-            <Row key={'s' + c.category_id} title={c.category_name} onMore={() => goCat('series', 'series')(c.category_id)}>
-              {data.seriesByCat.get(String(c.category_id)).slice(0, 18).map((s) => <Poster key={s.series_id} item={s} kind="series" onClick={() => openItem(s, 'series')} />)}
-            </Row>
-          ))}
+          {home.tiles.length > 0 && (
+            <section className="row">
+              <div className="row__head"><h2 className="row__title">Explorar por categoria</h2></div>
+              <div className="tiles">
+                {home.tiles.map((t) => (
+                  <button key={t.kind + t.c.category_id} className="tile" onClick={() => goCat(t.tab, t.kind)(t.c.category_id)}>
+                    <i className={t.icon} /><span className="clamp-2">{t.c.category_name}</span>
+                  </button>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
       )}
 
       {tab === 'movies' && <Browse title="Filmes" kind="movie" items={data.movies} cats={data.movieCats} byCat={data.movieByCat} selected={cat.movie} onSelect={setKindCat('movie')} onOpen={openItem} />}
       {tab === 'series' && <Browse title="Séries" kind="series" items={data.series} cats={data.seriesCats} byCat={data.seriesByCat} selected={cat.series} onSelect={setKindCat('series')} onOpen={openItem} />}
       {tab === 'live' && <Live data={data} session={session} liveUrl={liveUrl} selected={cat.live} onSelect={setKindCat('live')} onPlay={playLive} previewOn={prefs.livePreview} suspended={!!playable} />}
-      {tab === 'trending' && <Trending charts={charts} onOpen={openItem} />}
+      {tab === 'trending' && <Trending charts={charts} onOpen={openItem} onSearch={(t) => { setSearchSeed(t.split(/\s[-:]\s|:\s/)[0]); setTab('search'); }} />}
 
       {tab === 'favorites' && (
         <div className="page">
@@ -2675,28 +2888,25 @@ function AppContent() {
             <div className="grid" style={{ marginTop: 12 }}>
               {favoritesList.map((f) => (
                 <Poster key={`${f.type}-${f.id}`} grid item={{ name: f.name, stream_icon: f.poster }} tag={f.type === 'movie' ? 'Filme' : 'Série'}
-                  onClick={() => {
-                    if (f.type === 'movie') setOpenMovie(findMovie({ id: f.id, title: f.name, poster: f.poster, ext: f.container_extension }));
-                    else setOpenSeries({ series: findSeries({ seriesId: f.id, title: f.name, poster: f.poster }) });
-                  }} />
+                  onClick={() => openFav(f)} />
               ))}
             </div>
           )}
         </div>
       )}
 
-      {tab === 'search' && <SearchScreen data={data} onOpen={openItem} history={history} addHistory={addHistory} clearHistory={clearHistory} />}
+      {tab === 'search' && <SearchScreen key={searchSeed} seed={searchSeed} data={data} onOpen={openItem} history={history} addHistory={addHistory} clearHistory={clearHistory} />}
 
       <BottomNav tab={tab} setTab={setTab} />
 
       {openSeries && (
         <SeriesDetail key={openSeries.series.series_id} series={openSeries.series} focusEpisodeId={openSeries.focusEpisodeId}
           fetchSeriesInfo={fetchSeriesInfo} onClose={() => setOpenSeries(null)} onPlayEpisode={playEpisode} onToggleWatched={toggleWatched}
-          progressMap={progress.map} isFavorite={isFavorite} onToggleFavorite={toggleFavorite} />
+          progressMap={progress.map} isFavorite={isFavorite} onToggleFavorite={toggleFavorite} onPickVersion={(v) => setOpenSeries({ series: v })} />
       )}
       {openMovie && (
         <MovieDetail key={openMovie.stream_id} movie={openMovie} fetchMovieInfo={fetchMovieInfo} onClose={() => setOpenMovie(null)}
-          onPlay={playMovie} progressMap={progress.map} isFavorite={isFavorite} onToggleFavorite={toggleFavorite} />
+          onPlay={playMovie} progressMap={progress.map} isFavorite={isFavorite} onToggleFavorite={toggleFavorite} onPickVersion={setOpenMovie} />
       )}
       {playable && <Player playable={playable} onProgress={(t, d) => handleProgress(playable, t, d)} onClose={() => setPlayable(null)} />}
 
