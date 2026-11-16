@@ -700,7 +700,7 @@
      "year": "2026",
      "poster": "https://images.justwatch.com/poster/354927430/s332/love-in-disguise.jpg",
      "tmdbId": "303745",
-     "rating": "7.9"
+     "rating": "8.0"
     },
     {
      "rank": 10,
@@ -867,7 +867,7 @@
      "year": "2026",
      "poster": "https://images.justwatch.com/poster/356671510/s332/get-huge-looksmaxxing-to-death.jpg",
      "tmdbId": "340053",
-     "rating": "5.7"
+     "rating": "5.8"
     },
     {
      "rank": 6,
@@ -947,22 +947,22 @@
     {
      "rank": 3,
      "kind": "movie",
-     "title": "Vingança e Sedução",
-     "original": "Ms .45",
-     "year": "1981",
-     "poster": "https://images.justwatch.com/poster/11131535/s332/vinganca-duma-mulher.jpg",
-     "tmdbId": "22171",
-     "rating": "6.8"
-    },
-    {
-     "rank": 4,
-     "kind": "movie",
      "title": "O Pacto",
      "original": "The Covenant",
      "year": "2006",
      "poster": "https://images.justwatch.com/poster/180593595/s332/o-pacto.jpg",
      "tmdbId": "9954",
      "rating": "5.2"
+    },
+    {
+     "rank": 4,
+     "kind": "movie",
+     "title": "Vingança e Sedução",
+     "original": "Ms .45",
+     "year": "1981",
+     "poster": "https://images.justwatch.com/poster/11131535/s332/vinganca-duma-mulher.jpg",
+     "tmdbId": "22171",
+     "rating": "6.8"
     },
     {
      "rank": 5,
@@ -1174,16 +1174,6 @@
     {
      "rank": 5,
      "kind": "movie",
-     "title": "Comer Orar Amar",
-     "original": "Eat Pray Love",
-     "year": "2010",
-     "poster": "https://images.justwatch.com/poster/344625522/s332/comer-rezar-amar.jpg",
-     "tmdbId": "38167",
-     "rating": "5.9"
-    },
-    {
-     "rank": 6,
-     "kind": "movie",
      "title": "F1 - O Filme",
      "original": "F1",
      "year": "2025",
@@ -1192,7 +1182,7 @@
      "rating": "7.6"
     },
     {
-     "rank": 7,
+     "rank": 6,
      "kind": "movie",
      "title": "O Dia de Ação de Graças de Charlie Brown",
      "original": "A Charlie Brown Thanksgiving",
@@ -1202,7 +1192,7 @@
      "rating": "7.7"
     },
     {
-     "rank": 8,
+     "rank": 7,
      "kind": "movie",
      "title": "Instigadores",
      "original": "The Instigators",
@@ -1212,7 +1202,7 @@
      "rating": "6.2"
     },
     {
-     "rank": 9,
+     "rank": 8,
      "kind": "movie",
      "title": "Mamma Mia!",
      "original": "Mamma Mia!",
@@ -1222,13 +1212,23 @@
      "rating": "6.5"
     },
     {
-     "rank": 10,
+     "rank": 9,
      "kind": "movie",
      "title": "À Noite, no Museu",
      "original": "Night at the Museum",
      "year": "2006",
      "poster": "https://images.justwatch.com/poster/348531492/s332/uma-noite-no-museu.jpg",
      "tmdbId": "1593",
+     "rating": "6.5"
+    },
+    {
+     "rank": 10,
+     "kind": "movie",
+     "title": "Lobos Solitários",
+     "original": "Wolfs",
+     "year": "2024",
+     "poster": "https://images.justwatch.com/poster/336006304/s332/lobos-2024.jpg",
+     "tmdbId": "877817",
      "rating": "6.5"
     }
    ],
@@ -1371,12 +1371,12 @@
     {
      "rank": 4,
      "kind": "movie",
-     "title": "Uma Jogada de Natal",
-     "original": "Holiday Touchdown: A Chiefs Love Story",
-     "year": "2024",
-     "poster": "https://images.justwatch.com/poster/338806537/s332/holiday-touchdown-a-chiefs-love-story.jpg",
-     "tmdbId": "1319443",
-     "rating": "6.4"
+     "title": "Colisão",
+     "original": "Crash",
+     "year": "2005",
+     "poster": "https://images.justwatch.com/poster/175355471/s332/crash-no-limite.jpg",
+     "tmdbId": "1640",
+     "rating": "7.7"
     },
     {
      "rank": 5,
@@ -1391,6 +1391,16 @@
     {
      "rank": 6,
      "kind": "movie",
+     "title": "Uma Jogada de Natal",
+     "original": "Holiday Touchdown: A Chiefs Love Story",
+     "year": "2024",
+     "poster": "https://images.justwatch.com/poster/338806537/s332/holiday-touchdown-a-chiefs-love-story.jpg",
+     "tmdbId": "1319443",
+     "rating": "6.4"
+    },
+    {
+     "rank": 7,
+     "kind": "movie",
      "title": "Cidade de Deus",
      "original": "Cidade de Deus",
      "year": "2002",
@@ -1399,7 +1409,7 @@
      "rating": "8.6"
     },
     {
-     "rank": 7,
+     "rank": 8,
      "kind": "movie",
      "title": "Tropa de Elite 2",
      "original": "Tropa de Elite 2",
@@ -1409,7 +1419,7 @@
      "rating": "8.0"
     },
     {
-     "rank": 8,
+     "rank": 9,
      "kind": "movie",
      "title": "Covil",
      "original": "Covil",
@@ -1419,7 +1429,7 @@
      "rating": "5.9"
     },
     {
-     "rank": 9,
+     "rank": 10,
      "kind": "movie",
      "title": "Última Noite",
      "original": "Silent Night",
@@ -1427,16 +1437,6 @@
      "poster": "https://images.justwatch.com/poster/262456211/s332/silent-night.jpg",
      "tmdbId": "664574",
      "rating": "5.8"
-    },
-    {
-     "rank": 10,
-     "kind": "movie",
-     "title": "Os Farofeiros 2",
-     "original": "Os Farofeiros 2",
-     "year": "2024",
-     "poster": "https://images.justwatch.com/poster/321230179/s332/os-farofeiros-2.jpg",
-     "tmdbId": "1136897",
-     "rating": "5.7"
     }
    ],
    "series": [
