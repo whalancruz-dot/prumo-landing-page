@@ -306,16 +306,6 @@
     {
      "rank": 1,
      "kind": "movie",
-     "title": "No Coração de Nashville",
-     "original": "Heartland",
-     "year": "2026",
-     "poster": "https://images.justwatch.com/poster/355278075/s332/heartland.jpg",
-     "tmdbId": "1543469",
-     "rating": "5.5"
-    },
-    {
-     "rank": 2,
-     "kind": "movie",
      "title": "A Guarda-Costas",
      "original": "Guarding Stars",
      "year": "2026",
@@ -324,27 +314,17 @@
      "rating": "6.3"
     },
     {
+     "rank": 2,
+     "kind": "movie",
+     "title": "No Coração de Nashville",
+     "original": "Heartland",
+     "year": "2026",
+     "poster": "https://images.justwatch.com/poster/355278075/s332/heartland.jpg",
+     "tmdbId": "1543469",
+     "rating": "5.5"
+    },
+    {
      "rank": 3,
-     "kind": "movie",
-     "title": "Suzane von Richthofen: O Que o Tempo Não Apaga",
-     "original": "Suzane von Richthofen: O Que o Tempo Não Apaga",
-     "year": "2026",
-     "poster": "https://images.justwatch.com/poster/357064859/s332/suzane-von-richthofen-o-que-o-tempo-nao-apaga.jpg",
-     "tmdbId": "1664682",
-     "rating": "5.3"
-    },
-    {
-     "rank": 4,
-     "kind": "movie",
-     "title": "Avedon",
-     "original": "Avedon",
-     "year": "2026",
-     "poster": "https://images.justwatch.com/poster/355260209/s332/avedon.jpg",
-     "tmdbId": "1666787",
-     "rating": "7.5"
-    },
-    {
-     "rank": 5,
      "kind": "movie",
      "title": "Polar Express",
      "original": "The Polar Express",
@@ -354,17 +334,17 @@
      "rating": "6.6"
     },
     {
-     "rank": 6,
+     "rank": 4,
      "kind": "movie",
-     "title": "Gente Gira",
-     "original": "Funny People",
-     "year": "2009",
-     "poster": "https://images.justwatch.com/poster/324675445/s332/ta-rindo-do-que.jpg",
-     "tmdbId": "20829",
-     "rating": "6.3"
+     "title": "Suzane von Richthofen: O Que o Tempo Não Apaga",
+     "original": "Suzane von Richthofen: O Que o Tempo Não Apaga",
+     "year": "2026",
+     "poster": "https://images.justwatch.com/poster/357064859/s332/suzane-von-richthofen-o-que-o-tempo-nao-apaga.jpg",
+     "tmdbId": "1664682",
+     "rating": "5.3"
     },
     {
-     "rank": 7,
+     "rank": 5,
      "kind": "movie",
      "title": "Esquecido",
      "original": "Oblivion",
@@ -374,7 +354,7 @@
      "rating": "7.0"
     },
     {
-     "rank": 8,
+     "rank": 6,
      "kind": "movie",
      "title": "Rush - Duelo de Rivais",
      "original": "Rush",
@@ -384,7 +364,37 @@
      "rating": "8.1"
     },
     {
+     "rank": 7,
+     "kind": "movie",
+     "title": "O Brutalista",
+     "original": "The Brutalist",
+     "year": "2025",
+     "poster": "https://images.justwatch.com/poster/335435372/s332/the-brutalist.jpg",
+     "tmdbId": "549509",
+     "rating": "7.2"
+    },
+    {
+     "rank": 8,
+     "kind": "movie",
+     "title": "Gente Gira",
+     "original": "Funny People",
+     "year": "2009",
+     "poster": "https://images.justwatch.com/poster/324675445/s332/ta-rindo-do-que.jpg",
+     "tmdbId": "20829",
+     "rating": "6.3"
+    },
+    {
      "rank": 9,
+     "kind": "movie",
+     "title": "Ilha do Medo",
+     "original": "Shutter Island",
+     "year": "2010",
+     "poster": "https://images.justwatch.com/poster/347587185/s332/ilha-do-medo.jpg",
+     "tmdbId": "11324",
+     "rating": "8.2"
+    },
+    {
+     "rank": 10,
      "kind": "movie",
      "title": "O Estado das Coisas",
      "original": "Rumours",
@@ -392,16 +402,6 @@
      "poster": "https://images.justwatch.com/poster/326392952/s332/rumours.jpg",
      "tmdbId": "1187417",
      "rating": "4.8"
-    },
-    {
-     "rank": 10,
-     "kind": "movie",
-     "title": "Lendo o Mundo",
-     "original": "Lendo o Mundo",
-     "year": "2025",
-     "poster": "https://images.justwatch.com/poster/337915870/s332/lendo-o-mundo.jpg",
-     "tmdbId": "1515487",
-     "rating": "8.0"
     }
    ],
    "series": [
@@ -428,16 +428,6 @@
     {
      "rank": 3,
      "kind": "series",
-     "title": "O Cinema por Philomena Cunk",
-     "original": "Cunk on Cinema",
-     "year": "2026",
-     "poster": "https://images.justwatch.com/poster/356995715/s332/cunk-on-cinema.jpg",
-     "tmdbId": "335981",
-     "rating": "7.4"
-    },
-    {
-     "rank": 4,
-     "kind": "series",
      "title": "A Lei dos Monstros",
      "original": "Prawo bestii",
      "year": "2026",
@@ -446,27 +436,17 @@
      "rating": "6.0"
     },
     {
+     "rank": 4,
+     "kind": "series",
+     "title": "O Cinema por Philomena Cunk",
+     "original": "Cunk on Cinema",
+     "year": "2026",
+     "poster": "https://images.justwatch.com/poster/356995715/s332/cunk-on-cinema.jpg",
+     "tmdbId": "335981",
+     "rating": "7.4"
+    },
+    {
      "rank": 5,
-     "kind": "series",
-     "title": "A Imperatriz",
-     "original": "Die Kaiserin",
-     "year": "2022",
-     "poster": "https://images.justwatch.com/poster/301073708/s332/the-empress.jpg",
-     "tmdbId": "131488",
-     "rating": "7.8"
-    },
-    {
-     "rank": 6,
-     "kind": "series",
-     "title": "O Mentalista",
-     "original": "The Mentalist",
-     "year": "2008",
-     "poster": "https://images.justwatch.com/poster/320894402/s332/o-mentalista.jpg",
-     "tmdbId": "5920",
-     "rating": "8.2"
-    },
-    {
-     "rank": 7,
      "kind": "series",
      "title": "Gordon",
      "original": "Gordon",
@@ -476,17 +456,47 @@
      "rating": "6.9"
     },
     {
+     "rank": 6,
+     "kind": "series",
+     "title": "Os Altruístas",
+     "original": "The Altruists",
+     "year": "2026",
+     "poster": "https://images.justwatch.com/poster/357109853/s332/the-altruists.jpg",
+     "tmdbId": "308007",
+     "rating": "5.9"
+    },
+    {
+     "rank": 7,
+     "kind": "series",
+     "title": "A Imperatriz",
+     "original": "Die Kaiserin",
+     "year": "2022",
+     "poster": "https://images.justwatch.com/poster/301073708/s332/the-empress.jpg",
+     "tmdbId": "131488",
+     "rating": "7.8"
+    },
+    {
      "rank": 8,
      "kind": "series",
-     "title": "O Crime de Pazos",
-     "original": "El crimen de Pazos",
-     "year": "2026",
-     "poster": "https://images.justwatch.com/poster/357152380/s332/el-crimen-de-pazos.jpg",
-     "tmdbId": "303182",
-     "rating": "6.3"
+     "title": "Percy Jackson",
+     "original": "Percy Jackson and the Olympians",
+     "year": "2023",
+     "poster": "https://images.justwatch.com/poster/340387890/s332/percy-jackson-and-the-olympians.jpg",
+     "tmdbId": "103540",
+     "rating": "7.0"
     },
     {
      "rank": 9,
+     "kind": "series",
+     "title": "O Mentalista",
+     "original": "The Mentalist",
+     "year": "2008",
+     "poster": "https://images.justwatch.com/poster/320894402/s332/o-mentalista.jpg",
+     "tmdbId": "5920",
+     "rating": "8.2"
+    },
+    {
+     "rank": 10,
      "kind": "series",
      "title": "Os 12 Signos de Valentina",
      "original": "Os 12 Signos de Valentina",
@@ -494,16 +504,6 @@
      "poster": "https://images.justwatch.com/poster/354661698/s332/os-12-signos-de-valentina.jpg",
      "tmdbId": "318420",
      "rating": "5.1"
-    },
-    {
-     "rank": 10,
-     "kind": "series",
-     "title": "A Lei de Alicia",
-     "original": "La Ley de Alicia",
-     "year": "2026",
-     "poster": "https://images.justwatch.com/poster/355536099/s332/la-ley-de-alicia.jpg",
-     "tmdbId": "338562",
-     "rating": "5.2"
     }
    ],
    "updated": "2026-11-21"
@@ -563,12 +563,12 @@
     {
      "rank": 6,
      "kind": "movie",
-     "title": "Conselhos de um Serial Killer Aposentado",
-     "original": "Psycho Therapy: The Shallow Tale of a Writer Who Decided to Write About a Serial Killer",
-     "year": "2025",
-     "poster": "https://images.justwatch.com/poster/329364827/s332/conselhos-de-um-serial-killer-aposentado.jpg",
-     "tmdbId": "681434",
-     "rating": "6.2"
+     "title": "Headhunters - Caçadores de Cabeças",
+     "original": "Hodejegerne",
+     "year": "2011",
+     "poster": "https://images.justwatch.com/poster/344614693/s332/headhunters.jpg",
+     "tmdbId": "70670",
+     "rating": "7.5"
     },
     {
      "rank": 7,
@@ -583,22 +583,22 @@
     {
      "rank": 8,
      "kind": "movie",
-     "title": "Headhunters - Caçadores de Cabeças",
-     "original": "Hodejegerne",
-     "year": "2011",
-     "poster": "https://images.justwatch.com/poster/344614693/s332/headhunters.jpg",
-     "tmdbId": "70670",
-     "rating": "7.5"
-    },
-    {
-     "rank": 9,
-     "kind": "movie",
      "title": "Sequestro",
      "original": "Kapringen",
      "year": "2012",
      "poster": "https://images.justwatch.com/poster/175994214/s332/kapringen.jpg",
      "tmdbId": "127846",
      "rating": "7.1"
+    },
+    {
+     "rank": 9,
+     "kind": "movie",
+     "title": "Esquecido",
+     "original": "Oblivion",
+     "year": "2013",
+     "poster": "https://images.justwatch.com/poster/303435987/s332/oblivion-2013.jpg",
+     "tmdbId": "75612",
+     "rating": "7.0"
     },
     {
      "rank": 10,
@@ -655,22 +655,22 @@
     {
      "rank": 5,
      "kind": "series",
-     "title": "Snatch: Um Novo Golpe",
-     "original": "Snatch",
-     "year": "2017",
-     "poster": "https://images.justwatch.com/poster/184287973/s332/snatch.jpg",
-     "tmdbId": "69659",
-     "rating": "6.9"
-    },
-    {
-     "rank": 6,
-     "kind": "series",
      "title": "A Lista Terminal",
      "original": "The Terminal List",
      "year": "2022",
      "poster": "https://images.justwatch.com/poster/288805998/s332/the-terminal-list.jpg",
      "tmdbId": "120911",
      "rating": "7.9"
+    },
+    {
+     "rank": 6,
+     "kind": "series",
+     "title": "A História de Uma Serva",
+     "original": "The Handmaid's Tale",
+     "year": "2017",
+     "poster": "https://images.justwatch.com/poster/245230722/s332/the-handmaids-tale.jpg",
+     "tmdbId": "69478",
+     "rating": "8.3"
     },
     {
      "rank": 7,
@@ -695,22 +695,22 @@
     {
      "rank": 9,
      "kind": "series",
-     "title": "O Instituto",
-     "original": "The Institute",
-     "year": "2025",
-     "poster": "https://images.justwatch.com/poster/331844524/s332/the-institute.jpg",
-     "tmdbId": "253372",
-     "rating": "6.7"
+     "title": "Carrie: A Estranha",
+     "original": "Carrie",
+     "year": "2026",
+     "poster": "https://images.justwatch.com/poster/350899399/s332/carrie.jpg",
+     "tmdbId": "288673",
+     "rating": "7.8"
     },
     {
      "rank": 10,
      "kind": "series",
-     "title": "Lei & Ordem: Unidade Especial",
-     "original": "Law & Order: Special Victims Unit",
-     "year": "1999",
-     "poster": "https://images.justwatch.com/poster/261792206/s332/law-and-order-special-victims-unit.jpg",
-     "tmdbId": "2734",
-     "rating": "8.1"
+     "title": "O Escritório",
+     "original": "The Office",
+     "year": "2005",
+     "poster": "https://images.justwatch.com/poster/305385052/s332/o-escritorio.jpg",
+     "tmdbId": "2316",
+     "rating": "9.0"
     }
    ],
    "updated": "2026-11-21"
@@ -740,16 +740,6 @@
     {
      "rank": 3,
      "kind": "movie",
-     "title": "Sombras no Deserto",
-     "original": "The Carpenter's Son",
-     "year": "2025",
-     "poster": "https://images.justwatch.com/poster/341957615/s332/the-carpenters-son.jpg",
-     "tmdbId": "1286185",
-     "rating": "4.6"
-    },
-    {
-     "rank": 4,
-     "kind": "movie",
      "title": "Os Últimos Gângsters de Nova York",
      "original": "Truth and Lies: The Last Gangster",
      "year": "2022",
@@ -758,17 +748,7 @@
      "rating": "6.5"
     },
     {
-     "rank": 5,
-     "kind": "movie",
-     "title": "Sexta-Feira 13",
-     "original": "Friday the 13th",
-     "year": "2009",
-     "poster": "https://images.justwatch.com/poster/280703607/s332/sexta-feira-13-2009.jpg",
-     "tmdbId": "13207",
-     "rating": "5.5"
-    },
-    {
-     "rank": 6,
+     "rank": 4,
      "kind": "movie",
      "title": "Lar Doce Inferno",
      "original": "Home Sweet Home: Rebirth",
@@ -778,7 +758,37 @@
      "rating": "4.1"
     },
     {
+     "rank": 5,
+     "kind": "movie",
+     "title": "The Pursuit: F1 Academy",
+     "original": "The Pursuit: F1 ACADEMY",
+     "year": "2026",
+     "poster": "https://images.justwatch.com/poster/357568237/s332/the-pursuit-f1-academy.jpg",
+     "tmdbId": "1804968",
+     "rating": null
+    },
+    {
+     "rank": 6,
+     "kind": "movie",
+     "title": "A Vida Secreta de Walter Mitty",
+     "original": "The Secret Life of Walter Mitty",
+     "year": "2013",
+     "poster": "https://images.justwatch.com/poster/244771434/s332/a-vida-secreta-de-walter-mitty.jpg",
+     "tmdbId": "116745",
+     "rating": "7.3"
+    },
+    {
      "rank": 7,
+     "kind": "movie",
+     "title": "Acorda",
+     "original": "Wake Up",
+     "year": "2024",
+     "poster": "https://images.justwatch.com/poster/321466742/s332/wake-up-2024.jpg",
+     "tmdbId": "1165466",
+     "rating": "5.4"
+    },
+    {
+     "rank": 8,
      "kind": "movie",
      "title": "POV: Presença Oculta",
      "original": "Bodycam",
@@ -788,7 +798,7 @@
      "rating": "5.0"
     },
     {
-     "rank": 8,
+     "rank": 9,
      "kind": "movie",
      "title": "Não Abras",
      "original": "It Lives Inside",
@@ -796,16 +806,6 @@
      "poster": "https://images.justwatch.com/poster/308729568/s332/it-lives-inside-2023.jpg",
      "tmdbId": "1024773",
      "rating": "5.2"
-    },
-    {
-     "rank": 9,
-     "kind": "movie",
-     "title": "(500) Dias com Summer",
-     "original": "(500) Days of Summer",
-     "year": "2009",
-     "poster": "https://images.justwatch.com/poster/348215773/s332/500-dias-com-ela.jpg",
-     "tmdbId": "19913",
-     "rating": "7.6"
     },
     {
      "rank": 10,
@@ -842,6 +842,16 @@
     {
      "rank": 3,
      "kind": "series",
+     "title": "Percy Jackson",
+     "original": "Percy Jackson and the Olympians",
+     "year": "2023",
+     "poster": "https://images.justwatch.com/poster/340387890/s332/percy-jackson-and-the-olympians.jpg",
+     "tmdbId": "103540",
+     "rating": "7.0"
+    },
+    {
+     "rank": 4,
+     "kind": "series",
      "title": "Fingida",
      "original": "Phony",
      "year": "2026",
@@ -850,27 +860,7 @@
      "rating": "6.6"
     },
     {
-     "rank": 4,
-     "kind": "series",
-     "title": "The Killing - Além de um Crime",
-     "original": "The Killing",
-     "year": "2011",
-     "poster": "https://images.justwatch.com/poster/241811644/s332/the-killing-2011.jpg",
-     "tmdbId": "34415",
-     "rating": "8.3"
-    },
-    {
      "rank": 5,
-     "kind": "series",
-     "title": "Mentes Criminosas",
-     "original": "Criminal Minds",
-     "year": "2005",
-     "poster": "https://images.justwatch.com/poster/302376777/s332/criminal-minds.jpg",
-     "tmdbId": "4057",
-     "rating": "8.1"
-    },
-    {
-     "rank": 6,
      "kind": "series",
      "title": "Anatomia de Grey",
      "original": "Grey's Anatomy",
@@ -880,17 +870,17 @@
      "rating": "7.6"
     },
     {
-     "rank": 7,
+     "rank": 6,
      "kind": "series",
-     "title": "Looksmaxxing até a Morte",
-     "original": "Get Huge: Looksmaxxing to Death",
-     "year": "2026",
-     "poster": "https://images.justwatch.com/poster/357367517/s332/get-huge-looksmaxxing-to-death.jpg",
-     "tmdbId": "340053",
-     "rating": "5.9"
+     "title": "Mentes Criminosas",
+     "original": "Criminal Minds",
+     "year": "2005",
+     "poster": "https://images.justwatch.com/poster/302376777/s332/criminal-minds.jpg",
+     "tmdbId": "4057",
+     "rating": "8.1"
     },
     {
-     "rank": 8,
+     "rank": 7,
      "kind": "series",
      "title": "O Novo Casamento da Imperatriz",
      "original": "재혼 황후",
@@ -900,17 +890,17 @@
      "rating": null
     },
     {
-     "rank": 9,
+     "rank": 8,
      "kind": "series",
-     "title": "Chicago Fire",
-     "original": "Chicago Fire",
-     "year": "2012",
-     "poster": "https://images.justwatch.com/poster/261883441/s332/chicago-fire.jpg",
-     "tmdbId": "44006",
-     "rating": "8.0"
+     "title": "A História de Uma Serva",
+     "original": "The Handmaid's Tale",
+     "year": "2017",
+     "poster": "https://images.justwatch.com/poster/245230722/s332/the-handmaids-tale.jpg",
+     "tmdbId": "69478",
+     "rating": "8.3"
     },
     {
-     "rank": 10,
+     "rank": 9,
      "kind": "series",
      "title": "Verdade Oculta",
      "original": "The Lowdown",
@@ -918,6 +908,16 @@
      "poster": "https://images.justwatch.com/poster/336550738/s332/the-sensitive-kind.jpg",
      "tmdbId": "273247",
      "rating": "7.3"
+    },
+    {
+     "rank": 10,
+     "kind": "series",
+     "title": "Chicago Fire",
+     "original": "Chicago Fire",
+     "year": "2012",
+     "poster": "https://images.justwatch.com/poster/261883441/s332/chicago-fire.jpg",
+     "tmdbId": "44006",
+     "rating": "8.0"
     }
    ],
    "updated": "2026-11-21"
@@ -947,6 +947,16 @@
     {
      "rank": 3,
      "kind": "movie",
+     "title": "Do Outro Lado da Linha de Ajuda",
+     "original": "The Hotline",
+     "year": "2026",
+     "poster": "https://images.justwatch.com/poster/357128345/s332/the-hotline.jpg",
+     "tmdbId": "1627922",
+     "rating": "6.8"
+    },
+    {
+     "rank": 4,
+     "kind": "movie",
      "title": "Às Cegas",
      "original": "Sightless",
      "year": "2020",
@@ -955,27 +965,7 @@
      "rating": "5.5"
     },
     {
-     "rank": 4,
-     "kind": "movie",
-     "title": "Vingança e Sedução",
-     "original": "Ms .45",
-     "year": "1981",
-     "poster": "https://images.justwatch.com/poster/11131535/s332/vinganca-duma-mulher.jpg",
-     "tmdbId": "22171",
-     "rating": "6.8"
-    },
-    {
      "rank": 5,
-     "kind": "movie",
-     "title": "O Pacto",
-     "original": "The Covenant",
-     "year": "2006",
-     "poster": "https://images.justwatch.com/poster/180593595/s332/o-pacto.jpg",
-     "tmdbId": "9954",
-     "rating": "5.2"
-    },
-    {
-     "rank": 6,
      "kind": "movie",
      "title": "Tenet",
      "original": "Tenet",
@@ -983,6 +973,16 @@
      "poster": "https://images.justwatch.com/poster/354116125/s332/tenet.jpg",
      "tmdbId": "577922",
      "rating": "7.3"
+    },
+    {
+     "rank": 6,
+     "kind": "movie",
+     "title": "Vingança e Sedução",
+     "original": "Ms .45",
+     "year": "1981",
+     "poster": "https://images.justwatch.com/poster/11131535/s332/vinganca-duma-mulher.jpg",
+     "tmdbId": "22171",
+     "rating": "6.8"
     },
     {
      "rank": 7,
@@ -997,15 +997,25 @@
     {
      "rank": 8,
      "kind": "movie",
-     "title": "Do Outro Lado da Linha de Ajuda",
-     "original": "The Hotline",
-     "year": "2026",
-     "poster": "https://images.justwatch.com/poster/357128345/s332/the-hotline.jpg",
-     "tmdbId": "1627922",
-     "rating": "6.8"
+     "title": "O Pacto",
+     "original": "The Covenant",
+     "year": "2006",
+     "poster": "https://images.justwatch.com/poster/180593595/s332/o-pacto.jpg",
+     "tmdbId": "9954",
+     "rating": "5.2"
     },
     {
      "rank": 9,
+     "kind": "movie",
+     "title": "Insidious: O Longínquo",
+     "original": "Insidious: Out of the Further",
+     "year": "2026",
+     "poster": "https://images.justwatch.com/poster/355225002/s332/insidious-out-of-the-further.jpg",
+     "tmdbId": "1291595",
+     "rating": "6.0"
+    },
+    {
+     "rank": 10,
      "kind": "movie",
      "title": "Undertone",
      "original": "undertone",
@@ -1013,16 +1023,6 @@
      "poster": "https://images.justwatch.com/poster/340813644/s332/undertone.jpg",
      "tmdbId": "1480387",
      "rating": "5.9"
-    },
-    {
-     "rank": 10,
-     "kind": "movie",
-     "title": "Crianças Roubadas",
-     "original": "Stolen Children",
-     "year": "2025",
-     "poster": "https://images.justwatch.com/poster/341407163/s332/stolen-children.jpg",
-     "tmdbId": "1583382",
-     "rating": "7.0"
     }
    ],
    "series": [
@@ -1039,16 +1039,6 @@
     {
      "rank": 2,
      "kind": "series",
-     "title": "Aeroporto: Área Restrita",
-     "original": "Aeroporto: Área Restrita",
-     "year": "2017",
-     "poster": "https://images.justwatch.com/poster/309816836/s332/aeroporto-area-restrita.jpg",
-     "tmdbId": "103972",
-     "rating": "8.2"
-    },
-    {
-     "rank": 3,
-     "kind": "series",
      "title": "Tip Toe",
      "original": "Tip Toe",
      "year": "2026",
@@ -1057,27 +1047,17 @@
      "rating": "8.1"
     },
     {
+     "rank": 3,
+     "kind": "series",
+     "title": "Aeroporto: Área Restrita",
+     "original": "Aeroporto: Área Restrita",
+     "year": "2017",
+     "poster": "https://images.justwatch.com/poster/309816836/s332/aeroporto-area-restrita.jpg",
+     "tmdbId": "103972",
+     "rating": "8.2"
+    },
+    {
      "rank": 4,
-     "kind": "series",
-     "title": "Line of Fire",
-     "original": "Line of Fire",
-     "year": "2026",
-     "poster": "https://images.justwatch.com/poster/350163347/s332/line-of-fire.jpg",
-     "tmdbId": "321958",
-     "rating": "6.4"
-    },
-    {
-     "rank": 5,
-     "kind": "series",
-     "title": "Noite de Paz",
-     "original": "Wśród nocnej ciszy",
-     "year": "2026",
-     "poster": "https://images.justwatch.com/poster/356877599/s332/silent-night.jpg",
-     "tmdbId": "305245",
-     "rating": null
-    },
-    {
-     "rank": 6,
      "kind": "series",
      "title": "Georgie e Mandy: Seu Primeiro Casamento",
      "original": "Georgie & Mandy's First Marriage",
@@ -1087,17 +1067,27 @@
      "rating": "7.1"
     },
     {
-     "rank": 7,
+     "rank": 5,
      "kind": "series",
-     "title": "Black Clover",
-     "original": "Black Clover",
-     "year": "2017",
-     "poster": "https://images.justwatch.com/poster/289760864/s332/black-clover.jpg",
-     "tmdbId": null,
-     "rating": "8.3"
+     "title": "Line of Fire",
+     "original": "Line of Fire",
+     "year": "2026",
+     "poster": "https://images.justwatch.com/poster/350163347/s332/line-of-fire.jpg",
+     "tmdbId": "321958",
+     "rating": "6.4"
     },
     {
-     "rank": 8,
+     "rank": 6,
+     "kind": "series",
+     "title": "Noite de Paz",
+     "original": "Wśród nocnej ciszy",
+     "year": "2026",
+     "poster": "https://images.justwatch.com/poster/356877599/s332/silent-night.jpg",
+     "tmdbId": "305245",
+     "rating": null
+    },
+    {
+     "rank": 7,
      "kind": "series",
      "title": "Diários de uma Apotecária",
      "original": "Kusuriya no hitorigoto",
@@ -1107,7 +1097,7 @@
      "rating": "8.6"
     },
     {
-     "rank": 9,
+     "rank": 8,
      "kind": "series",
      "title": "One Piece",
      "original": "ワンピース",
@@ -1117,14 +1107,24 @@
      "rating": "9.0"
     },
     {
+     "rank": 9,
+     "kind": "series",
+     "title": "War",
+     "original": "War",
+     "year": "2026",
+     "poster": "https://images.justwatch.com/poster/354890779/s332/war.jpg",
+     "tmdbId": "298852",
+     "rating": "7.1"
+    },
+    {
      "rank": 10,
      "kind": "series",
-     "title": "Succession",
-     "original": "Succession",
-     "year": "2018",
-     "poster": "https://images.justwatch.com/poster/139397525/s332/succession.jpg",
-     "tmdbId": "76331",
-     "rating": "8.8"
+     "title": "Black Clover",
+     "original": "Black Clover",
+     "year": "2017",
+     "poster": "https://images.justwatch.com/poster/289760864/s332/black-clover.jpg",
+     "tmdbId": null,
+     "rating": "8.3"
     }
    ],
    "updated": "2026-11-21"
@@ -1154,16 +1154,6 @@
     {
      "rank": 3,
      "kind": "movie",
-     "title": "Snoopy Apresenta: 12 Dias de Snoopy",
-     "original": "Snoopy Presents: 12 Days of Snoopy",
-     "year": "2026",
-     "poster": "https://images.justwatch.com/poster/356577592/s332/snoopy-apresenta-12-dias-de-snoopy.jpg",
-     "tmdbId": "1780407",
-     "rating": "7.5"
-    },
-    {
-     "rank": 4,
-     "kind": "movie",
      "title": "O Dia de Ação de Graças de Charlie Brown",
      "original": "A Charlie Brown Thanksgiving",
      "year": "1973",
@@ -1172,7 +1162,7 @@
      "rating": "7.7"
     },
     {
-     "rank": 5,
+     "rank": 4,
      "kind": "movie",
      "title": "Comer Orar Amar",
      "original": "Eat Pray Love",
@@ -1180,6 +1170,16 @@
      "poster": "https://images.justwatch.com/poster/344625522/s332/comer-rezar-amar.jpg",
      "tmdbId": "38167",
      "rating": "5.9"
+    },
+    {
+     "rank": 5,
+     "kind": "movie",
+     "title": "F1 - O Filme",
+     "original": "F1",
+     "year": "2025",
+     "poster": "https://images.justwatch.com/poster/336298590/s332/f1.jpg",
+     "tmdbId": "911430",
+     "rating": "7.6"
     },
     {
      "rank": 6,
@@ -1194,42 +1194,42 @@
     {
      "rank": 7,
      "kind": "movie",
-     "title": "Tetris",
-     "original": "Tetris",
-     "year": "2023",
-     "poster": "https://images.justwatch.com/poster/304360454/s332/tetris.jpg",
-     "tmdbId": "726759",
-     "rating": "7.4"
+     "title": "Snoopy Apresenta: 12 Dias de Snoopy",
+     "original": "Snoopy Presents: 12 Days of Snoopy",
+     "year": "2026",
+     "poster": "https://images.justwatch.com/poster/356577592/s332/snoopy-apresenta-12-dias-de-snoopy.jpg",
+     "tmdbId": "1780407",
+     "rating": "7.5"
     },
     {
      "rank": 8,
      "kind": "movie",
-     "title": "À Noite, no Museu",
-     "original": "Night at the Museum",
-     "year": "2006",
-     "poster": "https://images.justwatch.com/poster/348531492/s332/uma-noite-no-museu.jpg",
-     "tmdbId": "1593",
-     "rating": "6.5"
+     "title": "O Desfiladeiro",
+     "original": "The Gorge",
+     "year": "2025",
+     "poster": "https://images.justwatch.com/poster/336304342/s332/the-gorge.jpg",
+     "tmdbId": "950396",
+     "rating": "6.7"
     },
     {
      "rank": 9,
      "kind": "movie",
-     "title": "Instigadores",
-     "original": "The Instigators",
-     "year": "2024",
-     "poster": "https://images.justwatch.com/poster/336511039/s332/instigadores.jpg",
-     "tmdbId": "1059064",
-     "rating": "6.2"
+     "title": "Ready Player One - Jogador 1",
+     "original": "Ready Player One",
+     "year": "2018",
+     "poster": "https://images.justwatch.com/poster/301728739/s332/ready-player-one-jogador-1.jpg",
+     "tmdbId": "333339",
+     "rating": "7.4"
     },
     {
      "rank": 10,
      "kind": "movie",
-     "title": "Napoleão",
-     "original": "Napoleon",
-     "year": "2023",
-     "poster": "https://images.justwatch.com/poster/309771177/s332/napoleon-2023.jpg",
-     "tmdbId": "753342",
-     "rating": "6.3"
+     "title": "Homem-Aranha: Longe de Casa",
+     "original": "Spider-Man: Far from Home",
+     "year": "2019",
+     "poster": "https://images.justwatch.com/poster/312913031/s332/homem-aranha-longe-de-casa.jpg",
+     "tmdbId": "429617",
+     "rating": "7.3"
     }
    ],
    "series": [
@@ -1316,22 +1316,22 @@
     {
      "rank": 9,
      "kind": "series",
-     "title": "Separação",
-     "original": "Severance",
-     "year": "2022",
-     "poster": "https://images.justwatch.com/poster/324479626/s332/severance.jpg",
-     "tmdbId": "95396",
-     "rating": "8.6"
-    },
-    {
-     "rank": 10,
-     "kind": "series",
      "title": "Onde Está a Wanda?",
      "original": "Where's Wanda?",
      "year": "2024",
      "poster": "https://images.justwatch.com/poster/356620627/s332/wheres-wanda.jpg",
      "tmdbId": "234310",
      "rating": "6.5"
+    },
+    {
+     "rank": 10,
+     "kind": "series",
+     "title": "Separação",
+     "original": "Severance",
+     "year": "2022",
+     "poster": "https://images.justwatch.com/poster/324479626/s332/severance.jpg",
+     "tmdbId": "95396",
+     "rating": "8.6"
     }
    ],
    "updated": "2026-11-21"
@@ -1371,6 +1371,16 @@
     {
      "rank": 4,
      "kind": "movie",
+     "title": "Sonhos Roubados",
+     "original": "Sonhos Roubados",
+     "year": "2009",
+     "poster": "https://images.justwatch.com/poster/320692562/s332/sonhos-roubados.jpg",
+     "tmdbId": "45170",
+     "rating": "6.3"
+    },
+    {
+     "rank": 5,
+     "kind": "movie",
      "title": "Uma Jogada de Natal",
      "original": "Holiday Touchdown: A Chiefs Love Story",
      "year": "2024",
@@ -1379,7 +1389,7 @@
      "rating": "6.4"
     },
     {
-     "rank": 5,
+     "rank": 6,
      "kind": "movie",
      "title": "Tropa de Elite 2",
      "original": "Tropa de Elite 2",
@@ -1387,16 +1397,6 @@
      "poster": "https://images.justwatch.com/poster/139010770/s332/tropa-de-elite-2-o-inimigo-agora-e-outro.jpg",
      "tmdbId": "47931",
      "rating": "8.0"
-    },
-    {
-     "rank": 6,
-     "kind": "movie",
-     "title": "Sonhos Roubados",
-     "original": "Sonhos Roubados",
-     "year": "2009",
-     "poster": "https://images.justwatch.com/poster/320692562/s332/sonhos-roubados.jpg",
-     "tmdbId": "45170",
-     "rating": "6.3"
     },
     {
      "rank": 7,
@@ -1411,32 +1411,32 @@
     {
      "rank": 8,
      "kind": "movie",
+     "title": "O Criador",
+     "original": "The Creator",
+     "year": "2023",
+     "poster": "https://images.justwatch.com/poster/310432677/s332/the-creator.jpg",
+     "tmdbId": "670292",
+     "rating": "6.7"
+    },
+    {
+     "rank": 9,
+     "kind": "movie",
+     "title": "Crepúsculo",
+     "original": "Twilight",
+     "year": "2008",
+     "poster": "https://images.justwatch.com/poster/245448978/s332/a-saga-crepusculo-crepusculo.jpg",
+     "tmdbId": "8966",
+     "rating": "5.4"
+    },
+    {
+     "rank": 10,
+     "kind": "movie",
      "title": "Força em Alerta 2",
      "original": "Under Siege 2: Dark Territory",
      "year": "1995",
      "poster": "https://images.justwatch.com/poster/281640850/s332/a-forca-em-alerta-2.jpg",
      "tmdbId": "3512",
      "rating": "5.6"
-    },
-    {
-     "rank": 9,
-     "kind": "movie",
-     "title": "Os Farofeiros 2",
-     "original": "Os Farofeiros 2",
-     "year": "2024",
-     "poster": "https://images.justwatch.com/poster/321230179/s332/os-farofeiros-2.jpg",
-     "tmdbId": "1136897",
-     "rating": "5.7"
-    },
-    {
-     "rank": 10,
-     "kind": "movie",
-     "title": "A Saga Twilight: Amanhecer Parte 1",
-     "original": "The Twilight Saga: Breaking Dawn - Part 1",
-     "year": "2011",
-     "poster": "https://images.justwatch.com/poster/8640902/s332/a-saga-twilight-amanhecer-parte-1.jpg",
-     "tmdbId": "50619",
-     "rating": "5.0"
     }
    ],
    "series": [
@@ -1473,22 +1473,22 @@
     {
      "rank": 4,
      "kind": "series",
-     "title": "Taboo",
-     "original": "Taboo",
-     "year": "2017",
-     "poster": "https://images.justwatch.com/poster/91735295/s332/taboo.jpg",
-     "tmdbId": "65708",
-     "rating": "8.3"
-    },
-    {
-     "rank": 5,
-     "kind": "series",
      "title": "Delegado",
      "original": "Delegado",
      "year": "2026",
      "poster": "https://images.justwatch.com/poster/357137137/s332/delegado.jpg",
      "tmdbId": "336716",
      "rating": "7.8"
+    },
+    {
+     "rank": 5,
+     "kind": "series",
+     "title": "Taboo",
+     "original": "Taboo",
+     "year": "2017",
+     "poster": "https://images.justwatch.com/poster/91735295/s332/taboo.jpg",
+     "tmdbId": "65708",
+     "rating": "8.3"
     },
     {
      "rank": 6,
@@ -1503,6 +1503,16 @@
     {
      "rank": 7,
      "kind": "series",
+     "title": "A História de Uma Serva",
+     "original": "The Handmaid's Tale",
+     "year": "2017",
+     "poster": "https://images.justwatch.com/poster/245230722/s332/the-handmaids-tale.jpg",
+     "tmdbId": "69478",
+     "rating": "8.3"
+    },
+    {
+     "rank": 8,
+     "kind": "series",
      "title": "Chicago Fire",
      "original": "Chicago Fire",
      "year": "2012",
@@ -1511,7 +1521,7 @@
      "rating": "8.0"
     },
     {
-     "rank": 8,
+     "rank": 9,
      "kind": "series",
      "title": "Lei & Ordem: Unidade Especial",
      "original": "Law & Order: Special Victims Unit",
@@ -1521,23 +1531,13 @@
      "rating": "8.1"
     },
     {
-     "rank": 9,
-     "kind": "series",
-     "title": "A História de Uma Serva",
-     "original": "The Handmaid's Tale",
-     "year": "2017",
-     "poster": "https://images.justwatch.com/poster/245230722/s332/the-handmaids-tale.jpg",
-     "tmdbId": "69478",
-     "rating": "8.3"
-    },
-    {
      "rank": 10,
      "kind": "series",
-     "title": "Quem Ama Cuida",
-     "original": "Quem Ama Cuida",
-     "year": "2026",
-     "poster": "https://images.justwatch.com/poster/346685796/s332/quem-ama-cuida.jpg",
-     "tmdbId": "306956",
+     "title": "Chicago P.D.",
+     "original": "Chicago P.D.",
+     "year": "2014",
+     "poster": "https://images.justwatch.com/poster/249409710/s332/chicago-p-d.jpg",
+     "tmdbId": "58841",
      "rating": "8.1"
     }
    ],
@@ -1548,22 +1548,22 @@
     {
      "rank": 1,
      "kind": "movie",
+     "title": "13 Horas: Os Soldados Secretos de Benghazi",
+     "original": "13 Hours: The Secret Soldiers of Benghazi",
+     "year": "2016",
+     "poster": "https://images.justwatch.com/poster/176297136/s332/13-horas-os-soldados-secretos-de-benghazi.jpg",
+     "tmdbId": "300671",
+     "rating": "7.3"
+    },
+    {
+     "rank": 2,
+     "kind": "movie",
      "title": "Respire",
      "original": "Breathe",
      "year": "2024",
      "poster": "https://images.justwatch.com/poster/323081937/s332/breathe-2024.jpg",
      "tmdbId": "720321",
      "rating": "4.3"
-    },
-    {
-     "rank": 2,
-     "kind": "movie",
-     "title": "Corrida para o Inferno",
-     "original": "Drive Through Fire",
-     "year": "2026",
-     "poster": "https://images.justwatch.com/poster/354633367/s332/corrida-para-o-inferno.jpg",
-     "tmdbId": "1378742",
-     "rating": "4.2"
     },
     {
      "rank": 3,
@@ -1578,22 +1578,22 @@
     {
      "rank": 4,
      "kind": "movie",
-     "title": "13 Horas: Os Soldados Secretos de Benghazi",
-     "original": "13 Hours: The Secret Soldiers of Benghazi",
-     "year": "2016",
-     "poster": "https://images.justwatch.com/poster/176297136/s332/13-horas-os-soldados-secretos-de-benghazi.jpg",
-     "tmdbId": "300671",
-     "rating": "7.3"
+     "title": "Corrida para o Inferno",
+     "original": "Drive Through Fire",
+     "year": "2026",
+     "poster": "https://images.justwatch.com/poster/354633367/s332/corrida-para-o-inferno.jpg",
+     "tmdbId": "1378742",
+     "rating": "4.2"
     },
     {
      "rank": 5,
      "kind": "movie",
-     "title": "Haverá Sangue",
-     "original": "There Will Be Blood",
-     "year": "2007",
-     "poster": "https://images.justwatch.com/poster/333605289/s332/sangue-negro.jpg",
-     "tmdbId": "7345",
-     "rating": "8.2"
+     "title": "A Queda de Wall Street",
+     "original": "The Big Short",
+     "year": "2015",
+     "poster": "https://images.justwatch.com/poster/354342088/s332/a-queda-de-wall-street.jpg",
+     "tmdbId": "318846",
+     "rating": "7.8"
     },
     {
      "rank": 6,
@@ -1618,25 +1618,15 @@
     {
      "rank": 8,
      "kind": "movie",
-     "title": "A Queda de Wall Street",
-     "original": "The Big Short",
-     "year": "2015",
-     "poster": "https://images.justwatch.com/poster/354342088/s332/a-queda-de-wall-street.jpg",
-     "tmdbId": "318846",
-     "rating": "7.8"
+     "title": "Haverá Sangue",
+     "original": "There Will Be Blood",
+     "year": "2007",
+     "poster": "https://images.justwatch.com/poster/333605289/s332/sangue-negro.jpg",
+     "tmdbId": "7345",
+     "rating": "8.2"
     },
     {
      "rank": 9,
-     "kind": "movie",
-     "title": "A Terra Prometida",
-     "original": "Bastarden",
-     "year": "2023",
-     "poster": "https://images.justwatch.com/poster/319846392/s332/the-bastard.jpg",
-     "tmdbId": "980026",
-     "rating": "7.7"
-    },
-    {
-     "rank": 10,
      "kind": "movie",
      "title": "Protocolo de Fuga",
      "original": "Exit Protocol",
@@ -1644,21 +1634,21 @@
      "poster": "https://images.justwatch.com/poster/338532534/s332/protocolo-de-fuga.jpg",
      "tmdbId": "1293167",
      "rating": "3.7"
+    },
+    {
+     "rank": 10,
+     "kind": "movie",
+     "title": "Por um Fio",
+     "original": "Hanging by a Wire",
+     "year": "2026",
+     "poster": "https://images.justwatch.com/poster/350686982/s332/por-um-fio-2026.jpg",
+     "tmdbId": "1480856",
+     "rating": "6.7"
     }
    ],
    "series": [
     {
      "rank": 1,
-     "kind": "series",
-     "title": "Dexter: Ressurreição",
-     "original": "Dexter: Resurrection",
-     "year": "2025",
-     "poster": "https://images.justwatch.com/poster/335638103/s332/dexter-resurrection.jpg",
-     "tmdbId": "259909",
-     "rating": "9.0"
-    },
-    {
-     "rank": 2,
      "kind": "series",
      "title": "Terra de Bandidos",
      "original": "MobLand",
@@ -1668,17 +1658,17 @@
      "rating": "8.3"
     },
     {
-     "rank": 3,
+     "rank": 2,
      "kind": "series",
-     "title": "Mentes Criminosas",
-     "original": "Criminal Minds",
-     "year": "2005",
-     "poster": "https://images.justwatch.com/poster/302376777/s332/criminal-minds.jpg",
-     "tmdbId": "4057",
-     "rating": "8.1"
+     "title": "Dexter: Ressurreição",
+     "original": "Dexter: Resurrection",
+     "year": "2025",
+     "poster": "https://images.justwatch.com/poster/335638103/s332/dexter-resurrection.jpg",
+     "tmdbId": "259909",
+     "rating": "9.0"
     },
     {
-     "rank": 4,
+     "rank": 3,
      "kind": "series",
      "title": "Marshals: Uma História de Yellowstone",
      "original": "Y: Marshals",
@@ -1688,7 +1678,27 @@
      "rating": "6.2"
     },
     {
+     "rank": 4,
+     "kind": "series",
+     "title": "Mentes Criminosas",
+     "original": "Criminal Minds",
+     "year": "2005",
+     "poster": "https://images.justwatch.com/poster/302376777/s332/criminal-minds.jpg",
+     "tmdbId": "4057",
+     "rating": "8.1"
+    },
+    {
      "rank": 5,
+     "kind": "series",
+     "title": "A História de Uma Serva",
+     "original": "The Handmaid's Tale",
+     "year": "2017",
+     "poster": "https://images.justwatch.com/poster/245230722/s332/the-handmaids-tale.jpg",
+     "tmdbId": "69478",
+     "rating": "8.3"
+    },
+    {
+     "rank": 6,
      "kind": "series",
      "title": "Dexter",
      "original": "Dexter",
@@ -1698,24 +1708,14 @@
      "rating": "8.6"
     },
     {
-     "rank": 6,
-     "kind": "series",
-     "title": "Tulsa King",
-     "original": "Tulsa King",
-     "year": "2022",
-     "poster": "https://images.justwatch.com/poster/337316136/s332/tulsa-king.jpg",
-     "tmdbId": "153312",
-     "rating": "7.9"
-    },
-    {
      "rank": 7,
      "kind": "series",
-     "title": "A História de Uma Serva",
-     "original": "The Handmaid's Tale",
-     "year": "2017",
-     "poster": "https://images.justwatch.com/poster/245230722/s332/the-handmaids-tale.jpg",
-     "tmdbId": "69478",
-     "rating": "8.3"
+     "title": "South Park",
+     "original": "South Park",
+     "year": "1997",
+     "poster": "https://images.justwatch.com/poster/335374909/s332/south-park.jpg",
+     "tmdbId": "2190",
+     "rating": "8.7"
     },
     {
      "rank": 8,
@@ -1730,22 +1730,22 @@
     {
      "rank": 9,
      "kind": "series",
-     "title": "South Park",
-     "original": "South Park",
-     "year": "1997",
-     "poster": "https://images.justwatch.com/poster/335374909/s332/south-park.jpg",
-     "tmdbId": "2190",
-     "rating": "8.7"
+     "title": "Tulsa King",
+     "original": "Tulsa King",
+     "year": "2022",
+     "poster": "https://images.justwatch.com/poster/337316136/s332/tulsa-king.jpg",
+     "tmdbId": "153312",
+     "rating": "7.9"
     },
     {
      "rank": 10,
      "kind": "series",
-     "title": "Quebra-Cabeça Mortal",
-     "original": "The Jigsaw Puzzle Murder",
-     "year": "2026",
-     "poster": "https://images.justwatch.com/poster/356944528/s332/quebra-cabeca-mortal.jpg",
-     "tmdbId": "340784",
-     "rating": "6.9"
+     "title": "SEAL Team: Soldados de Elite",
+     "original": "SEAL Team",
+     "year": "2017",
+     "poster": "https://images.justwatch.com/poster/304524277/s332/seal-team.jpg",
+     "tmdbId": "71789",
+     "rating": "7.9"
     }
    ],
    "updated": "2026-11-21"
@@ -1765,22 +1765,22 @@
     {
      "rank": 2,
      "kind": "movie",
+     "title": "Demon Slayer: Kimetsu no Yaiba Castelo Infinito",
+     "original": "劇場版「鬼滅の刃」無限城編 第一章 猗窩座再来",
+     "year": "2025",
+     "poster": "https://images.justwatch.com/poster/350635072/s332/demon-slayer-kimetsu-no-yaiba-infinity-castle.jpg",
+     "tmdbId": "1311031",
+     "rating": "8.3"
+    },
+    {
+     "rank": 3,
+     "kind": "movie",
      "title": "Suzume",
      "original": "すずめの戸締まり",
      "year": "2022",
      "poster": "https://images.justwatch.com/poster/312563600/s332/suzume-no-tojimari.jpg",
      "tmdbId": "916224",
      "rating": "7.6"
-    },
-    {
-     "rank": 3,
-     "kind": "movie",
-     "title": "My Hero Academia - Uma Missão Para os Heróis Mundiais",
-     "original": "僕のヒーローアカデミア THE MOVIE ワールド ヒーローズ ミッション",
-     "year": "2021",
-     "poster": "https://images.justwatch.com/poster/293400167/s332/my-hero-academia-movie-3.jpg",
-     "tmdbId": "768744",
-     "rating": "7.0"
     },
     {
      "rank": 4,
@@ -1795,12 +1795,12 @@
     {
      "rank": 5,
      "kind": "movie",
-     "title": "Demon Slayer: Kimetsu no Yaiba Castelo Infinito",
-     "original": "劇場版「鬼滅の刃」無限城編 第一章 猗窩座再来",
-     "year": "2025",
-     "poster": "https://images.justwatch.com/poster/350635072/s332/demon-slayer-kimetsu-no-yaiba-infinity-castle.jpg",
-     "tmdbId": "1311031",
-     "rating": "8.3"
+     "title": "My Hero Academia - Uma Missão Para os Heróis Mundiais",
+     "original": "僕のヒーローアカデミア THE MOVIE ワールド ヒーローズ ミッション",
+     "year": "2021",
+     "poster": "https://images.justwatch.com/poster/293400167/s332/my-hero-academia-movie-3.jpg",
+     "tmdbId": "768744",
+     "rating": "7.0"
     },
     {
      "rank": 6,
@@ -1815,22 +1815,22 @@
     {
      "rank": 7,
      "kind": "movie",
-     "title": "Chainsaw Man - O Filme: Reze Arc",
-     "original": "劇場版 チェンソーマン レゼ篇",
-     "year": "2025",
-     "poster": "https://images.justwatch.com/poster/339907814/s332/chainsaw-man-the-movie-reze-arc.jpg",
-     "tmdbId": "1218925",
-     "rating": "8.3"
-    },
-    {
-     "rank": 8,
-     "kind": "movie",
      "title": "Spy x Family Código - Branco",
      "original": "劇場版 SPY×FAMILY CODE: White",
      "year": "2023",
      "poster": "https://images.justwatch.com/poster/313009442/s332/spy-x-family-code-white.jpg",
      "tmdbId": "1062807",
      "rating": "7.3"
+    },
+    {
+     "rank": 8,
+     "kind": "movie",
+     "title": "Chainsaw Man - O Filme: Reze Arc",
+     "original": "劇場版 チェンソーマン レゼ篇",
+     "year": "2025",
+     "poster": "https://images.justwatch.com/poster/339907814/s332/chainsaw-man-the-movie-reze-arc.jpg",
+     "tmdbId": "1218925",
+     "rating": "8.3"
     },
     {
      "rank": 9,
@@ -1857,16 +1857,6 @@
     {
      "rank": 1,
      "kind": "series",
-     "title": "Black Clover",
-     "original": "Black Clover",
-     "year": "2017",
-     "poster": "https://images.justwatch.com/poster/289760864/s332/black-clover.jpg",
-     "tmdbId": null,
-     "rating": "8.3"
-    },
-    {
-     "rank": 2,
-     "kind": "series",
      "title": "Diários de uma Apotecária",
      "original": "Kusuriya no hitorigoto",
      "year": "2023",
@@ -1875,7 +1865,7 @@
      "rating": "8.6"
     },
     {
-     "rank": 3,
+     "rank": 2,
      "kind": "series",
      "title": "One Piece",
      "original": "ワンピース",
@@ -1885,7 +1875,27 @@
      "rating": "9.0"
     },
     {
+     "rank": 3,
+     "kind": "series",
+     "title": "Black Clover",
+     "original": "Black Clover",
+     "year": "2017",
+     "poster": "https://images.justwatch.com/poster/289760864/s332/black-clover.jpg",
+     "tmdbId": null,
+     "rating": "8.3"
+    },
+    {
      "rank": 4,
+     "kind": "series",
+     "title": "Ataque dos Titãs",
+     "original": "Shingeki no Kyojin",
+     "year": "2013",
+     "poster": "https://images.justwatch.com/poster/99030838/s332/ataque-dos-titas.jpg",
+     "tmdbId": "1429",
+     "rating": "9.1"
+    },
+    {
+     "rank": 5,
      "kind": "series",
      "title": "Sword Art Online",
      "original": "ソードアート・オンライン",
@@ -1895,24 +1905,14 @@
      "rating": "7.5"
     },
     {
-     "rank": 5,
-     "kind": "series",
-     "title": "Overgeared",
-     "original": "テムパル～アイテムの力～",
-     "year": "2026",
-     "poster": "https://images.justwatch.com/poster/355063863/s332/overgeared.jpg",
-     "tmdbId": "324502",
-     "rating": null
-    },
-    {
      "rank": 6,
      "kind": "series",
-     "title": "Ataque dos Titãs",
-     "original": "Shingeki no Kyojin",
-     "year": "2013",
-     "poster": "https://images.justwatch.com/poster/99030838/s332/ataque-dos-titas.jpg",
-     "tmdbId": "1429",
-     "rating": "9.1"
+     "title": "Dragon Ball Super: Beerus",
+     "original": "ドラゴンボール超 ビルス",
+     "year": "2026",
+     "poster": "https://images.justwatch.com/poster/354620109/s332/dragon-ball-super-beerus.jpg",
+     "tmdbId": "312359",
+     "rating": "8.9"
     },
     {
      "rank": 7,
@@ -1927,25 +1927,15 @@
     {
      "rank": 8,
      "kind": "series",
-     "title": "Dragon Ball Super: Beerus",
-     "original": "ドラゴンボール超 ビルス",
+     "title": "Overgeared",
+     "original": "テムパル～アイテムの力～",
      "year": "2026",
-     "poster": "https://images.justwatch.com/poster/354620109/s332/dragon-ball-super-beerus.jpg",
-     "tmdbId": "312359",
-     "rating": "8.9"
+     "poster": "https://images.justwatch.com/poster/355063863/s332/overgeared.jpg",
+     "tmdbId": "324502",
+     "rating": null
     },
     {
      "rank": 9,
-     "kind": "series",
-     "title": "Dragon Ball",
-     "original": "ドラゴンボール",
-     "year": "1986",
-     "poster": "https://images.justwatch.com/poster/354898526/s332/dragon-ball.jpg",
-     "tmdbId": "12609",
-     "rating": "8.5"
-    },
-    {
-     "rank": 10,
      "kind": "series",
      "title": "Hunter x Hunter",
      "original": "HUNTER×HUNTER",
@@ -1953,6 +1943,16 @@
      "poster": "https://images.justwatch.com/poster/350189679/s332/hantaxhanta.jpg",
      "tmdbId": "46298",
      "rating": "9.0"
+    },
+    {
+     "rank": 10,
+     "kind": "series",
+     "title": "Dragon Ball Z",
+     "original": "Dragon Ball Z",
+     "year": "1996",
+     "poster": "https://images.justwatch.com/poster/343296120/s332/dragon-ball-z.jpg",
+     "tmdbId": "12971",
+     "rating": "8.8"
     }
    ],
    "updated": "2026-11-21"
