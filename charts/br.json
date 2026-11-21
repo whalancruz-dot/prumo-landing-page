@@ -297,7 +297,7 @@
      "season": "Black Doves: Season 1"
     }
    ],
-   "updated": "2026-11-20"
+   "updated": "2026-11-21"
   }
  },
  "daily": {
@@ -376,16 +376,6 @@
     {
      "rank": 8,
      "kind": "movie",
-     "title": "Nove",
-     "original": "Nine",
-     "year": "2009",
-     "poster": "https://images.justwatch.com/poster/303968305/s332/nine.jpg",
-     "tmdbId": "10197",
-     "rating": "5.8"
-    },
-    {
-     "rank": 9,
-     "kind": "movie",
      "title": "Rush - Duelo de Rivais",
      "original": "Rush",
      "year": "2013",
@@ -394,7 +384,7 @@
      "rating": "8.1"
     },
     {
-     "rank": 10,
+     "rank": 9,
      "kind": "movie",
      "title": "O Estado das Coisas",
      "original": "Rumours",
@@ -402,6 +392,16 @@
      "poster": "https://images.justwatch.com/poster/326392952/s332/rumours.jpg",
      "tmdbId": "1187417",
      "rating": "4.8"
+    },
+    {
+     "rank": 10,
+     "kind": "movie",
+     "title": "Lendo o Mundo",
+     "original": "Lendo o Mundo",
+     "year": "2025",
+     "poster": "https://images.justwatch.com/poster/337915870/s332/lendo-o-mundo.jpg",
+     "tmdbId": "1515487",
+     "rating": "8.0"
     }
    ],
    "series": [
@@ -506,7 +506,7 @@
      "rating": "5.2"
     }
    ],
-   "updated": "2026-11-20"
+   "updated": "2026-11-21"
   },
   "prime": {
    "movies": [
@@ -543,6 +543,16 @@
     {
      "rank": 4,
      "kind": "movie",
+     "title": "Massacre no Texas",
+     "original": "The Texas Chain Saw Massacre",
+     "year": "1974",
+     "poster": "https://images.justwatch.com/poster/356464568/s332/o-massacre-da-serra-eletrica.jpg",
+     "tmdbId": "30497",
+     "rating": "7.4"
+    },
+    {
+     "rank": 5,
+     "kind": "movie",
      "title": "Hamlet (2025)",
      "original": "Hamlet",
      "year": "2026",
@@ -551,7 +561,7 @@
      "rating": "5.9"
     },
     {
-     "rank": 5,
+     "rank": 6,
      "kind": "movie",
      "title": "Conselhos de um Serial Killer Aposentado",
      "original": "Psycho Therapy: The Shallow Tale of a Writer Who Decided to Write About a Serial Killer",
@@ -561,7 +571,7 @@
      "rating": "6.2"
     },
     {
-     "rank": 6,
+     "rank": 7,
      "kind": "movie",
      "title": "007: Casino Royale",
      "original": "Casino Royale",
@@ -571,7 +581,7 @@
      "rating": "8.0"
     },
     {
-     "rank": 7,
+     "rank": 8,
      "kind": "movie",
      "title": "Headhunters - Caçadores de Cabeças",
      "original": "Hodejegerne",
@@ -581,7 +591,7 @@
      "rating": "7.5"
     },
     {
-     "rank": 8,
+     "rank": 9,
      "kind": "movie",
      "title": "Sequestro",
      "original": "Kapringen",
@@ -591,7 +601,7 @@
      "rating": "7.1"
     },
     {
-     "rank": 9,
+     "rank": 10,
      "kind": "movie",
      "title": "Razões Africanas",
      "original": "Razões Africanas",
@@ -599,16 +609,6 @@
      "poster": "https://images.justwatch.com/poster/322322717/s332/razoes-africanas.jpg",
      "tmdbId": "1194957",
      "rating": null
-    },
-    {
-     "rank": 10,
-     "kind": "movie",
-     "title": "Eve",
-     "original": "Eve",
-     "year": "2019",
-     "poster": "https://images.justwatch.com/poster/309787796/s332/eve-2019.jpg",
-     "tmdbId": "639135",
-     "rating": "4.1"
     }
    ],
    "series": [
@@ -713,7 +713,7 @@
      "rating": "8.1"
     }
    ],
-   "updated": "2026-11-20"
+   "updated": "2026-11-21"
   },
   "disney": {
    "movies": [
@@ -852,6 +852,16 @@
     {
      "rank": 4,
      "kind": "series",
+     "title": "The Killing - Além de um Crime",
+     "original": "The Killing",
+     "year": "2011",
+     "poster": "https://images.justwatch.com/poster/241811644/s332/the-killing-2011.jpg",
+     "tmdbId": "34415",
+     "rating": "8.3"
+    },
+    {
+     "rank": 5,
+     "kind": "series",
      "title": "Mentes Criminosas",
      "original": "Criminal Minds",
      "year": "2005",
@@ -860,7 +870,7 @@
      "rating": "8.1"
     },
     {
-     "rank": 5,
+     "rank": 6,
      "kind": "series",
      "title": "Anatomia de Grey",
      "original": "Grey's Anatomy",
@@ -870,7 +880,7 @@
      "rating": "7.6"
     },
     {
-     "rank": 6,
+     "rank": 7,
      "kind": "series",
      "title": "Looksmaxxing até a Morte",
      "original": "Get Huge: Looksmaxxing to Death",
@@ -880,7 +890,7 @@
      "rating": "5.9"
     },
     {
-     "rank": 7,
+     "rank": 8,
      "kind": "series",
      "title": "O Novo Casamento da Imperatriz",
      "original": "재혼 황후",
@@ -890,7 +900,7 @@
      "rating": null
     },
     {
-     "rank": 8,
+     "rank": 9,
      "kind": "series",
      "title": "Chicago Fire",
      "original": "Chicago Fire",
@@ -900,7 +910,7 @@
      "rating": "8.0"
     },
     {
-     "rank": 9,
+     "rank": 10,
      "kind": "series",
      "title": "Verdade Oculta",
      "original": "The Lowdown",
@@ -908,19 +918,9 @@
      "poster": "https://images.justwatch.com/poster/336550738/s332/the-sensitive-kind.jpg",
      "tmdbId": "273247",
      "rating": "7.3"
-    },
-    {
-     "rank": 10,
-     "kind": "series",
-     "title": "Black Clover",
-     "original": "Black Clover",
-     "year": "2017",
-     "poster": "https://images.justwatch.com/poster/289760864/s332/black-clover.jpg",
-     "tmdbId": null,
-     "rating": "8.3"
     }
    ],
-   "updated": "2026-11-20"
+   "updated": "2026-11-21"
   },
   "max": {
    "movies": [
@@ -1017,12 +1017,12 @@
     {
      "rank": 10,
      "kind": "movie",
-     "title": "Sexta-Feira 13",
-     "original": "Friday the 13th",
-     "year": "1980",
-     "poster": "https://images.justwatch.com/poster/9059503/s332/sexta-feira-13.jpg",
-     "tmdbId": "4488",
-     "rating": "6.3"
+     "title": "Crianças Roubadas",
+     "original": "Stolen Children",
+     "year": "2025",
+     "poster": "https://images.justwatch.com/poster/341407163/s332/stolen-children.jpg",
+     "tmdbId": "1583382",
+     "rating": "7.0"
     }
    ],
    "series": [
@@ -1127,7 +1127,7 @@
      "rating": "8.8"
     }
    ],
-   "updated": "2026-11-20"
+   "updated": "2026-11-21"
   },
   "apple": {
    "movies": [
@@ -1154,6 +1154,16 @@
     {
      "rank": 3,
      "kind": "movie",
+     "title": "Snoopy Apresenta: 12 Dias de Snoopy",
+     "original": "Snoopy Presents: 12 Days of Snoopy",
+     "year": "2026",
+     "poster": "https://images.justwatch.com/poster/356577592/s332/snoopy-apresenta-12-dias-de-snoopy.jpg",
+     "tmdbId": "1780407",
+     "rating": "7.5"
+    },
+    {
+     "rank": 4,
+     "kind": "movie",
      "title": "O Dia de Ação de Graças de Charlie Brown",
      "original": "A Charlie Brown Thanksgiving",
      "year": "1973",
@@ -1162,7 +1172,7 @@
      "rating": "7.7"
     },
     {
-     "rank": 4,
+     "rank": 5,
      "kind": "movie",
      "title": "Comer Orar Amar",
      "original": "Eat Pray Love",
@@ -1172,7 +1182,7 @@
      "rating": "5.9"
     },
     {
-     "rank": 5,
+     "rank": 6,
      "kind": "movie",
      "title": "Plano de Família",
      "original": "The Family Plan",
@@ -1182,27 +1192,7 @@
      "rating": "6.3"
     },
     {
-     "rank": 6,
-     "kind": "movie",
-     "title": "Lobos Solitários",
-     "original": "Wolfs",
-     "year": "2024",
-     "poster": "https://images.justwatch.com/poster/336006304/s332/lobos-2024.jpg",
-     "tmdbId": "877817",
-     "rating": "6.5"
-    },
-    {
      "rank": 7,
-     "kind": "movie",
-     "title": "Mamma Mia!",
-     "original": "Mamma Mia!",
-     "year": "2008",
-     "poster": "https://images.justwatch.com/poster/304672368/s332/mamma-mia.jpg",
-     "tmdbId": "11631",
-     "rating": "6.5"
-    },
-    {
-     "rank": 8,
      "kind": "movie",
      "title": "Tetris",
      "original": "Tetris",
@@ -1212,7 +1202,7 @@
      "rating": "7.4"
     },
     {
-     "rank": 9,
+     "rank": 8,
      "kind": "movie",
      "title": "À Noite, no Museu",
      "original": "Night at the Museum",
@@ -1222,7 +1212,7 @@
      "rating": "6.5"
     },
     {
-     "rank": 10,
+     "rank": 9,
      "kind": "movie",
      "title": "Instigadores",
      "original": "The Instigators",
@@ -1230,6 +1220,16 @@
      "poster": "https://images.justwatch.com/poster/336511039/s332/instigadores.jpg",
      "tmdbId": "1059064",
      "rating": "6.2"
+    },
+    {
+     "rank": 10,
+     "kind": "movie",
+     "title": "Napoleão",
+     "original": "Napoleon",
+     "year": "2023",
+     "poster": "https://images.justwatch.com/poster/309771177/s332/napoleon-2023.jpg",
+     "tmdbId": "753342",
+     "rating": "6.3"
     }
    ],
    "series": [
@@ -1334,7 +1334,7 @@
      "rating": "6.5"
     }
    ],
-   "updated": "2026-11-20"
+   "updated": "2026-11-21"
   },
   "globoplay": {
    "movies": [
@@ -1371,16 +1371,6 @@
     {
      "rank": 4,
      "kind": "movie",
-     "title": "Sonhos Roubados",
-     "original": "Sonhos Roubados",
-     "year": "2009",
-     "poster": "https://images.justwatch.com/poster/320692562/s332/sonhos-roubados.jpg",
-     "tmdbId": "45170",
-     "rating": "6.3"
-    },
-    {
-     "rank": 5,
-     "kind": "movie",
      "title": "Uma Jogada de Natal",
      "original": "Holiday Touchdown: A Chiefs Love Story",
      "year": "2024",
@@ -1389,7 +1379,7 @@
      "rating": "6.4"
     },
     {
-     "rank": 6,
+     "rank": 5,
      "kind": "movie",
      "title": "Tropa de Elite 2",
      "original": "Tropa de Elite 2",
@@ -1397,6 +1387,16 @@
      "poster": "https://images.justwatch.com/poster/139010770/s332/tropa-de-elite-2-o-inimigo-agora-e-outro.jpg",
      "tmdbId": "47931",
      "rating": "8.0"
+    },
+    {
+     "rank": 6,
+     "kind": "movie",
+     "title": "Sonhos Roubados",
+     "original": "Sonhos Roubados",
+     "year": "2009",
+     "poster": "https://images.justwatch.com/poster/320692562/s332/sonhos-roubados.jpg",
+     "tmdbId": "45170",
+     "rating": "6.3"
     },
     {
      "rank": 7,
@@ -1541,7 +1541,7 @@
      "rating": "8.1"
     }
    ],
-   "updated": "2026-11-20"
+   "updated": "2026-11-21"
   },
   "paramount": {
    "movies": [
@@ -1748,7 +1748,7 @@
      "rating": "6.9"
     }
    ],
-   "updated": "2026-11-20"
+   "updated": "2026-11-21"
   },
   "crunchyroll": {
    "movies": [
@@ -1955,7 +1955,7 @@
      "rating": "9.0"
     }
    ],
-   "updated": "2026-11-20"
+   "updated": "2026-11-21"
   }
  }
 }
